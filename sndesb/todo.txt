@@ -1,0 +1,101 @@
+
+GUI design frågor
+------------------
+- Format på datum i samband med datepicker ? 
+   "mm-dd-åååå" i simulator !! Tvärtom i telefonen.
+- Färgval. ändra från grå till ?
+- Snabba upp xml-parsing/fetching from REST-API.
+   
+
+Huvudfönster
+------------
+
+Tävlingar
+---------
+- Implementera tävlingstyper. Får kanske plats i samma fönster ?
+- Tävlingslista. Om tom, lägg till text "Inga tävlingar hittade".
+
+Infosida för tävling
+---------------------
+- Gråmarkera "Visa på karta" om gps koordin.ej finns
+- Länka till Eventor : Inbjudan, PM, 
+
+Klubbanmälan
+------------
+
+- Nedre delen av skärmen är svart.
+
+ 
+
+Typ :       "reg", "other", "nat", "loc", "int"
+            "", "", "Nationell", KlubbTavling", "Mästerskapstävling"
+Form :      "IndSingleDay" "IndMultiDay" "TeamSingleDay" "TeamMultiDay" "RelaySingleDay", "RelayMultiDay", "PatrolSingleDay", "PatrolMultiDay"
+            "individuell", "individuell" "Lag" "Lag" "Stafett" "Stafett" "Patrul" "Patrul" 
+Distans :   "Sprint","Middle", "Long", "UltraLong"
+            "Sprint", "Mellan", "Lång", "Ultralång"
+LightCondition :  "Day", "Night", "DayAndNight"
+                  "Dag", "Natt", "DagOchNatt"
+                              
+
+
+Bygg/deploy frågor
+------------------
+
+
+
+Tävling
+
+<EventId>
+<EventClassificationId>
+EventStatusId>
+Name
+StartDate/Date
+Organiser/Organisationid 
+EventRace raceDistance= racelightcondition=
+eventRace/EventCenterPosition y= x=
+url
+comment
+
+
+
+
+
+
+Skogsmulleracet
+Arr: OK Linné
+Datum: 2011-05-10
+Långdistans Dag
+GPSkoordinater TC: xxxxx yyyyyy
+Länk: www.oklinne.se
+Kommentarer: Troligen inklusive deltävling 5 i Five-o
+
+
+    <Event eventForm="IndSingleDay">
+        <EventId>709</EventId>
+        <Name languageId="sv">VikingatrÃ¤ffen FIVE O-5</Name>
+        <EventClassificationId>2</EventClassificationId>
+        <EventStatusId>3</EventStatusId>
+        <StartDate>
+            <Date>2011-04-25</Date>
+        </StartDate>
+        <Organiser>
+            <OrganisationId>408</OrganisationId>
+        </Organiser>
+        <ClassTypeId>5</ClassTypeId>
+        <ClassTypeId>15</ClassTypeId>
+        <ClassTypeId>2</ClassTypeId>
+        <EventRace raceDistance="Middle" raceLightCondition="Day">
+            <EventRaceId>763</EventRaceId>
+            <EventId>709</EventId>
+            <Name/>
+            <RaceDate><Date>2011-04-25</Date><Clock>00:00:00</Clock></RaceDate>
+            <EventCenterPosition y="58.21696" x="12.29065"/>
+            <ModifyDate><Date>2010-09-28</Date><Clock>09:56:02</Clock></ModifyDate>
+            <ModifiedBy><PersonId idManager="SWE" type="nat">25944</PersonId></ModifiedBy>
+        </EventRace>
+        <WebURL>http://www.tsok.se</WebURL>
+        <Comment>Troligen inklusive deltÃ¤vling 5 i Five-O</Comment>
+
+
+from manifest
+        <uses-library android:name="com.google.android.maps" />

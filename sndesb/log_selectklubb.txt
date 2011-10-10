@@ -1,0 +1,3 @@
+04-03 14:09:09.684: INFO/XTRACTOR(2481): 
+klubbanmalning.onCreate : urlString : 
+entries?organisationIds=638&fromEventDate=2011-04-03&toEventDate=2011-06-03&includePersonElement=true&includeOrganisationElement=true&includeEventElement=true

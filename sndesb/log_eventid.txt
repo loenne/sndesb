@@ -1,0 +1,69 @@
+04-07 20:35:24.654: ERROR/REST(24869): 
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<EntryList>
+    <Entry nonCompetitor="N">
+        <EntryId>278575</EntryId>
+        <Competitor>
+            <Person sex="M">
+                <PersonName>
+                    <Family>Batz</Family>
+                    <Given sequence="1">Jörgen</Given>
+                </PersonName>
+                <PersonId idManager="SWE" type="nat">4941</PersonId>
+                <BirthDate>
+                    <Date>1960-06-16</Date>
+                </BirthDate>
+                <Nationality>
+                    <CountryId value="752"/>
+                </Nationality>
+                <ModifyDate>
+                    <Date>2011-04-06</Date>
+                    <Clock>23:25:37</Clock>
+                </ModifyDate>
+            </Person>
+            <Organisation>
+                <OrganisationId>335</OrganisationId>
+                <Name languageId="sv">Skarpnäcks Orienteringslöpare</Name>
+                <ShortName languageId="sv">Skarpnäcks OL</ShortName>
+                <OrganisationTypeId>3</OrganisationTypeId>
+                <CountryId value="752"/>
+                <ParentOrganisation>
+                    <OrganisationId>18</OrganisationId>
+                </ParentOrganisation>
+                <ModifyDate>
+                    <Date>2011-04-06</Date>
+                    <Clock>16:00:27</Clock>
+                </ModifyDate>
+            </Organisation>
+            <CCard><CCardId>600600</CCardId><PunchingUnitType value="SI"/></CCard>
+        </Competitor>
+        <EntryClass sequence="1">
+            <EventClassId>36833</EventClassId>
+        </EntryClass>
+        <Event eventForm="IndSingleDay">
+            <EventId>1617</EventId>
+            <Name languageId="sv">Grymnatta</Name>
+            <EventClassificationId>2</EventClassificationId>
+            <EventStatusId>5</EventStatusId>
+            <StartDate>
+                <Date>2011-04-08</Date>
+                <Clock>00:00:00</Clock>
+            </StartDate>
+            <FinishDate>
+                <Date>2011-04-08</Date>
+                <Clock>00:00:00</Clock>
+            </FinishDate>
+            <EntryBreak>
+                <ValidFromDate>
+                    <Date>2011-04-02</Date>
+                    <Clock>00:00:00</Clock>
+                </ValidFromDate>
+                <ValidToDate>
+                    <Date>2011-04-04</Date>
+                    <Clock>23:59:59</Clock>
+                </ValidToDate>
+            </EntryBreak>
+            <EntryBreak><ValidToDate><Date>2011-04-04</Date><Clock>23:59:59</Clock></ValidToDate></EntryBreak>
+            <EventRace raceDistance="Long" raceLightCondition="Night">
+            <EventRaceId>1734</EventRaceId>
+            <EventId>1617</EventId><Name/><RaceDate><Date>2011-04-08</Date><Clock>00:00:00</Clock></RaceDate><EventCenterPosition y="59.75464" x="17.97235"/><ModifyDate><Date>2011-04-06</Date><Clock>21:42:36</Clock></ModifyDate><ModifiedBy><PersonId idManager="SWE" type="nat">25163</PersonId></ModifiedBy></EventRace><Comment/><PunchingUnitType value="SI"/><ModifyDate><Date>2011-04-06</Date><Clock>21:42:36</Clock></ModifyDate><ModifiedBy><PersonId idManager="SWE" type="nat">25163</PersonId></ModifiedBy></Event><AllocationControl/><EntryDate><Date>2011-03-02</Date><Clock>10:17:23</Clock></EntryDate><ModifyDate><Date>2011-03-02</Date><Clock>10:17:23</Clock></ModifyDate><ModifiedBy><PersonId idManager="SWE" type="nat">4941</PersonId></ModifiedBy></Entry><Entry nonCompetitor="N"><EntryId>278577</EntryId><Competitor><Person sex="M"><PersonName><Family>Batz</Family><Given sequence="1">Jörgen</Given></PersonName><PersonId idManager="SWE" type="nat">4941</PersonId><BirthDate><Date>1960-06-16</Date></BirthDate><Nationality><CountryId value="752"/></Nationality><ModifyDate><Date>2011-04-06</Date><Clock>23:25:37</Clock></ModifyDate></Person><Organisation><OrganisationId>335</OrganisationId><Name languageId="sv">Skarpnäcks Orienteringslöpare</Name><ShortName languageId="sv">Skarpnäcks OL</ShortName><OrganisationTypeId>3</OrganisationTypeId><CountryId value="752"/><ParentOrganisation><OrganisationId>18</OrganisationId></ParentOrganisation><ModifyDate><Date>2011-04-06</Date><Clock>16:00:27</Clock></ModifyDate></Organisation><CCard><CCardId>600600</CCardId><PunchingUnitType value="SI"/></CCard></Competitor><EntryClass sequence="1"><EventClassId>33551</EventClassId></EntryClass><Event eventForm="IndSingleDay"><EventId>1047</EventId><Name languageId="sv">Lännasprinten</Name><EventClassificationId>2</EventClassificationId><EventStatusId>5</EventStatusId><StartDate><Date>2011-04-09</Date><Clock>00:00:00</Clock></StartDate><FinishDate><Date>2011-04-09</Date><Clock>00:00:00</Clock></FinishDate><EntryBreak><ValidToDate><Date>2011-04-06</Date><Clock>23:59:59</Clock></ValidToDate></EntryBreak><EntryBreak><ValidFromDate><Date>2011-04-01</Date><Clock>00:00:00</Clock></ValidFromDate><ValidToDate><Date>2011-04-06</Date><Clock>23:59:59</Clock></ValidToDate></EntryBreak><EventRace raceDistance="Middle" raceLightCondition="Day"><EventRaceId>1121</EventRaceId><EventId>1047</EventId><Name/><R

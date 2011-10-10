@@ -1,0 +1,52 @@
+02-15 23:17:34.394: ERROR/REST(222): 
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<OrganisationList>
+	<Organisation>
+		<OrganisationId>1</OrganisationId>
+		<Name languageId="sv">Svenska Orienteringsförbundet</Name>
+		<ShortName>Svenska Orienteringsförbundet</ShortName>
+		<OrganisationTypeId>1</OrganisationTypeId>
+		<CountryId value="752"/>
+		<Address zipCode="17118" city="SOLNA" street="Box 22" careOf=" ">
+		<AddressType value="official"/>
+		<Country>
+			<CountryId value="752"/>
+			<Alpha2 value="SE"/>
+			<Alpha3 value="SWE"/>
+			<Name languageId="sv">Sverige</Name>
+			<Name languageId="en">Sweden</Name>
+			<ModifyDate>
+				<Date>2009-10-27</Date>
+				<Clock>21:55:12</Clock>
+			</ModifyDate>
+		</Country><
+		ModifyDate>
+			<Date>2010-08-03</Date>
+			<Clock>17:18:38</Clock>
+		</ModifyDate>
+		</Address>
+			<Tele mailAddress="info@orientering.se">
+			<TeleType value="official"/>
+		<ModifyDate>
+			<Date>2010-08-03</Date>
+			<Clock>17:18:38</Clock>
+		</ModifyDate>
+		</Tele>
+		<ParentOrganisation>
+			<OrganisationId>650</OrganisationId>
+		</ParentOrganisation>
+		<ModifyDate>
+			<Date>2010-08-03</Date>
+			<Clock>17:18:38</Clock>
+		</ModifyDate>
+	</Organisation>
+
+	<Organisation>
+		<OrganisationId>2</OrganisationId>
+		<Name languageId="sv">Smålands Orienteringsförbund</Name>
+		<ShortName>Smålands Orienteringsförbund</ShortName>
+		<OrganisationTypeId>2</OrganisationTypeId>
+		<CountryId value="752"/>
+		<Address zipCode="55116" city="JÖNKÖPING" street="Box 485" careOf="">
+		<AddressType value="official"/>
+		<Country><CountryId value="752"/><Alpha2 value="SE"/><Alpha3 value="SWE"/><Name languageId="sv">Sverige</Name><Name languageId="en">Sweden</Name><ModifyDate><Date>2009-10-27</Date><Clock>21:55:12</Clock></ModifyDate></Country><ModifyDate><Date>2010-08-03</Date><Clock>17:18:37</Clock></ModifyDate></Address><Tele mailAddress="smof@smalandsidrotten.se"><TeleType value="official"/><ModifyDate><Date>2010-08-03</Date><Clock>17:18:37</Clock></ModifyDate></Tele><ParentOrganisation><OrganisationId>1</OrganisationId></ParentOrganisation><ModifyDate><Date>2010-08-03</Date><Clock>17:18:37</Clock></ModifyDate></Organisation><Organisation><OrganisationId>3</OrganisationId><Name languageId="sv">Västergötlands Orienteringsförbund</Name><ShortName>Västergötlands Orienteringsförbund</ShortName><OrganisationTypeId>2</OrganisationTypeId><CountryId value="752"/><Address zipCode="54128" city="SKÖVDE" street="Box 418" careOf=""><AddressType value="official"/><Country><CountryId value="752"/><Alpha2 value="SE"/><Alpha3 value="SWE"/><Name languageId="sv">Sverige</Name><Name languageId="en">Sweden</Name><ModifyDate><Date>2009-10-27</Date><Clock>21:55:12</Clock></ModifyDate></Country><ModifyDate><Date>2010-10-21</Date><Clock>09:40:15</Clock></ModifyDate></Address><Tele mailAddress="magnus.vof@westgotasport.se" mobilePhoneNumber="0706-779806"><TeleType value="official"/><ModifyDate><Date>2010-10-21</Date><Clock>09:40:15</Clock></ModifyDate></Tele><ParentOrganisation><OrganisationId>1</OrganisationId></ParentOrganisation><ModifyDate><Date>2010-10-21</Date><Clock>09:40:15</Clock></ModifyDate></Organisation><Organisation><OrganisationId>4</OrganisationId><Name languageId="sv">Upplands Orienteringsförbund</Name><ShortName>Upplands Orienteringsförbund</ShortName><OrganisationTypeId>2</OrganisationTypeId><CountryId value="752"/><Address zipCode="19558" city="MÄRSTA" street="Friggagatan 14" careOf="c/o Sven-Erik Mosén"><AddressType value="official"/><Country><CountryId value="752"/><Alpha2 value="SE"/><Alpha3 value="SWE"/><Name languageId="sv">Sverige</Name><Name languageId="en">Sweden</Name><ModifyDate><Date>2009-10-27</Date><Clock>21:55:12</Clock></ModifyDate></Country><ModifyDate><Date>2010-08-03</Date><Clock>17:18:37</Clock></ModifyDate></Address><Tele mailAddress="upplandsof@gmail.com"><TeleType value="official"/><ModifyDate><Date>2010-08-03</Date><Clock>17:18:37</Clock></ModifyDate></Tele><ParentOrganisation><OrganisationId>1</OrganisationId></ParentOrganisation><ModifyDate><Date>2010-08-03</Date><Clock>17:18:37</Clock></ModifyDate></Organisation><Organisation><OrganisationId>5</OrganisationId><Name languageId="sv">Ångermanlands Orienteringsförbund</Name><ShortName>Ångermanlands Orienteringsförb
