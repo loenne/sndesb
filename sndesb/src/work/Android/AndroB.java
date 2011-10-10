@@ -24,6 +24,11 @@ public class AndroB extends Activity {
         setContentView(R.layout.main);
     }
 
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
 	public void myClickHandler(View view) {
 		switch (view.getId()) {
 			// Tävlingar
@@ -58,6 +63,11 @@ public class AndroB extends Activity {
 		}
 	}
 
+	///////////////////////////////////////////////////////////
+	//
+	//
+	//
+	///////////////////////////////////////////////////////////
     @Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
