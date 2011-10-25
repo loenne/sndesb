@@ -113,18 +113,18 @@ public class klubbanmalning extends Activity
 							heading = 1;
 						}
 					}
-						// Ny t‰vling  t‰vling / datum
+						// Ny tävling  tävling / datum
 					if (tavlAnm.getEventName() != null) {
 
 						if ((tavling.compareTo(tavlAnm.getEventName()) != 0) ||
 						    (tavlingsdatum.compareTo(tavlAnm.getEventDate()) != 0)){
-//							Log.e("XTRACTOR","loadAnmalningar : Ny t‰vling, h‰mta alla klasser fˆr id " + tavlAnm.getEventId());
+//							Log.e("XTRACTOR","loadAnmalningar : Ny tävling, hämta alla klasser för id " + tavlAnm.getEventId());
 
 							fetchTavlingsKlasser(tavlAnm.getEventId());							
 
 							// fetchTavlingsStartlista							
 							map = new HashMap<String, String>();
-//							Log.e("XTRACTOR","loadAnmalningar : Ny t‰vling : " + tavlAnm.getEventName());
+//							Log.e("XTRACTOR","loadAnmalningar : Ny tävling : " + tavlAnm.getEventName());
 							tavling = tavlAnm.getEventName();
 							tavlingsdatum = tavlAnm.getEventDate();
 							map.put("datum", tavlAnm.getEventDate());
@@ -139,7 +139,7 @@ public class klubbanmalning extends Activity
 					}						
 					// Klass / Namn
 					map = new HashMap<String, String>();
-//	   				Log.e("XTRACTOR","loadAnmalningar : Ny t‰vlingsanm‰lning fˆr : " + tavlAnm.getGiven() + " " + tavlAnm.getFamily() + "Form:" + tavlAnm.getEventForm());
+//	   				Log.e("XTRACTOR","loadAnmalningar : Ny tävlingsanmälning för : " + tavlAnm.getGiven() + " " + tavlAnm.getFamily() + "Form:" + tavlAnm.getEventForm());
 					map.put("datum", tKlasser.get(tavlAnm.getEventClassId()));
 					if ((tavlAnm.getEventForm().compareTo("IndSingleDay") == 0) ||
 						(tavlAnm.getEventForm().compareTo("IndMultiDay") == 0)) {

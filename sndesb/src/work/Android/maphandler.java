@@ -1,5 +1,4 @@
 package work.Android;
- 
 
 import java.io.Serializable;
 import java.util.List;
@@ -20,7 +19,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 //import android.view.View;
-import android.widget.LinearLayout;
+//import android.widget.LinearLayout;
 
 
 public class maphandler extends MapActivity 
@@ -92,7 +91,7 @@ public class maphandler extends MapActivity
         double lat = Double.parseDouble(coordinates[0]);
         double lng = Double.parseDouble(coordinates[1]);
 
-//	Ingarö        
+//	Ingarš        
 //        	59°13'45.39"N    18°28'52.88"O
 //        	59 + 13/60 + 45.39/3600 = 0.216666667 + 0.012608333 = 59.22928 
 //			18 + 28/60 + 52.88/3600 = 0.466666667 + 0.014444444 = 18.48135

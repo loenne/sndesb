@@ -60,4 +60,8 @@
     <string name="ttype6">Internationell</string>   
     <string name="ttokbutton">OK</string>   
     <string name="ttcancelbutton">CANCEL</string>   
+    <string name="forbund">Förbund</string>   
+    <string name="klubb">Klubb</string>   
+    <string name="quit">Quit</string>   
+    <string name="okbutton">Ok</string>   
 </resources>

@@ -27,5 +27,6 @@
         <activity android:name="selectklubb"></activity>
         <activity android:name="tavlingsinfo"></activity>
         <activity android:name="maphandler"></activity>
+        <activity android:name="configApp"></activity>
     </application>
 </manifest>

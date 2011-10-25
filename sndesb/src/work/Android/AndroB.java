@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 import android.content.Intent;
@@ -50,7 +51,7 @@ public class AndroB extends Activity {
 			// Löpare
 			case R.id.loparval:
 			{
-				Toast.makeText(this, "Du vill hämta alla anmälningar för en person. Inte Implementerat änn !!",
+				Toast.makeText(this, "Du vill hŠmta alla anmŠlningar fšr en person. Inte Implementerat Šnn !!",
 						Toast.LENGTH_LONG).show();
 				return;
 			}
@@ -61,6 +62,34 @@ public class AndroB extends Activity {
 				return;
 			}
 		}
+	}
+
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
+	public void konfigurera() {
+
+        Intent i = new Intent();
+        i.setClassName("work.Android", "work.Android.configApp");
+        startActivity(i);               
+		return;
+	
+	}
+	
+	   ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
+	public void showAbout() {
+
+        Intent i = new Intent();
+        i.setClassName("work.Android", "work.Android.showAbout");
+        startActivity(i);               
+		return;
+	
 	}
 
 	///////////////////////////////////////////////////////////
@@ -74,4 +103,27 @@ public class AndroB extends Activity {
 		inflater.inflate(R.menu.menu, menu);
 		return true;		
 	}
+    
+	///////////////////////////////////////////////////////////
+	//
+	//
+	//
+	///////////////////////////////////////////////////////////
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+        case R.id.konfig:
+            konfigurera();
+            return true;
+        case R.id.aboutme:
+            showAbout();
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }    
+
+
+
 }		
