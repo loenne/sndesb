@@ -18,7 +18,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import work.Android.tavling;
-import work.Android.organisation;
+import work.Android.Organisation;
 //import org.json.JSONArray;
 //import org.json.JSONException;
 //import org.json.JSONObject;
@@ -396,9 +396,9 @@ public class RestAPI {
 /*
  * 	
  */
-	public List<organisation> parseOrganisations() {
-		final organisation currentOrganisation = new organisation();
-		final List<organisation> organisationer = new ArrayList<organisation>();
+	public List<Organisation> parseOrganisations() {
+		final Organisation currentOrganisation = new Organisation();
+		final List<Organisation> organisationer = new ArrayList<Organisation>();
 		RootElement root = new RootElement(ORGANISATIONLIST);
 		Element item = root.getChild(ORGANISATION);
 		Element item2 = item.getChild(PARENTORGANISATION);

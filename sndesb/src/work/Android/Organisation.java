@@ -1,5 +1,7 @@
 package work.Android;
 
+import android.util.Log;
+
 //import java.net.MalformedURLException;
 //import java.net.URL;
 //import java.text.ParseException;
@@ -50,7 +52,7 @@ ModifyDate>
 */
 
 
-public class organisation implements Comparable<organisation>{
+public class Organisation implements Comparable<Organisation>{
 //	static SimpleDateFormat FORMATTER = 
 //		new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z");
 	private String organisationId;
@@ -99,6 +101,14 @@ public class organisation implements Comparable<organisation>{
 		this.parentOrganisationId = parentOrganisationId.trim();
 	}
 
+	public void printRecord() {
+		Log.e("XTRACTOR","organisation: record:");	
+		Log.e("XTRACTOR","organisation: " + this.organisationId );	
+		Log.e("XTRACTOR","organisation: " + this.organisationTypeId);	
+		Log.e("XTRACTOR","organisation: " + this.name);	
+		Log.e("XTRACTOR","organisation: " + this.shortName);	
+		Log.e("XTRACTOR","organisation: " + this.parentOrganisationId);
+	}
 	
 /* 	public void setLink(String link) {
 		try {
@@ -132,8 +142,8 @@ public class organisation implements Comparable<organisation>{
 		}
 	}
 */	
-	public organisation copy(){
-		organisation copy = new organisation();
+	public Organisation copy(){
+		Organisation copy = new Organisation();
 		copy.organisationId = organisationId;
 		copy.name = name;
 		copy.shortName = shortName;
@@ -206,7 +216,7 @@ public class organisation implements Comparable<organisation>{
 		return true;
 	}
 */
-	public int compareTo(organisation another) {
+	public int compareTo(Organisation another) {
 		if (another == null) return 1;
 		// sort descending, most recent first
 		return 1;  //another.date.compareTo(date);

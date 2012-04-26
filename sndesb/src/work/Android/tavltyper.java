@@ -43,7 +43,7 @@ public class tavltyper extends Dialog {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.tavltyper);
-		setTitle("V‰lj t‰vlingstyper");
+		setTitle("Välj tävlingstyper");
 
         CheckBox typ1 = (CheckBox) findViewById(R.id.ttype1);
         CheckBox typ2 = (CheckBox) findViewById(R.id.ttype2);

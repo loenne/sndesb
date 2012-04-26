@@ -38,18 +38,18 @@ public class tavlingar extends Activity  {
 	ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
 	HashMap<String, String> map;
 	ArrayList<String> interfaceArray = new ArrayList<String>();
-	HashMap<String,String> klubbArray = new HashMap<String,String>();
+	//HashMap<String,String> klubbArray = new HashMap<String,String>();
 	String[] from  = new String[] {"datum", "namn"};
 	int[] to = new int[] { R.id.item1, R.id.item2 };
-	String[] classificationId = new String[] {"Ok‰nd","M‰sterskap","Nationell","Distrikt","N‰r","Klubb"};
-	String[] lightConditions = new String[] {"Ok‰nd","Dag","Natt","Dag/Natt"};
+	String[] classificationId = new String[] {"Okänd","Mästerskap","Nationell","Distrikt","När","Klubb"};
+	String[] lightConditions = new String[] {"Okänd","Dag","Natt","Dag/Natt"};
 	
 /*
-	"champs" championship / "m‰st" (m‰sterskap)
+	"champs" championship / "mäst" (mästerskap)
 	"nat" national / "nat" nationell
 	"dist" district / "dist" distrikt
-	"loc" local / "n‰r" n‰rt‰vling
-	"club" clubb / "klubb" klubbt‰vling
+	"loc" local / "när" närtävling
+	"club" clubb / "klubb" klubbtävling
 	
     <xs:enumeration value="reg" />     1
     <xs:enumeration value="other" />   2
@@ -98,11 +98,11 @@ public class tavlingar extends Activity  {
 		mySelForbund   = interfaceArray.get(7);
 		mySelClassificationIds = interfaceArray.get(9);
 			
-		while (i < size-1) {
-			klubbArray.put(interfaceArray.get(i), interfaceArray.get(i+1));
-			Log.i("XTRACTOR","tavlingar, onCreate: Fetched : " + interfaceArray.get(i) + ", " + interfaceArray.get(i+1) + " size:" + interfaceArray.size());    			
-			i = i + 2;
-		}
+//		while (i < size-1) {
+//			klubbArray.put(interfaceArray.get(i), interfaceArray.get(i+1));
+//			Log.i("XTRACTOR","tavlingar, onCreate: Fetched : " + interfaceArray.get(i) + ", " + interfaceArray.get(i+1) + " size:" + interfaceArray.size());    			
+//			i = i + 2;
+//		}
 
 		if (mySelForbund == "Alla fˆrbund") {
 			urlString = urlString + "?fromDate=" + mySelDateFrom + "&toDate=" + mySelDateTo;
@@ -134,7 +134,7 @@ public class tavlingar extends Activity  {
 		list.setTextFilterEnabled(true);
 		list.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-//				Log.i("XTRACTOR","loadTavlingar : Selected : " + list.getItemAtPosition(position));    			
+				Log.i("XTRACTOR","loadTavlingar : Selected : " + list.getItemAtPosition(position));    			
 //				Log.i("XTRACTOR","loadTavlingar : Selected : view :" + v + "pos: "+ position + " id : " +id);
 
 				tavling valdTavl = new tavling();
@@ -142,8 +142,8 @@ public class tavlingar extends Activity  {
 //				String name; 				
 //				name = selecttavling.getKlubbarFetched(valdTavl.getOrganisationId());
 
-				Log.i("XTRACTOR","setOnItemClickListener : organisationid : " + valdTavl.getOrganisationId() + "klubb: "+ klubbArray.get(valdTavl.getOrganisationId()));
-
+//				Log.i("XTRACTOR","setOnItemClickListener : organisationid : " + valdTavl.getOrganisationId() + "klubb: "+ klubbArray.get(valdTavl.getOrganisationId()));
+				Log.i("XTRACTOR","setOnItemClickListener : organisationid : " + valdTavl.getOrganisationId());
 				
 				String interfaceArray[] = new String[26];
 //				interfaceArray[0] = "EVENTID";
@@ -167,7 +167,7 @@ public class tavlingar extends Activity  {
 					  	   (tmp.compareTo("PatrolMultiDay") == 0)) {
 						interfaceArray[3] = "Patrul";
 				} else {
-					interfaceArray[3] = "Ok‰nd";					
+					interfaceArray[3] = "Okänd";					
 				}			
 
 				interfaceArray[4] = "EVENTCLASSIFICATIONID";
@@ -200,7 +200,7 @@ public class tavlingar extends Activity  {
 //				interfaceArray[10] = "ORANISATIONID";
 //				interfaceArray[11] = valdTavl.getOrganisationId();
 				interfaceArray[12] = "ORGANISATIONNAME";				
-				interfaceArray[13] = klubbArray.get(valdTavl.getOrganisationId());
+				interfaceArray[13] = "kalle"; // klubbArray.get(valdTavl.getOrganisationId());
 				interfaceArray[14] = "RACEDISTANCE";
 
 				tmp = valdTavl.getRaceDistance();
@@ -208,13 +208,13 @@ public class tavlingar extends Activity  {
 				if (tmp.compareTo("Sprint") == 0) {
 					interfaceArray[15] = "Sprint";
 				} else if (tmp.compareTo("Middle") == 0) {
-						interfaceArray[15] = "Medel";
+					interfaceArray[15] = "Medel";
 				} else if (tmp.compareTo("Long") == 0) {
-					interfaceArray[15] = "LÂng";
+					interfaceArray[15] = "Lång";
 				} else if (tmp.compareTo("UltraLong") == 0) {
-					interfaceArray[15] = "UltraLÂng";
+					interfaceArray[15] = "UltraLång";
 				} else {
-					interfaceArray[15] = "Ok‰nd";
+					interfaceArray[15] = "Okänd";
 				}				
 				interfaceArray[16] = "RACELIGHTCONDITION";
 
@@ -247,7 +247,7 @@ public class tavlingar extends Activity  {
 		});		 
 	}
 
-	// H‰mta t‰vlingar med urvalet (Datum frÂn/till samt forbund)
+	// Fetch tävlingar med urvalet (Datum från/till samt forbund)
 	private void loadTavlingar() 
 	{
 		try 

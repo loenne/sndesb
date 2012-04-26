@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	 
+	    <PreferenceCategory
+	        android:title="Inställningar för sökning"
+	        android:key="installningar">
+
+			<EditTextPreference
+	            android:key="months"
+	            android:title="Ändra sökintervall"
+	            android:summary="Ange hur många månader framåt man ska söka"
+	            android:dialogTitle="Sökintervall"
+	            android:dialogMessage="Antal månader"
+	            android:defaultValue="2" />	        	             
+
+			<ListPreference
+	            android:key="forbund"
+	            android:title="Förbund"
+	            android:summary="Välj orienteringsförbund"
+	            android:defaultValue="18"/>  	
+	            
+	        <EditTextPreference
+	            android:key="Klubb"
+	            android:title="Klubb"
+	            android:summary="Ange orienteringsklubb"
+	            android:dialogTitle="Klubb"
+	            android:dialogMessage="Orienteringsklubb"  
+	            android:defaultValue="Skarpnäcks OL" />
+	 
+	    </PreferenceCategory>
+	  	</PreferenceScreen>

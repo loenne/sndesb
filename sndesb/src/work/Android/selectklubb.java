@@ -34,7 +34,7 @@ public class selectklubb  extends Activity {
 	private ProgressDialog m_ProgressDialog = null;
 	private ArrayList<String> oforbund;
 	private ArrayList<String> oforbundid;
-	private List<organisation> organisations;
+	private List<Organisation> organisations;
 	private ArrayList<String> klubbar;
 	private ArrayList<String> klubbid;
     private int mYear;
@@ -131,16 +131,16 @@ public class selectklubb  extends Activity {
 		oforbund.clear();
 		oforbundid.clear();
 
-		// Speciallösning start. Eftersom man inte får hämta andra klubbar !!
+		// SpeciallŠsning start. Eftersom man inte fŒr hŠmta andra klubbar !!
 //		oforbund.add("[Alla]");
 //		oforbundid.add("0");
 /*
- 		oforbund.add("Stockholms Orienteringsförbund");		
+ 		oforbund.add("Stockholms Orienteringsfšrbund");		
 		oforbundid.add("18");
 		defForbundIndex = 0;
 		mySelForbundId = "18";
 */
-		// Speciallösning stop. Eftersom man inte får hämta andra klubbar !!
+		// Speciallšsning stop. Eftersom man inte fŒr hŠmta andra klubbar !!
 		
 		try{
 			RestAPI andRest = new RestAPI();
@@ -149,12 +149,12 @@ public class selectklubb  extends Activity {
 			if (fetchOk) {
 				organisations = andRest.parseOrganisations();    		
 
-				// 1 = Orienteringsförbundet
+				// 1 = Orienteringsfšrbundet
 				// 2 = Forbund
 				// 3 = Klubb
 				int i = 0;
 
-				for (organisation org : organisations){
+				for (Organisation org : organisations){
 
 					if (org.getOrganisationTypeId().equals("2")) {
 						// Log.e("XTRACTOR","Stored : " + org.getShortName() + " id: " + org.getOrganisationId() + " in pos : " + i);
@@ -176,7 +176,7 @@ public class selectklubb  extends Activity {
 /*	
  				Toast.makeText(this, "No network connection. Check mobile network",
 						Toast.LENGTH_LONG).show();
-*/				oforbund.add("Inga förbund hittade");
+*/				oforbund.add("Inga fšrbund hittade");
 				oforbundid.add("1");
 			}  			
 		} catch (Throwable t){
@@ -204,7 +204,7 @@ public class selectklubb  extends Activity {
 //		Log.e("XTRACTOR","loadKlubbar : antal organis :" + organisations.size() + " forbund : " + forbundid);
 		klubbIdCreated = 1;
 
-		// Speciallösning start. Eftersom man inte får hämta andra klubbar !!
+		// SpeciallŠsning start. Eftersom man inte fŒr hŠmta andra klubbar !!
 //		klubbar.add("[Alla]");
 //		klubbid.add("1");
 //		klubbar.add("Skarpnäcks OL");
@@ -218,7 +218,7 @@ public class selectklubb  extends Activity {
 		
  		int i = 0;
 				
-		for (organisation org : organisations){
+		for (Organisation org : organisations){
 
 			if ((org.getOrganisationTypeId().equals("3")) &&
 				(org.getParentOrganisationId().equals(forbundid))) {
@@ -230,7 +230,7 @@ public class selectklubb  extends Activity {
 
 				if (org.getShortName().equals(sol)) {
 					defKlubbIndex = i;
-					// Log.e("XTRACTOR","Found Skarpnäck as 335 in index : " + i);
+					// Log.e("XTRACTOR","Found SkarpnŠck as 335 in index : " + i);
 					mySelKlubb = klubbar.get(i);
    	    			mySelKlubbId = klubbid.get(i);  	  						
 				}			

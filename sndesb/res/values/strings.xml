@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Idrott - När den är som bäst</string>
-    <string name="rubrik1">Orienteringstävlingar</string>
+    <string name="rubrik1">Orientering med Skarpnäck OL</string>
     <string name="tavlingsval">Tävlingar</string>
     <string name="klubbval">Klubbanmälningar</string>
     <string name="loparval">Löparanmälningar</string>
@@ -63,5 +63,7 @@
     <string name="forbund">Förbund</string>   
     <string name="klubb">Klubb</string>   
     <string name="quit">Quit</string>   
-    <string name="okbutton">Ok</string>   
+    <string name="aboutok">Ok</string>   
+    <string name="revision">Version 1.0</string>
+    <string name="rev_date">Last update : 2012-04-16</string>   
 </resources>

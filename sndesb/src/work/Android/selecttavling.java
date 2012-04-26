@@ -4,6 +4,7 @@ import java.util.ArrayList;
 //import java.util.Collections;
 //import java.util.Comparator;
 //import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Calendar;
 
@@ -21,6 +22,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 // import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -32,7 +34,8 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
-
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 // import work.Android.forbund;
 
 public class selecttavling  extends Activity {
@@ -40,12 +43,14 @@ public class selecttavling  extends Activity {
 	private boolean fetchOk; 
 	private Runnable getOrg;
 	private ProgressDialog m_ProgressDialog = null;
-	private List<organisation> organisations;
+	private List<Organisation> organisations;
 	private ArrayList<String> oforbund;
 	private ArrayList<String> oforbundid;
+	private Hashtable orforbund;
 //	private HashMap<String, String> forbundFetched;	
 //	private  ArrayList<String> klubbarFetched;	
 	private  ArrayList<String> klubbarSelected;	
+
 	
 //	private String[] oforbundid;
     private int mYear;
@@ -85,12 +90,19 @@ public class selecttavling  extends Activity {
 				loadForbund();
 			}
 		};
+		
 		tavlingstyper = new boolean[]{true,true,true,true,true,true};
 		typer = new String[]{"1","2","3","4","5","6"};
 		mySelClassificationIds	= "1,2,3,4,5,6";
 		oforbund = new ArrayList<String>();
 		oforbundid = new ArrayList<String>(); 
-//		klubbarFetched = new ArrayList<String>();
+		orforbund = new Hashtable();
+		orforbund.put("18","Stockholms Orienteringsfšrbund");
+
+		if (orforbund.containsValue("Stockholms Orienteringsfšrbund")) {
+			Log.e("XTRACTOR","Stockholms Orienteringsfšrbund finns i hash tabell ");
+		}
+		//		klubbarFetched = new ArrayList<String>();
 		klubbarSelected = new ArrayList<String>();
    		myDateFrom = (TextView)findViewById(R.id.selectFDate);
    		myDateTo = (TextView)findViewById(R.id.selectTDate);
@@ -112,42 +124,47 @@ public class selecttavling  extends Activity {
    		// get the current date
         final Calendar c = Calendar.getInstance();
         mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH);
-		mMonth = mMonth + 1;
+        mMonth = c.get(Calendar.MONTH) + 1;  // January is 0 but we want to see it as 1
         mDay = c.get(Calendar.DAY_OF_MONTH);       
         updateDisplay1();
         mMonth = c.get(Calendar.MONTH);       
-//		Log.e("XTRACTOR","Month2 : " + mMonth);
-		mMonth = mMonth + 3;
-//		Log.e("XTRACTOR","Month2 : " + mMonth);
+		Log.e("XTRACTOR","Month1 : " + mMonth);
+		// Adjust for new year
+		if (mMonth > 8) { 
+        	mYear = mYear+1;
+        }
+		mMonth=(mMonth+3)%11;
+   		Log.e("XTRACTOR","Month2 : " + mMonth);
         updateDisplay2();		
    	}
 
 	private void loadForbund() 
    	{
+		Log.e("XTRACTOR","Start of loadForbund");
 		oforbund.clear();
 		oforbundid.clear();
-
-//		oforbund.add("Stockholms Orienteringsfšrbund");
-//		oforbundid.add("18");
-//		activeIndex = 0;
+		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+		StringBuilder builder = new StringBuilder();		
+		builder.append(sharedPrefs.getString("forbund", "NULL"));
+			
+		oforbund.add(orforbund.get(sharedPrefs.getString("forbund", "NULL")).toString());
+		oforbundid.add("18");
+		activeIndex = 0;
 
 /* START COMMENT OUT */
-		try{
+/*		try{
    			RestAPI andRest = new RestAPI();
    			fetchOk = andRest.queryRESTurl(urlString);
 
    			if (fetchOk) {
    				organisations = andRest.parseOrganisations();    		
-//				oforbund = new ArrayList<String>(organisations.size());
-//   			oforbundid = new String[organisations.size()]; 
    				
-   				// 1 = Orienteringsförbundet
+   				// 1 = Orienteringsfšrbundet
    				// 2 = Forbund
    				// 3 = Klubb
    				int i = 1;
 
-				oforbund.add("Alla förbund");
+				oforbund.add("Alla fšrbund");
 				oforbundid.add("1");
    				   				
    				for (organisation org : organisations){
@@ -170,12 +187,13 @@ public class selecttavling  extends Activity {
    			} else {
 				Toast.makeText(this, "No network connection. Check mobile newtwok",
 						Toast.LENGTH_LONG).show();
-				oforbund.add("Inga förbund hittade");
+				oforbund.add("Inga fšrbund hittade");
 				oforbundid.add("0");
   			}
    		} catch (Throwable t){
   			Log.e("XTRACTOR","loadForbund : Failing to fetch forbund : " + t.getMessage(),t);
   		}
+*/
 /* END OF COMMENTED OUT */  		
 		runOnUiThread(returnRes);
 	}
@@ -194,10 +212,10 @@ public class selecttavling  extends Activity {
    	{
    	    public void onItemSelected(AdapterView<?> parent,
    	        View view, int pos, long id) {
-//			Log.e("XTRACTOR","Selected pos : " + pos + " som är : " + parent.getItemAtPosition(pos).toString() );
+//			Log.e("XTRACTOR","Selected pos : " + pos + " som Šr : " + parent.getItemAtPosition(pos).toString() );
 			mySelForbund = parent.getItemAtPosition(pos).toString();
 			mySelForbundId = oforbundid.get(pos);
-			Log.e("XTRACTOR","Selected pos : " + pos + " som är : " + mySelForbund + " och id:" + oforbundid.get(pos) );
+			Log.e("XTRACTOR","Selected pos : " + pos + " som Šr : " + mySelForbund + " och id:" + oforbundid.get(pos) );
    	    }
 
    	    public void onNothingSelected(AdapterView<?> parent) {
@@ -205,7 +223,7 @@ public class selecttavling  extends Activity {
 			mySelForbundId = oforbundid.get(0);
    	    }
    	}
-	
+
     // updates the date in the TextView
    	private void updateDisplay1() {
    		String mZeroMonth = "";
@@ -228,7 +246,7 @@ public class selecttavling  extends Activity {
    	                .append(mZeroDay)
    	                .append(mDay));
    	        mySelDateFrom = myDateFrom.getText().toString();
-			//Log.e("XTRACTOR","update display1 : " + mySelDateFrom);
+			Log.e("XTRACTOR","update display1 : " + mySelDateFrom);
     }
 
     private void updateDisplay2() {
@@ -251,7 +269,7 @@ public class selecttavling  extends Activity {
 	                .append(mZeroDay)
 	                .append(mDay));
    	        mySelDateTo = myDateTo.getText().toString();
-			//Log.e("XTRACTOR","update display2 : " + mySelDateTo);
+			Log.e("XTRACTOR","update display2 : " + mySelDateTo);
     }
 
     private DatePickerDialog.OnDateSetListener mDateSetListener1 =
@@ -277,12 +295,66 @@ public class selecttavling  extends Activity {
             }
         };
         
-    @Override
-  	public boolean onCreateOptionsMenu(Menu menu) {
-    	MenuInflater inflater = getMenuInflater();
-    	inflater.inflate(R.menu.menu, menu);
-    	return true;		
-    }
+    
+        ///////////////////////////////////////////////////////////
+        //
+        //
+        //
+        ///////////////////////////////////////////////////////////
+        public void konfigurera() {
+
+        	Intent i = new Intent();
+        	i.setClassName("work.Android", "work.Android.configApp");
+        	startActivity(i);               
+        	return;
+
+        }
+
+        ///////////////////////////////////////////////////////////
+        //
+        //
+        //
+        ///////////////////////////////////////////////////////////
+        public void showAbout() {
+
+        	showabout sab = new showabout(this);
+        	sab.show();
+        	return;
+
+        }
+
+        ///////////////////////////////////////////////////////////
+        //
+        //
+        //
+        ///////////////////////////////////////////////////////////
+        @Override
+        public boolean onCreateOptionsMenu(Menu menu) {
+        	MenuInflater inflater = getMenuInflater();
+        	inflater.inflate(R.menu.menu, menu);
+        	return true;		
+        }
+
+        ///////////////////////////////////////////////////////////
+        //
+        //
+        //
+        ///////////////////////////////////////////////////////////
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+        	// Handle item selection
+        	switch (item.getItemId()) {
+        	case R.id.konfig:
+        		konfigurera();
+        		return true;
+        	case R.id.aboutme:
+        		showAbout();
+        		return true;
+        	default:
+        		return super.onOptionsItemSelected(item);
+        	}
+}    
+
         
     @Override
     protected Dialog onCreateDialog(int id) {
@@ -383,7 +455,8 @@ public class selecttavling  extends Activity {
 			}
 			case R.id.sokval:
 			{
-				//Log.e("XTRACTOR"," myTavlingSearchClickHandler 0 : " + mySelDateFrom + ":" + mySelDateTo + " : " + mySelForbundId + " : " + mySelForbund );
+				Log.e("XTRACTOR"," myTavlingSearchClickHandler : DateFrom:" + mySelDateFrom + " DateTo:" + 
+						mySelDateTo + " ForbundId: " + mySelForbundId + " Forbund: " + mySelForbund + " ClassificationIds:" + mySelClassificationIds );
 				klubbarSelected.clear();
 				klubbarSelected.add("DATE_FROM");
 				klubbarSelected.add(mySelDateFrom);
@@ -399,24 +472,24 @@ public class selecttavling  extends Activity {
 				Log.e("XTRACTOR"," myTavlingSearchClickHandler 1 : array size (borde vara 10) : " + klubbarSelected.size());
 				
 				// Store Klubbar belonging to selected forbund
-				// SInce it's possible to select "allaFörbund" we need to even store getParentOrganisationId 
-				for (organisation org : organisations){
+				// Since it's possible to select "allaFšrbund" we need to even store getParentOrganisationId 
+//				for (organisation org : organisations){
 
 //					if () {
 						
 //					}else {
 						
-						if ((org.getOrganisationTypeId().equals(ORGTYPE_KLUBB)) &&
-								(org.getParentOrganisationId().equals(mySelForbundId))) {
-							klubbarSelected.add(org.getOrganisationId());
-							klubbarSelected.add(org.getShortName());
-							Log.e("XTRACTOR"," myTavlingSearchClickHandler 2 : stored org : " + org.getShortName() + ", " + org.getOrganisationId());
-						} else {
-							Log.e("XTRACTOR"," myTavlingSearchClickHandler 3 : org not part of : " + mySelForbundId + ": " + org.getShortName() + ", " + org.getOrganisationId());
-						}	   															
+//						if ((org.getOrganisationTypeId().equals(ORGTYPE_KLUBB)) &&
+//								(org.getParentOrganisationId().equals(mySelForbundId))) {
+//							klubbarSelected.add(org.getOrganisationId());
+//							klubbarSelected.add(org.getShortName());
+//							Log.e("XTRACTOR"," myTavlingSearchClickHandler 2 : stored org : " + org.getShortName() + ", " + org.getOrganisationId());
+//						} else {
+//							Log.e("XTRACTOR"," myTavlingSearchClickHandler 3 : org not part of : " + mySelForbundId + ": " + org.getShortName() + ", " + org.getOrganisationId());
+//						}	   															
 //					}
-				}
-				Log.e("XTRACTOR"," myTavlingSearchClickHandler 4 : array size : " + klubbarSelected.size());
+//				}
+//				Log.e("XTRACTOR"," myTavlingSearchClickHandler 4 : array size : " + klubbarSelected.size());
 				
 				Intent i = new Intent();
 				i.setClassName("work.Android", "work.Android.tavlingar");
