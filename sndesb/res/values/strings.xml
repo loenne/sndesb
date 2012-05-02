@@ -65,5 +65,7 @@
     <string name="quit">Quit</string>   
     <string name="aboutok">Ok</string>   
     <string name="revision">Version 1.0</string>
-    <string name="rev_date">Last update : 2012-04-16</string>   
+    <string name="rev_date">Last update : 2012-04-16</string> 
+    <string name="configheading1">Konfiguration</string>
+    <string name="configsearchlength">Sök längd (månader)</string>
 </resources>
