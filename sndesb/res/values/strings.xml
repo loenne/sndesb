@@ -67,5 +67,9 @@
     <string name="revision">Version 1.0</string>
     <string name="rev_date">Last update : 2012-04-16</string> 
     <string name="configheading1">Konfiguration</string>
-    <string name="configsearchlength">Sök längd (månader)</string>
+    <string name="configsearchlength">Söklängd (månader):</string>
+    <string name="configsearchforbund">Förvald förbund:</string>
+    <string name="configsearchklubb">Förvald klubb:</string>
+    <string name="configcreatedatabase">Skapa konfigurationsdatabas</string>
+    <string name="configupdateeventor">Hämta Eventor data</string>
 </resources>
