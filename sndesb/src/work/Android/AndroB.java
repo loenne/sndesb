@@ -50,11 +50,11 @@ public class AndroB extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-		Log.e("XTRACTOR","AndroB: Create new DownloadForbund task");
 		oforbund = new ArrayList<String>();
 		oforbundid = new ArrayList<String>(); 
 		orforbund = new Hashtable();
 
+//		Log.e("XTRACTOR","AndroB: Create new DownloadForbund task");
 //    	DownloadForbundTask task = new DownloadForbundTask();
 //    	task.execute();
 /*		getOrg = new Runnable() {
@@ -125,8 +125,8 @@ public class AndroB extends Activity {
 //		builder.append("\n" + sharedPrefs.getString("Forbund", "NULL"));
 //		oforbund.add(builder.toString());
 
-		oforbund.add(sharedPrefs.getString("forbund", "NULL"));
-		oforbundid.add("18");
+//		oforbund.add(sharedPrefs.getString("forbund", "NULL"));
+//		oforbundid.add("18");
 		activeIndex = 0;
 
 		try{

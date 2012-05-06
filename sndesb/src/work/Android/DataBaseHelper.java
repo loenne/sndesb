@@ -25,6 +25,11 @@ import java.util.List;
 //import java.io.UnsupportedEncodingException;
 //import java.util.HashMap;
 
+///////////////////////////////////////////////////////////
+//
+//
+//
+///////////////////////////////////////////////////////////
 public class DataBaseHelper extends SQLiteOpenHelper{
 
 	//The Android's default system path of your application database.
@@ -45,6 +50,11 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	 * Takes and keeps a reference of the passed context in order to access to the application assets and resources.
 	 * @param context
 	 */
+	///////////////////////////////////////////////////////////
+	//
+	//
+	//
+	///////////////////////////////////////////////////////////
 	public DataBaseHelper(Context context) {
 
 		super(context, DB_NAME, null, 1);
@@ -52,6 +62,11 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 		this.myContext = context;
 	}	
 
+	///////////////////////////////////////////////////////////
+	//
+	//
+	//
+	///////////////////////////////////////////////////////////
 	/**
 	 * Creates a empty database on the system and rewrites it with your own database.
 	 * */
@@ -82,6 +97,11 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 		}
 	}
 
+	///////////////////////////////////////////////////////////
+	//
+	//
+	//
+	///////////////////////////////////////////////////////////
 	/**
 	 * Check if the database already exist to avoid re-copying the file each time you open the application.
 	 * @return true if it exists, false if it doesn't
@@ -112,6 +132,11 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 		return checkDB != null ? true : false;
 	}
 
+	///////////////////////////////////////////////////////////
+	//
+	//
+	//
+	///////////////////////////////////////////////////////////
 	/**
 	 * Copies your database from your local assets-folder to the just created empty database in the
 	 * system folder, from where it can be accessed and handled.
@@ -147,6 +172,11 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 
 	}
 
+	///////////////////////////////////////////////////////////
+	//
+	//
+	//
+	///////////////////////////////////////////////////////////
 	public boolean openDataBase(int openstate) throws SQLException{
 
 		//Open the database
@@ -161,6 +191,11 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 		return true;
 	}
 
+	///////////////////////////////////////////////////////////
+	//
+	//
+	//
+	///////////////////////////////////////////////////////////
 	@Override
 	public synchronized void close() {
 
@@ -169,11 +204,21 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 		super.close();
 	}
 
+	///////////////////////////////////////////////////////////
+	//
+	//
+	//
+	///////////////////////////////////////////////////////////
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 
 	}
 	
+	///////////////////////////////////////////////////////////
+	//
+	//
+	//
+	///////////////////////////////////////////////////////////
 	public void createTable() {		
 
 		myDataBase.execSQL("DROP TABLE Organisation");
@@ -181,6 +226,11 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 		myDataBase.execSQL(CREATE_TABLE_ORG);
 	}
 
+	///////////////////////////////////////////////////////////
+	//
+	//
+	//
+	///////////////////////////////////////////////////////////
 	public void createConfigTable() {		
 
 //		myDataBase.execSQL("DROP TABLE Config");
@@ -188,6 +238,11 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 		myDataBase.execSQL(CREATE_TABLE_CONFIG);
 	}
 	
+	///////////////////////////////////////////////////////////
+	//
+	//
+	//
+	///////////////////////////////////////////////////////////
 	public Organisation getOrganisation(int id) {		
 
 		//	    SQLiteDatabase db = this.getReadableDatabase();
@@ -219,6 +274,11 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 		return org;
 	}
 
+	///////////////////////////////////////////////////////////
+	//
+	//
+	//
+	///////////////////////////////////////////////////////////
 	public List <Organisation> getAllOrganisations() {		
 
 		List<Organisation> organisationList = new ArrayList<Organisation>();
@@ -248,6 +308,42 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	    return organisationList;
 	}
 
+	///////////////////////////////////////////////////////////
+	//
+	//
+	//
+	///////////////////////////////////////////////////////////
+	public ArrayList <String> getAllForbundNames() {		
+
+		ArrayList<String> forbundNameList = new ArrayList<String>();
+
+		// Select All Query
+	    String selectQuery = "SELECT  * FROM " + "Organisation" + " WHERE organisationTypeId = 2";
+//	    SQLiteDatabase db = this.getWritableDatabase();
+	    Cursor cursor = myDataBase.rawQuery(selectQuery, null);
+	 
+	    // looping through all rows and adding to list
+	    if (cursor.moveToFirst()) {
+	        do {
+	            String forb = new String();
+				forb = cursor.getString(cursor.getColumnIndex("Name"));  
+
+	            // Adding forbundsname to list
+	            forbundNameList.add(forb);
+//	            Log.d("Forb: ", forb);		
+
+	        } while (cursor.moveToNext());
+	    }
+	 
+	    // return contact list
+	    return forbundNameList;
+	}
+	
+	///////////////////////////////////////////////////////////
+	//
+	//
+	//
+	///////////////////////////////////////////////////////////
 	public List <Organisation> getOrgClubs(int id) {		
 
 		List<Organisation> organisationList = new ArrayList<Organisation>();
@@ -279,6 +375,45 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	    return organisationList;
 	}
 	
+	///////////////////////////////////////////////////////////
+	//
+	//
+	//
+	///////////////////////////////////////////////////////////
+	public ArrayList <String> getOrgClubNames(int id) {		
+
+		ArrayList<String> klubbNameList = new ArrayList<String>();
+
+		Cursor cursor = myDataBase.query ("Organisation",  
+				new String[] { "_id", "OrganisationId", "Name", "ShortName", "OrganisationTypeId", "ParentOrganisationId"},
+				"ParentOrganisationId" + "=?", new String[] { String.valueOf(id) }, null, null, null, null);
+				
+		// Select All Query
+//	    String selectQuery = "SELECT  * FROM " + "Organisation WHERE organisationId "+;
+//	    Cursor cursor = myDataBase.rawQuery(selectQuery, null);
+	 
+	    // looping through all rows and adding to list
+	    if (cursor.moveToFirst()) {
+	        do {
+	            String klubb = new String();
+				klubb = cursor.getString(cursor.getColumnIndex("Name"));
+
+	            // Adding klubbname to list
+	            klubbNameList.add(klubb);
+//	            Log.d("Klubb: ", klubb);		
+
+	        } while (cursor.moveToNext());
+	    }
+	 
+	    // return contact list
+	    return klubbNameList;
+	}
+	
+	///////////////////////////////////////////////////////////
+	//
+	//
+	//
+	///////////////////////////////////////////////////////////
 	public void addRecord(Organisation org) {
 		
 //		select OrganisationId, Name, ShortName, OrganisationTypeId, ParentOrganisationId from organizations;
@@ -310,11 +445,21 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	        }
 	}		
 
+	///////////////////////////////////////////////////////////
+	//
+	//
+	//
+	///////////////////////////////////////////////////////////
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
 	}
 	
+	///////////////////////////////////////////////////////////
+	//
+	//
+	//
+	///////////////////////////////////////////////////////////
 	public Config getConfig() {		
 
 		Config conf = new Config();
@@ -336,6 +481,11 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 		return conf;
 	}
 	
+	///////////////////////////////////////////////////////////
+	//
+	//
+	//
+	///////////////////////////////////////////////////////////
 	public void addConfigRecord() {
 				
 	        // A map to hold the new record's values.

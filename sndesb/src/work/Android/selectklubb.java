@@ -226,7 +226,7 @@ public class selectklubb  extends Activity {
 				klubbid.add(org.getOrganisationId());
 				// Log.e("XTRACTOR","Load klubbar : Added : " + org.getShortName() + " :" + org.getOrganisationId());    			
 
-				String sol = "Skarpn‰cks OL";
+				String sol = "Skarpnäcks OL";
 
 				if (org.getShortName().equals(sol)) {
 					defKlubbIndex = i;
