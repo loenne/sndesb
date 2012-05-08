@@ -48,6 +48,7 @@ public class configApp extends Activity {
 	private Button myCreateDatabase; 
 	private Button myUpdateEventor;
 	private ArrayList<String> oforbund;
+	private ArrayList<String> oforbundid;
 	private ArrayList<String> oklubbar;
 	private List <Organisation> allaOrg;
 	private Config cfg;
@@ -59,20 +60,27 @@ public class configApp extends Activity {
 		setContentView(R.layout.configapp);
 
 		oforbund = new ArrayList<String>();
+		oforbundid = new ArrayList<String>();
 		oklubbar = new ArrayList<String>();
+		oforbund.clear();
+		oforbundid.clear();
 		
 		mySearchLength = (TextView)findViewById(R.id.configSearchLengthField);
    		myForbundSpinner = (Spinner)findViewById(R.id.configSearchForbundField);
 		myKlubbSpinner = (Spinner)findViewById(R.id.configSearchKlubbField);
 		myCreateDatabase = (Button)findViewById(R.id.configcreatedatabase);
    		myUpdateEventor = (Button)findViewById(R.id.configupdateeventor);
+   		
+//   	//createConfigTable();
+   		fetchConfig();
 
-		fetchAllOrganisationNames();
+   		mySearchLength.setText(String.valueOf(cfg.getSearchIntervall()));
+   		
+		fetchAllOrganisationNamesAndIds();
 		Log.e("XTRACTOR","configApp Fetched forbund records from config database");
 //		fetchOrgClubs(1);
-		fetchOrgClubNames(18);
+		fetchOrgClubNames(cfg.getSelectedOrg());
 		Log.e("XTRACTOR","configApp Fetched klubb records from config database");
-//		fetchConfig();
    		
 		mySpinnerForbundArrayAdapter =  
 	   			new ArrayAdapter<String>(this, R.layout.spinnerlayout, oforbund);
@@ -94,7 +102,7 @@ public class configApp extends Activity {
 		parentOrganisationId = new ArrayList<String>();
 		shortName = new ArrayList<String>();
 */	    
-		openstate = 0; //0=readwrite, 1 = readonly
+//		openstate = 0; //0=readwrite, 1 = readonly
 		
 //		int rec = fetchOrganisations();
 //		Log.e("XTRACTOR","configApp Fetched:" + rec + " records from eventor");
@@ -185,6 +193,32 @@ public class configApp extends Activity {
 		}
 		myDbHelper.close();
 	}
+
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
+	public void fetchAllOrganisationNamesAndIds() {
+
+		DataBaseHelper myDbHelper = new DataBaseHelper(this);
+		
+        try {
+        	myDbHelper.openDataBase(openstate);
+        }catch(SQLException sqle){ 
+        	throw sqle;
+        }
+		
+		oforbund = myDbHelper.getAllForbundNames();
+		oforbundid = myDbHelper.getAllForbundIds();
+		
+		for (String oforb : oforbund) {
+			String log = "Name: " + oforb;
+//            // Writing Contacts to log
+            Log.d("Org: ", log);		            
+		}
+		myDbHelper.close();
+	}
 	
     ///////////////////////////////////////////////////////////
     //
@@ -202,9 +236,9 @@ public class configApp extends Activity {
         }
 		
 		cfg = myDbHelper.getConfig();
-		String log = "SearchIntervall: "+cfg.getSearchIntervall() + "SelectedOrg: "+cfg.getSelectedOrg()+" ,SelectedClub: " + cfg.getSelectedClub();
+		String log = "SearchIntervall: "+cfg.getSearchIntervall() + " SelectedOrg: "+cfg.getSelectedOrg()+" ,SelectedClub: " + cfg.getSelectedClub();
 		// Writing Contacts to log
-		Log.d("Org: ", log);		
+		Log.d("Config: ", log);		
 		myDbHelper.close();
 	}
 	
@@ -337,6 +371,38 @@ public class configApp extends Activity {
 */
         myDbHelper.close();
 	}	
+
+	///////////////////////////////////////////////////////////
+	//
+	//
+	//
+	///////////////////////////////////////////////////////////
+	public void createConfigTable() {
+
+		DataBaseHelper myDbHelper = new DataBaseHelper(this);
+
+		try {
+			myDbHelper.openDataBase(openstate);
+		}catch(SQLException sqle){ 
+			throw sqle;
+		}
+
+		//create config table
+		try {
+			myDbHelper.createConfigTable();
+		}catch(SQLException sqle){ 
+			throw sqle;
+		}
+
+		try {
+			myDbHelper.addConfigRecord();
+		}
+		catch(SQLException sqle) {
+			throw sqle;
+		}
+
+		myDbHelper.close();
+	}	
 	
     ///////////////////////////////////////////////////////////
     //
@@ -431,7 +497,7 @@ public class configApp extends Activity {
    	{
    	    public void onItemSelected(AdapterView<?> parent,
    	        View view, int pos, long id) {
-			// Log.e("XTRACTOR","onItemSelected1 Selected pos : " + pos + "som Šr : " + parent.getItemAtPosition(pos).toString() + " och id:" + oforbundid.get(pos) );
+			Log.e("XTRACTOR","MyOnForbundItemSelectedListener Selected pos : " + pos + "som Šr : " + parent.getItemAtPosition(pos).toString() + " och id:" + oforbundid.get(pos) );
 			// mySelForbund = parent.getItemAtPosition(pos).toString();
 
 // fixa			mySelForbundId = oforbundid.get(pos);

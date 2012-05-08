@@ -4,32 +4,32 @@ import android.util.Log;
 
 public class Config {
 	
-		private String SearchIntervall;
-		private String SelectedOrg;
-		private String SelectedClub;
+		private int SearchIntervall;
+		private int SelectedOrg;
+		private int SelectedClub;
 		
-		public String getSearchIntervall() {
+		public int getSearchIntervall() {
 			return SearchIntervall;
 		}
 
-		public void setSearchIntervall(String searchIntervall) {
-			this.SearchIntervall = searchIntervall.trim();
+		public void setSearchIntervall(int searchIntervall) {
+			this.SearchIntervall = searchIntervall;
 		}
 
-		public String getSelectedOrg() {
+		public int getSelectedOrg() {
 			return SelectedOrg;
 		}
 
-		public void setSelectedOrg(String selectedOrg) {
-			this.SelectedOrg = selectedOrg.trim();
+		public void setSelectedOrg(int selectedOrg) {
+			this.SelectedOrg = selectedOrg;
 		}
 		
-		public String getSelectedClub() {
+		public int getSelectedClub() {
 			return SelectedClub;
 		}
 
-		public void setSelectedClub(String selectedClub) {
-			this.SelectedClub = selectedClub.trim();
+		public void setSelectedClub(int selectedClub) {
+			this.SelectedClub = selectedClub;
 		}
 
 		public void printRecord() {

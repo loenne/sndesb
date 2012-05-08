@@ -225,18 +225,6 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 		String CREATE_TABLE_ORG = "CREATE TABLE Organisation (_id INTEGER PRIMARY KEY, OrganisationId TEXT, Name TEXT, ShortName TEXT, OrganisationTypeId TEXT, ParentOrganisationId TEXT);";
 		myDataBase.execSQL(CREATE_TABLE_ORG);
 	}
-
-	///////////////////////////////////////////////////////////
-	//
-	//
-	//
-	///////////////////////////////////////////////////////////
-	public void createConfigTable() {		
-
-//		myDataBase.execSQL("DROP TABLE Config");
-		String CREATE_TABLE_CONFIG = "CREATE TABLE Config (_id INTEGER PRIMARY KEY, SearchIntervall TEXT, SelectedOrg TEXT, SelectedClub TEXT);";
-		myDataBase.execSQL(CREATE_TABLE_CONFIG);
-	}
 	
 	///////////////////////////////////////////////////////////
 	//
@@ -339,6 +327,37 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	    return forbundNameList;
 	}
 	
+	///////////////////////////////////////////////////////////
+	//
+	//
+	//
+	///////////////////////////////////////////////////////////
+	public ArrayList <String> getAllForbundIds() {		
+
+		ArrayList<String> forbundIdsList = new ArrayList<String>();
+
+		// Select All Query
+	    String selectQuery = "SELECT  * FROM " + "Organisation" + " WHERE organisationTypeId = 2";
+//	    SQLiteDatabase db = this.getWritableDatabase();
+	    Cursor cursor = myDataBase.rawQuery(selectQuery, null);
+	 
+	    // looping through all rows and adding to list
+	    if (cursor.moveToFirst()) {
+	        do {
+	            String forb = new String();
+				forb = cursor.getString(cursor.getColumnIndex("OrganisationId"));  
+
+	            // Adding forbundsIds to list
+	            forbundIdsList.add(forb);
+	            Log.d("ForbIds: ", forb);		
+
+	        } while (cursor.moveToNext());
+	    }
+	 
+	    // return contact list
+	    return forbundIdsList;
+	}
+
 	///////////////////////////////////////////////////////////
 	//
 	//
@@ -460,6 +479,19 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	//
 	//
 	///////////////////////////////////////////////////////////
+	public void createConfigTable() {		
+
+		// FIX Not good to just drop the table !!!
+		myDataBase.execSQL("DROP TABLE Config");
+		String CREATE_TABLE_CONFIG = "CREATE TABLE Config (_id INTEGER PRIMARY KEY, SearchIntervall INTEGER, SelectedOrg INTEGER, SelectedClub INTEGER);";
+		myDataBase.execSQL(CREATE_TABLE_CONFIG);
+	}
+	
+	///////////////////////////////////////////////////////////
+	//
+	//
+	//
+	///////////////////////////////////////////////////////////
 	public Config getConfig() {		
 
 		Config conf = new Config();
@@ -472,9 +504,9 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 
 		// looping through all rows and adding to list
 		if (cursor.moveToFirst()) {
-			conf.setSearchIntervall(cursor.getString(cursor.getColumnIndex("SearchIntervall")));  
-			conf.setSelectedOrg(cursor.getString(cursor.getColumnIndex("SelectedOrg")));  
-			conf.setSelectedClub(cursor.getString(cursor.getColumnIndex("SelectedClub")));  
+			conf.setSearchIntervall(cursor.getInt(cursor.getColumnIndex("SearchIntervall")));  
+			conf.setSelectedOrg(cursor.getInt(cursor.getColumnIndex("SelectedOrg")));  
+			conf.setSelectedClub(cursor.getInt(cursor.getColumnIndex("SelectedClub")));  
 		}
 
 		// return contact list
@@ -491,9 +523,9 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	        // A map to hold the new record's values.
 	        ContentValues values = new ContentValues();
 
-	    	values.put("SearchIntervall", "2");
-	    	values.put("SelectedOrg", "18");
-	    	values.put("SelectedClub", "335");
+	    	values.put("SearchIntervall", 2);
+	    	values.put("SelectedOrg", 18);
+	    	values.put("SelectedClub", 335);
 
 	    	rowId = myDataBase.insert("Config", null, values);
 
