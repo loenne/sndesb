@@ -137,7 +137,7 @@
         	android:width="160dip" 
         	android:layout_height="wrap_content" 
         	android:textSize="16dp" 
-        	android:onClick="myUpdateFromEventorClickHandler" 
+        	android:onClick="myCreateDatabaseClickHandler" 
         	android:layout_gravity="center" 
         	android:layout_width="206dp">
         </Button>

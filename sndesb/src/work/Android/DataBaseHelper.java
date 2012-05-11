@@ -58,7 +58,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	public DataBaseHelper(Context context) {
 
 		super(context, DB_NAME, null, 1);
-		Log.e("XTRACTOR","DataBaseHelper : Constructor: DB Name:" + DB_NAME);	
+//		Log.e("XTRACTOR","DataBaseHelper : Constructor: DB Name:" + DB_NAME);	
 		this.myContext = context;
 	}	
 
@@ -186,7 +186,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 			Log.e("XTRACTOR","DataBaseHelper : openDataBase: " + myPath + " ERROR: wrong state : " + openstate);		
 			return false;
 		}
-		Log.e("XTRACTOR","DataBaseHelper : openDataBase: " + myPath + " state : " + openstate + "0=readwrite, 1=readonly");		
+//		Log.e("XTRACTOR","DataBaseHelper : openDataBase: " + myPath + " state : " + openstate + "0=readwrite, 1=readonly");		
 		myDataBase = SQLiteDatabase.openDatabase(myPath, null, openstate);
 		return true;
 	}
@@ -349,7 +349,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 
 	            // Adding forbundsIds to list
 	            forbundIdsList.add(forb);
-	            Log.d("ForbIds: ", forb);		
+//	            Log.d("ForbIds: ", forb);		
 
 	        } while (cursor.moveToNext());
 	    }
