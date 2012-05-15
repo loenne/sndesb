@@ -410,22 +410,58 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 		// Select All Query
 //	    String selectQuery = "SELECT  * FROM " + "Organisation WHERE organisationId "+;
 //	    Cursor cursor = myDataBase.rawQuery(selectQuery, null);
-	 
-	    // looping through all rows and adding to list
+		Integer ind = new Integer(0);
+
+		// looping through all rows and adding to list
 	    if (cursor.moveToFirst()) {
 	        do {
 	            String klubb = new String();
 				klubb = cursor.getString(cursor.getColumnIndex("Name"));
 
-	            // Adding klubbname to list
-	            klubbNameList.add(klubb);
-//	            Log.d("Klubb: ", klubb);		
-
+//	            klubbNameList.add(klubb);
+				if (ind < 4) {
+					klubbNameList.add("kalle"+ind.toString());					
+					Log.d("Klubb: ", klubb);		
+				}
+	            ind++;
 	        } while (cursor.moveToNext());
 	    }
 	 
 	    // return contact list
 	    return klubbNameList;
+	}
+
+	///////////////////////////////////////////////////////////
+	//
+	//
+	//
+	///////////////////////////////////////////////////////////
+	public ArrayList <String> getOrgClubNameIds(int id) {		
+
+		ArrayList<String> klubbNameIdList = new ArrayList<String>();
+
+		Cursor cursor = myDataBase.query ("Organisation",  
+				new String[] { "_id", "OrganisationId", "Name", "ShortName", "OrganisationTypeId", "ParentOrganisationId"},
+				"ParentOrganisationId" + "=?", new String[] { String.valueOf(id) }, null, null, null, null);
+				
+		// Select All Query
+//	    String selectQuery = "SELECT  * FROM " + "Organisation WHERE organisationId "+;
+//	    Cursor cursor = myDataBase.rawQuery(selectQuery, null);
+	 
+	    // looping through all rows and adding to list
+	    if (cursor.moveToFirst()) {
+	        do {
+	            String klubbid = new String();
+				klubbid = cursor.getString(cursor.getColumnIndex("OrganisationId"));
+
+	            klubbNameIdList.add(klubbid);
+	            Log.d("KlubbId: ", klubbid);		
+
+	        } while (cursor.moveToNext());
+	    }
+	 
+	    // return contact list
+	    return klubbNameIdList;
 	}
 	
 	///////////////////////////////////////////////////////////
