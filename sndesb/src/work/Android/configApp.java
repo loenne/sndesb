@@ -41,8 +41,8 @@ public class configApp extends Activity {
 	private ArrayList<String> parentOrganisationId;
 	private List<Organisation> organisations;
 	private ArrayAdapter<String> mySpinnerForbundArrayAdapter;
-	private ArrayAdapter<String> mySpinnerKlubbArrayAdapter;	
-	private ArrayAdapter<String> mySpinnerKlubbArrayAdapter2;	
+	private ArrayAdapter<String> mySpinnerKlubbArrayAdapter;
+	private ArrayAdapter<String> mySpinnerKlubbArrayAdapter2;
 	private TextView mySearchLength;
 	private Spinner  myForbundSpinner;
 	private Spinner  myKlubbSpinner;
@@ -52,6 +52,7 @@ public class configApp extends Activity {
 	private ArrayList<String> oforbund;
 	private ArrayList<String> oforbundid;
 	private ArrayList<String> oklubbar;
+	private ArrayList<String> oklubbar2;
 	private ArrayList<String> oklubbarid;
 	private String mySelKlubb;
 	private String mySelKlubbId;	
@@ -71,42 +72,37 @@ public class configApp extends Activity {
 		oforbund = new ArrayList<String>();
 		oforbundid = new ArrayList<String>();
 		oklubbar = new ArrayList<String>();
+		oklubbar2 = new ArrayList<String>();
 		oklubbarid = new ArrayList<String>();
 		oforbund.clear();
 		oforbundid.clear();
-		oklubbar.clear();
-		oklubbarid.clear();
+//		oklubbar.clear();
+//		oklubbarid.clear();
 		mySelForbundIndx = 0;
-		
+
+		oklubbar.add("kalle44"); 
+		oklubbar2.add("kalle12"); 
+		oklubbar2.add("kalle13"); 
+		oklubbar2.add("kalle14"); 
+		oklubbar2.add("kalle15"); 
 		mySearchLength = (TextView)findViewById(R.id.configSearchLengthField);
    		myForbundSpinner = (Spinner)findViewById(R.id.configSearchForbundField);
 		myKlubbSpinner = (Spinner)findViewById(R.id.configSearchKlubbField);
 		myCreateDatabase = (Button)findViewById(R.id.configcreatedatabase);
    		myUpdateEventor = (Button)findViewById(R.id.configupdateeventor);
+		myKlubbSpinner2 = (Spinner)findViewById(R.id.configSearchKlubbField2);
    		
-//   	//createConfigTable();
+ //   	//createConfigTable();
    		fetchConfig();
 
    		mySearchLength.setText(String.valueOf(cfg.getSearchIntervall()));
    		
-		Log.d("XTRACTOR","configApp: Fetch all forbund records from config database");
+		Log.d("SNDESB","configApp: Fetch all forbund records from config database");
 		fetchAllOrganisationNamesAndIds();
 //		fetchOrgClubs(1);
-		Log.d("XTRACTOR","configApp: Fetch all clubs belonging to configured forbund: " + cfg.getSelectedOrg() + " from config database");
+		Log.d("SNDESB","configApp: Fetch all clubs belonging to configured forbund: " + cfg.getSelectedOrg() + " from config database");
 		fetchOrgClubNamesAndIds(cfg.getSelectedOrg());
-   		
-		mySpinnerForbundArrayAdapter =  
-	   			new ArrayAdapter<String>(this, R.layout.spinnerlayout, oforbund);
-		   		mySpinnerForbundArrayAdapter.setDropDownViewResource(R.layout.spinnerlayout);		   		
-		   		myForbundSpinner.setAdapter(mySpinnerForbundArrayAdapter);
-		   		myForbundSpinner.setOnItemSelectedListener(new MyOnForbundItemSelectedListener()); 	   	 	   		 	   		 	   		 	   		
-
-		mySpinnerKlubbArrayAdapter =  
-	   			new ArrayAdapter<String>(this, R.layout.spinnerlayout, oforbund);
-				mySpinnerKlubbArrayAdapter.setDropDownViewResource(R.layout.spinnerlayout);
-				myKlubbSpinner.setAdapter(mySpinnerKlubbArrayAdapter);
-				myKlubbSpinner.setOnItemSelectedListener(new MyOnKlubbItemSelectedListener());		
-  		
+   		  		
 //		addPreferencesFromResource(R.layout.configapp);
 
 /*		organisationId = new ArrayList<String>();
@@ -118,7 +114,7 @@ public class configApp extends Activity {
 //		openstate = 0; //0=readwrite, 1 = readonly
 		
 //		int rec = fetchOrganisations();
-//		Log.e("XTRACTOR","configApp Fetched:" + rec + " records from eventor");
+//		Log.e("SNDESB","configApp Fetched:" + rec + " records from eventor");
 
 //		if (rec>0) {
 //			updateDatabase(rec);
@@ -127,11 +123,29 @@ public class configApp extends Activity {
 //		updateDatabase(0);
 		
 //		fetchOneOrganisation(1200);
+
+		mySpinnerKlubbArrayAdapter2 =  
+	   			new ArrayAdapter<String>(this, R.layout.spinnerlayout, oklubbar2);
+				mySpinnerKlubbArrayAdapter2.setDropDownViewResource(R.layout.spinnerlayout);
+				myKlubbSpinner2.setAdapter(mySpinnerKlubbArrayAdapter2);
+				myKlubbSpinner2.setOnItemSelectedListener(new MyOnKlubbItemSelectedListener2());		
 		
+		mySpinnerForbundArrayAdapter =  
+	   			new ArrayAdapter<String>(this, R.layout.spinnerlayout, oforbund);
+		   		mySpinnerForbundArrayAdapter.setDropDownViewResource(R.layout.spinnerlayout);		   		
+		   		myForbundSpinner.setAdapter(mySpinnerForbundArrayAdapter);
+		   		myForbundSpinner.setOnItemSelectedListener(new MyOnForbundItemSelectedListener()); 	   	 	   		 	   		 	   		 	   		
+
+		mySpinnerKlubbArrayAdapter =  
+			   			new ArrayAdapter<String>(this, R.layout.spinnerlayout, oklubbar2);
+						mySpinnerKlubbArrayAdapter.setDropDownViewResource(R.layout.spinnerlayout);
+						myKlubbSpinner.setAdapter(mySpinnerKlubbArrayAdapter);
+						myKlubbSpinner.setOnItemSelectedListener(new MyOnKlubbItemSelectedListener());		
+		   		
 		mySpinnerForbundArrayAdapter.notifyDataSetChanged();
 		mySpinnerKlubbArrayAdapter.notifyDataSetChanged();
 		myForbundSpinner.setSelection(mySelForbundIndx,true);
-   		myKlubbSpinner.setSelection(1,true);
+   		myKlubbSpinner.setSelection(0,true);
 	}
 
     ///////////////////////////////////////////////////////////
@@ -227,15 +241,15 @@ public class configApp extends Activity {
    		mySelForbundId = String.valueOf(cfg.getSelectedOrg());
 		int i = 0;
 
-		Log.d("XTRACTOR","Search for selected forbundid: " + mySelForbundId + " among forbunds");
+		Log.d("SNDESB","Search for selected forbundid: " + mySelForbundId + " among forbunds");
 
 		for (String oforbid : oforbundid) {
-		//	Log.d("XTRACTOR","Search index: " + i + "forbundid: " + oforbid);
+		//	Log.d("SNDESB","Search index: " + i + "forbundid: " + oforbid);
 
 			if (oforbid.equals(mySelForbundId)) {
 				mySelForbundIndx = i;
 				mySelForbundId = oforbundid.get(i);
-				Log.d("XTRACTOR","Found forbundsid: " + mySelForbundId + " in index : " + i + " name:" + oforbund.get(i));
+				Log.d("SNDESB","Found forbundsid: " + mySelForbundId + " in index : " + i + " name:" + oforbund.get(i));
 			}
 	//		String log = "ForbundId: " + oforbid;
     //        Log.d("Organisation: ", log);
@@ -283,11 +297,11 @@ public class configApp extends Activity {
 		oklubbar.clear();
 		oklubbarid.clear();
 		
-		oklubbar = myDbHelper.getOrgClubNames(id);
+		oklubbar2 = myDbHelper.getOrgClubNames(id);
 		oklubbarid = myDbHelper.getOrgClubNameIds(id);
 	
-		for (String klubb : oklubbar) {
-            Log.d("Klubb: ", klubb);		
+		for (String klubb : oklubbar2) {
+            Log.d("SNDESB", "Klubb: "+ klubb);
 		}
 		myDbHelper.close();
 	}
@@ -367,11 +381,11 @@ public class configApp extends Activity {
 /*
          while (ind < records) {
  
-        	Log.e("XTRACTOR","configApp: OrganisationId       " + organisationId.get(ind));
-        	Log.e("XTRACTOR","configApp: OrganisationTypeId   " + organisationTypeId.get(ind));
-        	Log.e("XTRACTOR","configApp: Name                 " + name.get(ind));
-        	Log.e("XTRACTOR","configApp: ParentOrganisationId " + parentOrganisationId.get(ind));
-        	Log.e("XTRACTOR","configApp: ShortName            " + shortName.get(ind));
+        	Log.e("SNDESB","configApp: OrganisationId       " + organisationId.get(ind));
+        	Log.e("SNDESB","configApp: OrganisationTypeId   " + organisationTypeId.get(ind));
+        	Log.e("SNDESB","configApp: Name                 " + name.get(ind));
+        	Log.e("SNDESB","configApp: ParentOrganisationId " + parentOrganisationId.get(ind));
+        	Log.e("SNDESB","configApp: ShortName            " + shortName.get(ind));
         	ind++;
         }
  */
@@ -440,7 +454,7 @@ public class configApp extends Activity {
 
 		boolean fetchOk = false;
 
-		Log.d("XTRACTOR","configApp: fetchOrganisations");
+		Log.d("SNDESB","configApp: fetchOrganisations");
 
 		organisationId.clear();
 		organisationTypeId.clear();
@@ -453,7 +467,7 @@ public class configApp extends Activity {
 			fetchOk = andRest.queryRESTurl(urlString);
 
 			if (fetchOk) {
-				Log.d("XTRACTOR","configApp: fetchOK");
+				Log.d("SNDESB","configApp: fetchOK");
 				organisations = andRest.parseOrganisations();    		
 
 				// 1 = Orienteringsfšrbundet
@@ -461,7 +475,7 @@ public class configApp extends Activity {
 				// 3 = Klubb
 
 				for (Organisation org : organisations){
-					Log.d("XTRACTOR","configApp: loop index:" + count);
+					Log.d("SNDESB","configApp: loop index:" + count);
 					
 					organisationId.add(org.getOrganisationId());
 					organisationTypeId.add(org.getOrganisationTypeId());
@@ -473,11 +487,11 @@ public class configApp extends Activity {
 	  						(org.getOrganisationTypeId().equals(ORGTYPE_FORB))) {
 	  						oforbund.add(org.getShortName());
 	  						oforbundid.add(org.getOrganisationId());
-	  						Log.e("XTRACTOR","Stored : " + org.getShortName() + " id: " + org.getOrganisationId() + " in pos : " + i);
+	  						Log.e("SNDESB","Stored : " + org.getShortName() + " id: " + org.getOrganisationId() + " in pos : " + i);
 
 	  						if (org.getOrganisationId().equals(ORG_STOCKHOLM)) {
 	  							activeIndex = i;
-	  	  						Log.e("XTRACTOR","Found Stockholm as 18 in index : " + i);
+	  	  						Log.e("SNDESB","Found Stockholm as 18 in index : " + i);
 	  	  						mySelForbund = oforbund.get(i);
 	  	  	   	    			mySelForbundId = oforbundid.get(i);  	  						
 	  						}  						
@@ -490,7 +504,7 @@ public class configApp extends Activity {
 						Toast.LENGTH_LONG).show();
 			}
 		} catch (Throwable t){
-			Log.e("XTRACTOR","loadForbund : Failing to fetch forbund : " + t.getMessage(),t);
+			Log.e("SNDESB","loadForbund : Failing to fetch forbund : " + t.getMessage(),t);
 		}
 
 		return count;
@@ -506,17 +520,61 @@ public class configApp extends Activity {
    		switch (view.getId()) {
    			case R.id.configcreatedatabase:
    			{	   				
-   				Log.d("XTRACTOR","myCreateDatabaseClickHandler Want to create Config database");
+   				Log.d("SNDESB","myCreateDatabaseClickHandler Want to create Config database");
+   				mySpinnerForbundArrayAdapter.notifyDataSetChanged();
+   				mySpinnerKlubbArrayAdapter.notifyDataSetChanged();
    	            return;
    			}
    			case R.id.configupdateeventor:
    			{	   				
-   				Log.d("XTRACTOR","myCreateDatabaseClickHandler Want to fill database from Eventor");
+   				Log.d("SNDESB","myCreateDatabaseClickHandler Want to fill database from Eventor");
    	            return;
    			}
    		}		
    	}
-   	
+
+  	///////////////////////////////////////////////////////////
+  	//
+  	//
+  	//
+  	///////////////////////////////////////////////////////////
+  	public class MyOnKlubbItemSelectedListener implements OnItemSelectedListener 
+  	{
+  		public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+  			Log.d("SNDESB","MyOnKlubbItemSelectedListener: Selected pos : " + pos + "som Šr : " + parent.getItemAtPosition(pos).toString() );
+  			mySelKlubb = parent.getItemAtPosition(pos).toString();
+
+  			//if (klubbIdCreated == 1) {
+  			//mySelKlubbId = klubbid.get(pos);			}
+  			//}
+  		}
+  		public void onNothingSelected(AdapterView<?> parent) {
+  			Log.d("SNDESB","MyOnKlubbItemSelectedListener: Nothing selected" );
+  			// Do nothing.
+  		}
+  	}  	
+
+  	///////////////////////////////////////////////////////////
+  	//
+  	//
+  	//
+  	///////////////////////////////////////////////////////////
+  	public class MyOnKlubbItemSelectedListener2 implements OnItemSelectedListener 
+  	{
+  		public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+  			Log.d("SNDESB","MyOnKlubbItemSelectedListener2: Selected pos : " + pos + "som Šr : " + parent.getItemAtPosition(pos).toString() );
+  			mySelKlubb = parent.getItemAtPosition(pos).toString();
+
+  			//if (klubbIdCreated == 1) {
+  			//mySelKlubbId = klubbid.get(pos);			}
+  			//}
+  		}
+  		public void onNothingSelected(AdapterView<?> parent) {
+  			Log.d("SNDESB","MyOnKlubbItemSelectedListener2: Nothing selected" );
+  			// Do nothing.
+  		}
+  	}  	
+  	
     ///////////////////////////////////////////////////////////
     //
     //
@@ -524,48 +582,28 @@ public class configApp extends Activity {
     ///////////////////////////////////////////////////////////
   	public class MyOnForbundItemSelectedListener implements OnItemSelectedListener 
    	{
-   	    public void onItemSelected(AdapterView<?> parent,
-   	        View view, int pos, long id) {
-			Log.d("XTRACTOR","MyOnForbundItemSelectedListener: Selected pos : " + pos + " som Šr : " + parent.getItemAtPosition(pos).toString() + " och id:" + oforbundid.get(pos) );
+   	    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+			Log.d("SNDESB","MyOnForbundItemSelectedListener: Selected pos : " + pos + " som Šr : " + parent.getItemAtPosition(pos).toString() + " och id:" + oforbundid.get(pos) );
 			mySelForbund = parent.getItemAtPosition(pos).toString();
 			mySelForbundId = oforbundid.get(pos);
 			mySelForbundIndx = pos;
 			Integer val = new Integer(mySelForbundId);
-			Log.d("XTRACTOR","MyOnForbundItemSelectedListener: Before" );
+			Log.d("SNDESB","MyOnForbundItemSelectedListener: Before fetching klubbs for " + val);
 			fetchOrgClubNamesAndIds(val);
 			mySpinnerKlubbArrayAdapter.notifyDataSetChanged();
 //	   		myKlubbSpinner.setSelection(0,true);	
-			Log.d("XTRACTOR","MyOnForbundItemSelectedListener: After" );
+			Log.d("SNDESB","MyOnForbundItemSelectedListener: After" );
+//			Log.d("SNDESB","oklubbar:" + oklubbar.get(0) + oklubbar.get(1) + oklubbar.get(2) );			
    	    }
 
    	    public void onNothingSelected(AdapterView<?> parent) {
    	    	//mySelForbund = oforbund.get(0);
 			//mySelForbundId = oforbundid.get(0);
-			Log.d("XTRACTOR","MyOnForbundItemSelectedListener: Nothing selected" );
+			Log.d("SNDESB","MyOnForbundItemSelectedListener: Nothing selected" );
    	    }
    	}
 	
-    ///////////////////////////////////////////////////////////
-    //
-    //
-    //
-    ///////////////////////////////////////////////////////////
-  	public class MyOnKlubbItemSelectedListener implements OnItemSelectedListener 
-   	{
-   	    public void onItemSelected(AdapterView<?> parent,
-   	        View view, int pos, long id) {
-			Log.d("XTRACTOR","MyOnKlubbItemSelectedListener: Selected pos : " + pos + "som Šr : " + parent.getItemAtPosition(pos).toString() );
-			mySelKlubb = parent.getItemAtPosition(pos).toString();
-			
-//			if (klubbIdCreated == 1) {
-//				mySelKlubbId = klubbid.get(pos);			}
-//   	    }
-   	    }
-   	    public void onNothingSelected(AdapterView<?> parent) {
-			Log.d("XTRACTOR","MyOnKlubbItemSelectedListener: Nothing selected" );
-  	      // Do nothing.
-   	    }
-   	}  	
+    
   	
 	// Get the custom preference
 	//        Preference customPref = (Preference) findPreference("customPref");

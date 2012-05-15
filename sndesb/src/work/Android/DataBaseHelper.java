@@ -58,7 +58,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	public DataBaseHelper(Context context) {
 
 		super(context, DB_NAME, null, 1);
-//		Log.e("XTRACTOR","DataBaseHelper : Constructor: DB Name:" + DB_NAME);	
+//		Log.e("SNDESB","DataBaseHelper : Constructor: DB Name:" + DB_NAME);	
 		this.myContext = context;
 	}	
 
@@ -72,27 +72,27 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	 * */
 	public void createDataBase() throws IOException{
 
-		Log.e("XTRACTOR","DataBaseHelper : Create Database:");	
+		Log.e("SNDESB","DataBaseHelper : Create Database:");	
 		boolean dbExist = checkDataBase();
 
 		
 		if(dbExist){
-			Log.e("XTRACTOR","DataBaseHelper : database exists");	
+			Log.e("SNDESB","DataBaseHelper : database exists");	
 			//do nothing - database already exist
 		}else{
-			Log.e("XTRACTOR","DataBaseHelper : database does not exist:");	
+			Log.e("SNDESB","DataBaseHelper : database does not exist:");	
 
 			//By calling this method and empty database will be created into the default system path
 			//of your application so we are gonna be able to overwrite that database with our database.
 			this.getReadableDatabase();
-			Log.e("XTRACTOR","DataBaseHelper : after getReadableDatabase");
+			Log.e("SNDESB","DataBaseHelper : after getReadableDatabase");
 
 			try {
-				Log.e("XTRACTOR","DataBaseHelper : copy database:");
+				Log.e("SNDESB","DataBaseHelper : copy database:");
 				copyDataBase();
 
 			} catch (IOException e) {
-				throw new Error("Error copying database");
+				throw new Error("DataBaseHelper: Error copying database");
 			}
 		}
 	}
@@ -112,7 +112,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 
 		try{
 			String myPath = DB_PATH + DB_NAME;
-			Log.e("XTRACTOR","DataBaseHelper : checkdatabase: open database:");
+			Log.e("SNDESB","DataBaseHelper : checkdatabase: open database:");
 
 			checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
 
@@ -144,24 +144,24 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	 * */
 	private void copyDataBase() throws IOException{
 	
-		Log.e("XTRACTOR","DataBaseHelper : copyDatabase: database:" + DB_NAME);
+		Log.e("SNDESB","DataBaseHelper : copyDatabase: database:" + DB_NAME);
 		//Open your local db as the input stream
 		InputStream myInput = myContext.getAssets().open(DB_NAME);
-		Log.e("XTRACTOR","DataBaseHelper : copyDatabase: after inputStream");
+		Log.e("SNDESB","DataBaseHelper : copyDatabase: after inputStream");
 
 		// Path to the just created empty db
 		String outFileName = DB_PATH + DB_NAME;
 
 		//Open the empty db as the output stream
 		OutputStream myOutput = new FileOutputStream(outFileName);
-		Log.e("XTRACTOR","DataBaseHelper : copyDatabase: after outputStream");
+		Log.e("SNDESB","DataBaseHelper : copyDatabase: after outputStream");
 
 		//transfer bytes from the inputfile to the outputfile
 		byte[] buffer = new byte[1024];
 		int length;
 
 		while ((length = myInput.read(buffer))>0){
-			Log.e("XTRACTOR","DataBaseHelper : copyDatabase: loop writing data" + buffer);
+			Log.e("SNDESB","DataBaseHelper : copyDatabase: loop writing data" + buffer);
 			myOutput.write(buffer, 0, length);
 		}
 
@@ -183,10 +183,10 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 		String myPath = DB_PATH + DB_NAME;
 
 		if ((openstate != SQLiteDatabase.OPEN_READWRITE) && (openstate != SQLiteDatabase.OPEN_READONLY)) {
-			Log.e("XTRACTOR","DataBaseHelper : openDataBase: " + myPath + " ERROR: wrong state : " + openstate);		
+			Log.e("SNDESB","DataBaseHelper : openDataBase: " + myPath + " ERROR: wrong state : " + openstate);		
 			return false;
 		}
-//		Log.e("XTRACTOR","DataBaseHelper : openDataBase: " + myPath + " state : " + openstate + "0=readwrite, 1=readonly");		
+//		Log.e("SNDESB","DataBaseHelper : openDataBase: " + myPath + " state : " + openstate + "0=readwrite, 1=readonly");		
 		myDataBase = SQLiteDatabase.openDatabase(myPath, null, openstate);
 		return true;
 	}
@@ -410,7 +410,6 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 		// Select All Query
 //	    String selectQuery = "SELECT  * FROM " + "Organisation WHERE organisationId "+;
 //	    Cursor cursor = myDataBase.rawQuery(selectQuery, null);
-		Integer ind = new Integer(0);
 
 		// looping through all rows and adding to list
 	    if (cursor.moveToFirst()) {
@@ -418,16 +417,10 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	            String klubb = new String();
 				klubb = cursor.getString(cursor.getColumnIndex("Name"));
 
-//	            klubbNameList.add(klubb);
-				if (ind < 4) {
-					klubbNameList.add("kalle"+ind.toString());					
-					Log.d("Klubb: ", klubb);		
-				}
-	            ind++;
+	            klubbNameList.add(klubb);
+	            Log.d("SNDESB", "getOrgClubKlubbNames: Klubb: " + klubb);		
 	        } while (cursor.moveToNext());
 	    }
-	 
-	    // return contact list
 	    return klubbNameList;
 	}
 
@@ -453,10 +446,8 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	        do {
 	            String klubbid = new String();
 				klubbid = cursor.getString(cursor.getColumnIndex("OrganisationId"));
-
 	            klubbNameIdList.add(klubbid);
-	            Log.d("KlubbId: ", klubbid);		
-
+	            Log.d("SNDESB", "getOrgClubKlubbIdNames: KlubbId: " + klubbid);		
 	        } while (cursor.moveToNext());
 	    }
 	 
@@ -493,7 +484,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 
 	        // If the insert succeeded, the row ID exists.
 	        if (rowId > 0) {
-	        	Log.e("XTRACTOR","DataBaseHelper : addRecord: new row added to db : id:" + rowId);
+	        	Log.e("SNDESB","DataBaseHelper: addRecord: new row added to db : id:" + rowId);
 	        } else {
 	        	// If the insert didn't succeed, then the rowID is <= 0. Throws an exception.
 	        	throw new SQLException("Failed to insert row into organisations");
@@ -570,7 +561,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 
 	        // If the insert succeeded, the row ID exists.
 	        if (rowId > 0) {
-	        	Log.e("XTRACTOR","DataBaseHelper : addRecord: new row added to db : id:" + rowId);
+	        	Log.e("SNDESB","DataBaseHelper : addRecord: new row added to db : id:" + rowId);
 	        } else {
 	        	// If the insert didn't succeed, then the rowID is <= 0. Throws an exception.
 	        	throw new SQLException("Failed to insert row into organisations");

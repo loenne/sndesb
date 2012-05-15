@@ -132,5 +132,13 @@
         	android:onClick="myCreateDatabaseClickHandler"
             android:textColor="@color/myTextColour">
         </Button>
-    </LinearLayout>    
+        <Spinner 
+            android:id="@+id/configSearchKlubbField2" 
+            android:textSize="16dp"
+            android:layout_width="fill_parent" 
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:layout_height="wrap_content">
+        </Spinner>    
+        </LinearLayout>    
 </LinearLayout>

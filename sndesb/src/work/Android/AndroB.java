@@ -54,7 +54,7 @@ public class AndroB extends Activity {
 		oforbundid = new ArrayList<String>(); 
 		orforbund = new Hashtable();
 
-//		Log.e("XTRACTOR","AndroB: Create new DownloadForbund task");
+//		Log.e("SNDESB","AndroB: Create new DownloadForbund task");
 //    	DownloadForbundTask task = new DownloadForbundTask();
 //    	task.execute();
 /*		getOrg = new Runnable() {
@@ -72,11 +72,11 @@ public class AndroB extends Activity {
     private class DownloadForbundTask extends AsyncTask<String, Void, String> {
     	@Override
     	protected String doInBackground(String... urls) {
-    		Log.e("XTRACTOR","AndroB: doInBackground started");
+    		Log.e("SNDESB","AndroB: doInBackground started");
     		
     		String response = "";
     		loadForbund();
-    		Log.e("XTRACTOR","AndroB: doInBackground ended");
+    		Log.e("SNDESB","AndroB: doInBackground ended");
 	/*
 				for (String url : urls) {
 					DefaultHttpClient client = new DefaultHttpClient();
@@ -103,7 +103,7 @@ public class AndroB extends Activity {
     	@Override
     	protected void onPostExecute(String result) {
     		
-    		Log.e("XTRACTOR","AndroB: onPostExecute");
+    		Log.e("SNDESB","AndroB: onPostExecute");
     		//textView.setText(result);
     	}
     }
@@ -116,7 +116,7 @@ public class AndroB extends Activity {
     
     private void loadForbund() 
    	{
-		Log.e("XTRACTOR","AndroB: Start of loadForbund");
+		Log.e("SNDESB","AndroB: Start of loadForbund");
 
 		oforbund.clear();
 		oforbundid.clear();
@@ -134,7 +134,7 @@ public class AndroB extends Activity {
    			fetchOk = andRest.queryRESTurl(urlString);
 
    			if (fetchOk) {
-   				Log.e("XTRACTOR","AndroB: fetchOK");
+   				Log.e("SNDESB","AndroB: fetchOK");
    				organisations = andRest.parseOrganisations();    		
    				
    				// 1 = Orienteringsfšrbundet
@@ -151,11 +151,11 @@ public class AndroB extends Activity {
   						(org.getOrganisationTypeId().equals(ORGTYPE_FORB))) {
   						oforbund.add(org.getShortName());
   						oforbundid.add(org.getOrganisationId());
-  						Log.e("XTRACTOR","Stored : " + org.getShortName() + " id: " + org.getOrganisationId() + " in pos : " + i);
+  						Log.e("SNDESB","Stored : " + org.getShortName() + " id: " + org.getOrganisationId() + " in pos : " + i);
   						
   						if (org.getOrganisationId().equals(ORG_STOCKHOLM)) {
   							activeIndex = i;
-  	  						Log.e("XTRACTOR","Found Stockholm as 18 in index : " + i);
+  	  						Log.e("SNDESB","Found Stockholm as 18 in index : " + i);
   	  						mySelForbund = oforbund.get(i);
   	  	   	    			mySelForbundId = oforbundid.get(i);  	  						
   						}  						
@@ -169,7 +169,7 @@ public class AndroB extends Activity {
 				oforbundid.add("0");
   			}
    		} catch (Throwable t){
-  			Log.e("XTRACTOR","loadForbund : Failing to fetch forbund : " + t.getMessage(),t);
+  			Log.e("SNDESB","loadForbund : Failing to fetch forbund : " + t.getMessage(),t);
   		}
 
 		/* END OF COMMENTED OUT */  		

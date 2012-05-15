@@ -157,7 +157,7 @@ public class selectklubb  extends Activity {
 				for (Organisation org : organisations){
 
 					if (org.getOrganisationTypeId().equals("2")) {
-						// Log.e("XTRACTOR","Stored : " + org.getShortName() + " id: " + org.getOrganisationId() + " in pos : " + i);
+						// Log.e("SNDESB","Stored : " + org.getShortName() + " id: " + org.getOrganisationId() + " in pos : " + i);
 						oforbund.add(org.getShortName());
 						oforbundid.add(org.getOrganisationId());
 
@@ -165,7 +165,7 @@ public class selectklubb  extends Activity {
 
 						if (org.getShortName().equals(stof)) {
 							defForbundIndex = i;
-							Log.e("XTRACTOR","Found " + stof + " in index : " + i + " id:" + oforbundid.get(i));
+							Log.e("SNDESB","Found " + stof + " in index : " + i + " id:" + oforbundid.get(i));
 							//mySelForbund = oforbund.get(i);
 							mySelForbundId = oforbundid.get(i);  	  						
 						}
@@ -180,7 +180,7 @@ public class selectklubb  extends Activity {
 				oforbundid.add("1");
 			}  			
 		} catch (Throwable t){
-			Log.e("XTRACTOR","loadForbund : Failing to fetch forbund \n" + t.getMessage(),t);
+			Log.e("SNDESB","loadForbund : Failing to fetch forbund \n" + t.getMessage(),t);
 		}
 		runOnUiThread(returnRes);
 	}
@@ -201,7 +201,7 @@ public class selectklubb  extends Activity {
    	{
 		klubbar.clear();
 		klubbid.clear();
-//		Log.e("XTRACTOR","loadKlubbar : antal organis :" + organisations.size() + " forbund : " + forbundid);
+//		Log.e("SNDESB","loadKlubbar : antal organis :" + organisations.size() + " forbund : " + forbundid);
 		klubbIdCreated = 1;
 
 		// Specialläsning start. Eftersom man inte får hämta andra klubbar !!
@@ -224,13 +224,13 @@ public class selectklubb  extends Activity {
 				(org.getParentOrganisationId().equals(forbundid))) {
 				klubbar.add(org.getShortName());
 				klubbid.add(org.getOrganisationId());
-				// Log.e("XTRACTOR","Load klubbar : Added : " + org.getShortName() + " :" + org.getOrganisationId());    			
+				// Log.e("SNDESB","Load klubbar : Added : " + org.getShortName() + " :" + org.getOrganisationId());    			
 
 				String sol = "Skarpnäcks OL";
 
 				if (org.getShortName().equals(sol)) {
 					defKlubbIndex = i;
-					// Log.e("XTRACTOR","Found Skarpnäck as 335 in index : " + i);
+					// Log.e("SNDESB","Found Skarpnäck as 335 in index : " + i);
 					mySelKlubb = klubbar.get(i);
    	    			mySelKlubbId = klubbid.get(i);  	  						
 				}			
@@ -244,7 +244,7 @@ public class selectklubb  extends Activity {
    	{
    	    public void onItemSelected(AdapterView<?> parent,
    	        View view, int pos, long id) {
-			// Log.e("XTRACTOR","onItemSelected1 Selected pos : " + pos + "som ‰r : " + parent.getItemAtPosition(pos).toString() + " och id:" + oforbundid.get(pos) );
+			// Log.e("SNDESB","onItemSelected1 Selected pos : " + pos + "som ‰r : " + parent.getItemAtPosition(pos).toString() + " och id:" + oforbundid.get(pos) );
 			// mySelForbund = parent.getItemAtPosition(pos).toString();
 			mySelForbundId = oforbundid.get(pos);
 			loadKlubbar(mySelForbundId);
@@ -260,7 +260,7 @@ public class selectklubb  extends Activity {
    	{
    	    public void onItemSelected(AdapterView<?> parent,
    	        View view, int pos, long id) {
-			// Log.e("XTRACTOR","onItemSelected2 Selected pos : " + pos + "som ‰r : " + parent.getItemAtPosition(pos).toString() );
+			// Log.e("SNDESB","onItemSelected2 Selected pos : " + pos + "som ‰r : " + parent.getItemAtPosition(pos).toString() );
 			mySelKlubb = parent.getItemAtPosition(pos).toString();
 
 			if (klubbIdCreated == 1) {
@@ -423,15 +423,15 @@ public class selectklubb  extends Activity {
             			mySelClassificationIds = mySelClassificationIds + ",";
             		}
         		}
-        		Log.e("XTRACTOR OnReadyListener"," just nu: " + mySelClassificationIds);
+        		Log.e("SNDESB OnReadyListener"," just nu: " + mySelClassificationIds);
         	}            		
 
         	if (tavlingstyper[5]) { 
         		mySelClassificationIds = mySelClassificationIds + typer[5];        		
-    			Log.e("XTRACTOR OnReadyListener"," slutkl‰mm: " + mySelClassificationIds);
+    			Log.e("SNDESB OnReadyListener"," slutkl‰mm: " + mySelClassificationIds);
         	}
         	
-			Log.e("XTRACTOR OnReadyListener"," resultat: " + mySelClassificationIds);        	
+			Log.e("SNDESB OnReadyListener"," resultat: " + mySelClassificationIds);        	
         }
    	}
         
@@ -448,7 +448,7 @@ public class selectklubb  extends Activity {
 			}
 			case R.id.sokval:
 			{	
-				Log.e("XTRACTOR","myKlubbSearchClickHandler klubbid" + mySelKlubbId + " som ‰r : " + mySelKlubb );
+				Log.e("SNDESB","myKlubbSearchClickHandler klubbid" + mySelKlubbId + " som ‰r : " + mySelKlubb );
 				String kalle[] = new String[8];
 				kalle[0] = "DATE_FROM";
 				kalle[1] = mySelDateFrom;
