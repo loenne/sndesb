@@ -447,7 +447,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	            String klubbid = new String();
 				klubbid = cursor.getString(cursor.getColumnIndex("OrganisationId"));
 	            klubbNameIdList.add(klubbid);
-	            Log.d("SNDESB", "getOrgClubKlubbIdNames: KlubbId: " + klubbid);		
+	            Log.d("SNDESB", "getOrgClubKlubbIdNames: Add KlubbId: " + klubbid);		
 	        } while (cursor.moveToNext());
 	    }
 	 

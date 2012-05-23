@@ -7,6 +7,7 @@ import java.util.List;
 
 import work.Android.selectklubb.MyOnItemSelectedListener1;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.SQLException;
@@ -42,17 +43,14 @@ public class configApp extends Activity {
 	private List<Organisation> organisations;
 	private ArrayAdapter<String> mySpinnerForbundArrayAdapter;
 	private ArrayAdapter<String> mySpinnerKlubbArrayAdapter;
-	private ArrayAdapter<String> mySpinnerKlubbArrayAdapter2;
 	private TextView mySearchLength;
 	private Spinner  myForbundSpinner;
 	private Spinner  myKlubbSpinner;
-	private Spinner  myKlubbSpinner2;
 	private Button myCreateDatabase; 
 	private Button myUpdateEventor;
 	private ArrayList<String> oforbund;
 	private ArrayList<String> oforbundid;
 	private ArrayList<String> oklubbar;
-	private ArrayList<String> oklubbar2;
 	private ArrayList<String> oklubbarid;
 	private String mySelKlubb;
 	private String mySelKlubbId;	
@@ -62,6 +60,7 @@ public class configApp extends Activity {
 	private int mySelForbundIndx;
 	private List <Organisation> allaOrg;
 	private Config cfg;
+	private Context cont;
 	private int openstate;
 	
 	@Override	
@@ -72,25 +71,18 @@ public class configApp extends Activity {
 		oforbund = new ArrayList<String>();
 		oforbundid = new ArrayList<String>();
 		oklubbar = new ArrayList<String>();
-		oklubbar2 = new ArrayList<String>();
 		oklubbarid = new ArrayList<String>();
 		oforbund.clear();
 		oforbundid.clear();
-//		oklubbar.clear();
-//		oklubbarid.clear();
+		oklubbar.clear();
+		oklubbarid.clear();
 		mySelForbundIndx = 0;
 
-		oklubbar.add("kalle44"); 
-		oklubbar2.add("kalle12"); 
-		oklubbar2.add("kalle13"); 
-		oklubbar2.add("kalle14"); 
-		oklubbar2.add("kalle15"); 
 		mySearchLength = (TextView)findViewById(R.id.configSearchLengthField);
    		myForbundSpinner = (Spinner)findViewById(R.id.configSearchForbundField);
 		myKlubbSpinner = (Spinner)findViewById(R.id.configSearchKlubbField);
 		myCreateDatabase = (Button)findViewById(R.id.configcreatedatabase);
    		myUpdateEventor = (Button)findViewById(R.id.configupdateeventor);
-		myKlubbSpinner2 = (Spinner)findViewById(R.id.configSearchKlubbField2);
    		
  //   	//createConfigTable();
    		fetchConfig();
@@ -123,29 +115,24 @@ public class configApp extends Activity {
 //		updateDatabase(0);
 		
 //		fetchOneOrganisation(1200);
+		cont = this;
 
-		mySpinnerKlubbArrayAdapter2 =  
-	   			new ArrayAdapter<String>(this, R.layout.spinnerlayout, oklubbar2);
-				mySpinnerKlubbArrayAdapter2.setDropDownViewResource(R.layout.spinnerlayout);
-				myKlubbSpinner2.setAdapter(mySpinnerKlubbArrayAdapter2);
-				myKlubbSpinner2.setOnItemSelectedListener(new MyOnKlubbItemSelectedListener2());		
-		
 		mySpinnerForbundArrayAdapter =  
 	   			new ArrayAdapter<String>(this, R.layout.spinnerlayout, oforbund);
-		   		mySpinnerForbundArrayAdapter.setDropDownViewResource(R.layout.spinnerlayout);		   		
-		   		myForbundSpinner.setAdapter(mySpinnerForbundArrayAdapter);
-		   		myForbundSpinner.setOnItemSelectedListener(new MyOnForbundItemSelectedListener()); 	   	 	   		 	   		 	   		 	   		
+	   	mySpinnerForbundArrayAdapter.setDropDownViewResource(R.layout.spinnerlayout);		   		
+		myForbundSpinner.setAdapter(mySpinnerForbundArrayAdapter);
+		myForbundSpinner.setOnItemSelectedListener(new MyOnForbundItemSelectedListener()); 	   	 	   		 	   		 	   		 	   		
 
 		mySpinnerKlubbArrayAdapter =  
-			   			new ArrayAdapter<String>(this, R.layout.spinnerlayout, oklubbar2);
-						mySpinnerKlubbArrayAdapter.setDropDownViewResource(R.layout.spinnerlayout);
-						myKlubbSpinner.setAdapter(mySpinnerKlubbArrayAdapter);
-						myKlubbSpinner.setOnItemSelectedListener(new MyOnKlubbItemSelectedListener());		
-		   		
+			   			new ArrayAdapter<String>(this, R.layout.spinnerlayout, oklubbar);
+		mySpinnerKlubbArrayAdapter.setDropDownViewResource(R.layout.spinnerlayout);
+		myKlubbSpinner.setAdapter(mySpinnerKlubbArrayAdapter);
+		myKlubbSpinner.setOnItemSelectedListener(new MyOnKlubbItemSelectedListener());		
+		
 		mySpinnerForbundArrayAdapter.notifyDataSetChanged();
 		mySpinnerKlubbArrayAdapter.notifyDataSetChanged();
 		myForbundSpinner.setSelection(mySelForbundIndx,true);
-   		myKlubbSpinner.setSelection(0,true);
+		myKlubbSpinner.setSelection(0,true);
 	}
 
     ///////////////////////////////////////////////////////////
@@ -294,13 +281,27 @@ public class configApp extends Activity {
         }catch(SQLException sqle){ 
         	throw sqle;
         }
-		oklubbar.clear();
+/*		oklubbar.clear();
 		oklubbarid.clear();
-		
-		oklubbar2 = myDbHelper.getOrgClubNames(id);
+		oklubbarid.add("11");
+		oklubbarid.add("12");
+		oklubbarid.add("13");
+		oklubbarid.add("14");
+		oklubbarid.add("15");
+		oklubbarid.add("16");
+		oklubbarid.add("17");
+		oklubbar.add("Skogsluffarna 1");
+		oklubbar.add("Skogsluffarna 2");
+		oklubbar.add("Skogsluffarna 3");
+		oklubbar.add("Skogsluffarna 4");
+		oklubbar.add("Skogsluffarna 5");
+		oklubbar.add("Skogsluffarna 6");
+		oklubbar.add("Skogsluffarna 7");
+*/
+		oklubbar = myDbHelper.getOrgClubNames(id);
 		oklubbarid = myDbHelper.getOrgClubNameIds(id);
 	
-		for (String klubb : oklubbar2) {
+		for (String klubb : oklubbar) {
             Log.d("SNDESB", "Klubb: "+ klubb);
 		}
 		myDbHelper.close();
@@ -533,47 +534,6 @@ public class configApp extends Activity {
    		}		
    	}
 
-  	///////////////////////////////////////////////////////////
-  	//
-  	//
-  	//
-  	///////////////////////////////////////////////////////////
-  	public class MyOnKlubbItemSelectedListener implements OnItemSelectedListener 
-  	{
-  		public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-  			Log.d("SNDESB","MyOnKlubbItemSelectedListener: Selected pos : " + pos + "som Šr : " + parent.getItemAtPosition(pos).toString() );
-  			mySelKlubb = parent.getItemAtPosition(pos).toString();
-
-  			//if (klubbIdCreated == 1) {
-  			//mySelKlubbId = klubbid.get(pos);			}
-  			//}
-  		}
-  		public void onNothingSelected(AdapterView<?> parent) {
-  			Log.d("SNDESB","MyOnKlubbItemSelectedListener: Nothing selected" );
-  			// Do nothing.
-  		}
-  	}  	
-
-  	///////////////////////////////////////////////////////////
-  	//
-  	//
-  	//
-  	///////////////////////////////////////////////////////////
-  	public class MyOnKlubbItemSelectedListener2 implements OnItemSelectedListener 
-  	{
-  		public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-  			Log.d("SNDESB","MyOnKlubbItemSelectedListener2: Selected pos : " + pos + "som Šr : " + parent.getItemAtPosition(pos).toString() );
-  			mySelKlubb = parent.getItemAtPosition(pos).toString();
-
-  			//if (klubbIdCreated == 1) {
-  			//mySelKlubbId = klubbid.get(pos);			}
-  			//}
-  		}
-  		public void onNothingSelected(AdapterView<?> parent) {
-  			Log.d("SNDESB","MyOnKlubbItemSelectedListener2: Nothing selected" );
-  			// Do nothing.
-  		}
-  	}  	
   	
     ///////////////////////////////////////////////////////////
     //
@@ -590,10 +550,18 @@ public class configApp extends Activity {
 			Integer val = new Integer(mySelForbundId);
 			Log.d("SNDESB","MyOnForbundItemSelectedListener: Before fetching klubbs for " + val);
 			fetchOrgClubNamesAndIds(val);
-			mySpinnerKlubbArrayAdapter.notifyDataSetChanged();
-//	   		myKlubbSpinner.setSelection(0,true);	
+
+			mySpinnerKlubbArrayAdapter = new ArrayAdapter<String>(cont, R.layout.spinnerlayout, oklubbar);
+			mySpinnerKlubbArrayAdapter.setDropDownViewResource(R.layout.spinnerlayout);
+			myKlubbSpinner.setAdapter(mySpinnerKlubbArrayAdapter);
+//			myKlubbSpinner.setOnItemSelectedListener(new MyOnKlubbItemSelectedListener());		
+			
+			
+//			mySpinnerKlubbArrayAdapter.notifyDataSetChanged();
+//			myKlubbSpinner.setAdapter(mySpinnerKlubbArrayAdapter);
+	   		myKlubbSpinner.setSelection(0,true);	
 			Log.d("SNDESB","MyOnForbundItemSelectedListener: After" );
-//			Log.d("SNDESB","oklubbar:" + oklubbar.get(0) + oklubbar.get(1) + oklubbar.get(2) );			
+			Log.d("SNDESB","oklubbar:" + oklubbar.get(0) + oklubbar.get(1) + oklubbar.get(2) );			
    	    }
 
    	    public void onNothingSelected(AdapterView<?> parent) {
@@ -602,9 +570,31 @@ public class configApp extends Activity {
 			Log.d("SNDESB","MyOnForbundItemSelectedListener: Nothing selected" );
    	    }
    	}
-	
-    
+
   	
+	///////////////////////////////////////////////////////////
+  	//
+  	//
+  	//
+  	///////////////////////////////////////////////////////////
+  	public class MyOnKlubbItemSelectedListener implements OnItemSelectedListener 
+  	{
+  		public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+  			Log.d("SNDESB","MyOnKlubbItemSelectedListener: Selected pos : " + pos + "som Šr : " + parent.getItemAtPosition(pos).toString() );
+  			mySelKlubb = parent.getItemAtPosition(pos).toString();
+  			Log.d("SNDESB","MyOnKlubbItemSelectedListener: Selected:" + pos + " som Šr: " + mySelKlubb );
+
+  			//if (klubbIdCreated == 1) {
+  			//mySelKlubbId = klubbid.get(pos);			}
+  			//}
+  		}
+  		public void onNothingSelected(AdapterView<?> parent) {
+  			Log.d("SNDESB","MyOnKlubbItemSelectedListener: Nothing selected" );
+  			// Do nothing.
+  		}
+  	}  	
+   	
+     	
 	// Get the custom preference
 	//        Preference customPref = (Preference) findPreference("customPref");
 	//        customPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {

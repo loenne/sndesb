@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Toast;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.SQLException;
 
 ///////////////////////////////////////////////////////////
 //
@@ -35,6 +36,10 @@ public class AndroB extends Activity {
 	private Hashtable orforbund;
 	private String mySelForbund;
 	private String mySelForbundId;
+	private Config cfg;
+	private Integer mySearchInterval;
+	private Integer mySelectedForbund;
+	private Integer mySelectedClub;
 		
 	private int activeIndex;
     static final int DATE_DIALOG_ID1 = 0;
@@ -67,9 +72,17 @@ public class AndroB extends Activity {
 		Thread thread = new Thread(null, getOrg, "MagentoBackground");
 		thread.start();
 */
+		
+   		fetchConfig();
+		
 	}
 
-    private class DownloadForbundTask extends AsyncTask<String, Void, String> {
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
+/*    private class DownloadForbundTask extends AsyncTask<String, Void, String> {
     	@Override
     	protected String doInBackground(String... urls) {
     		Log.e("SNDESB","AndroB: doInBackground started");
@@ -77,7 +90,7 @@ public class AndroB extends Activity {
     		String response = "";
     		loadForbund();
     		Log.e("SNDESB","AndroB: doInBackground ended");
-	/*
+*/	/*
 				for (String url : urls) {
 					DefaultHttpClient client = new DefaultHttpClient();
 					HttpGet httpGet = new HttpGet(url);
@@ -97,7 +110,7 @@ public class AndroB extends Activity {
 					}
 				}
     		 */
-    		return response;
+/*    		return response;
     	}
 
     	@Override
@@ -107,13 +120,44 @@ public class AndroB extends Activity {
     		//textView.setText(result);
     	}
     }
-
+*/
 //    public void readWebpage(View view) {
 //    	DownloadWebPageTask task = new DownloadWebPageTask();
 //    	task.execute(new String[] { "http://www.vogella.com" });
 //    }
 
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
+	public void fetchConfig() {
+
+		DataBaseHelper myDbHelper = new DataBaseHelper(this);
+		int openstate = 0;
+		
+        try {
+        	myDbHelper.openDataBase(openstate);
+        }catch(SQLException sqle){ 
+        	throw sqle;
+        }
+		
+		cfg = myDbHelper.getConfig();
+		String log = "SearchIntervall: "+cfg.getSearchIntervall() + " SelectedOrg: "+cfg.getSelectedOrg()+" SelectedClub: " + cfg.getSelectedClub();
+		mySearchInterval  = cfg.getSearchIntervall();
+		mySelectedForbund = cfg.getSelectedOrg();
+		mySearchInterval  = cfg.getSelectedClub();
+
+		Log.d("Fetched config: ", log);		
+		myDbHelper.close();
+	}
+	    
     
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
     private void loadForbund() 
    	{
 		Log.e("SNDESB","AndroB: Start of loadForbund");
@@ -233,7 +277,16 @@ public class AndroB extends Activity {
 	public void konfigurera() {
 
         Intent i = new Intent();
+		String kalle[] = new String[8];
         i.setClassName("work.Android", "work.Android.configApp");
+        i.putExtra("arguments", kalle);
+		kalle[0] = "SEARCH_LENGTH";
+		kalle[1] = mySearchInterval.toString();
+		kalle[2] = "FORBUND";
+		kalle[3] = mySelectedForbund.toString();
+		kalle[4] = "KLUBB";
+		kalle[5] = mySelectedClub.toString();
+        
         startActivity(i);               
 		return;
 	
