@@ -146,7 +146,7 @@ public class AndroB extends Activity {
 		String log = "SearchIntervall: "+cfg.getSearchIntervall() + " SelectedOrg: "+cfg.getSelectedOrg()+" SelectedClub: " + cfg.getSelectedClub();
 		mySearchInterval  = cfg.getSearchIntervall();
 		mySelectedForbund = cfg.getSelectedOrg();
-		mySearchInterval  = cfg.getSelectedClub();
+		mySelectedClub   = cfg.getSelectedClub();
 
 		Log.d("Fetched config: ", log);		
 		myDbHelper.close();
@@ -277,16 +277,15 @@ public class AndroB extends Activity {
 	public void konfigurera() {
 
         Intent i = new Intent();
-		String kalle[] = new String[8];
+		String sendbuff[] = new String[6];
         i.setClassName("work.Android", "work.Android.configApp");
-        i.putExtra("arguments", kalle);
-		kalle[0] = "SEARCH_LENGTH";
-		kalle[1] = mySearchInterval.toString();
-		kalle[2] = "FORBUND";
-		kalle[3] = mySelectedForbund.toString();
-		kalle[4] = "KLUBB";
-		kalle[5] = mySelectedClub.toString();
-        
+		sendbuff[0] = "SEARCH_LENGTH";
+		sendbuff[1] = mySearchInterval.toString();
+		sendbuff[2] = "FORBUND";
+		sendbuff[3] = mySelectedForbund.toString();
+		sendbuff[4] = "KLUBB";
+		sendbuff[5] = mySelectedClub.toString();
+        i.putExtra("arguments", sendbuff); 
         startActivity(i);               
 		return;
 	

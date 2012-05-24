@@ -219,7 +219,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	//
 	//
 	///////////////////////////////////////////////////////////
-	public void createTable() {		
+	public void createOrganisationsTable() {		
 
 		myDataBase.execSQL("DROP TABLE Organisation");
 		String CREATE_TABLE_ORG = "CREATE TABLE Organisation (_id INTEGER PRIMARY KEY, OrganisationId TEXT, Name TEXT, ShortName TEXT, OrganisationTypeId TEXT, ParentOrganisationId TEXT);";
@@ -418,7 +418,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 				klubb = cursor.getString(cursor.getColumnIndex("Name"));
 
 	            klubbNameList.add(klubb);
-	            Log.d("SNDESB", "getOrgClubKlubbNames: Klubb: " + klubb);		
+//	            Log.d("SNDESB", "getOrgClubKlubbNames: Klubb: " + klubb);		
 	        } while (cursor.moveToNext());
 	    }
 	    return klubbNameList;
@@ -447,7 +447,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	            String klubbid = new String();
 				klubbid = cursor.getString(cursor.getColumnIndex("OrganisationId"));
 	            klubbNameIdList.add(klubbid);
-	            Log.d("SNDESB", "getOrgClubKlubbIdNames: Add KlubbId: " + klubbid);		
+//	            Log.d("SNDESB", "getOrgClubKlubbIdNames: Add KlubbId: " + klubbid);		
 	        } while (cursor.moveToNext());
 	    }
 	 
@@ -483,9 +483,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	//        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
 	        // If the insert succeeded, the row ID exists.
-	        if (rowId > 0) {
-	        	Log.e("SNDESB","DataBaseHelper: addRecord: new row added to db : id:" + rowId);
-	        } else {
+	        if (rowId <= 0) {
 	        	// If the insert didn't succeed, then the rowID is <= 0. Throws an exception.
 	        	throw new SQLException("Failed to insert row into organisations");
 	        }
@@ -560,9 +558,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	//        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
 	        // If the insert succeeded, the row ID exists.
-	        if (rowId > 0) {
-	        	Log.e("SNDESB","DataBaseHelper : addRecord: new row added to db : id:" + rowId);
-	        } else {
+	    	if (rowId <= 0) {
 	        	// If the insert didn't succeed, then the rowID is <= 0. Throws an exception.
 	        	throw new SQLException("Failed to insert row into organisations");
 	        }

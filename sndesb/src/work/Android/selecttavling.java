@@ -1,5 +1,6 @@
 package work.Android;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 //import java.util.Collections;
 //import java.util.Comparator;
@@ -108,6 +109,16 @@ public class selecttavling  extends Activity {
    		myDateTo = (TextView)findViewById(R.id.selectTDate);
    		mySpinner = (Spinner)findViewById(R.id.spinner1);
 
+   		
+		 Serializable s = this.getIntent().getSerializableExtra("arguments");
+		 Object[] o = (Object[]) s;
+
+		 if (o != null) {
+	       		myBuffSearchLength = o[1].toString();
+	       		myBuffSelectedForbund = o[3].toString();
+	       		myBuffSelectedKlubb = o[5].toString();
+		 }
+   		
 		Thread thread = new Thread(null, getOrg, "MagentoBackground");
 		thread.start();
 		m_ProgressDialog = ProgressDialog.show(selecttavling.this,"Please wait...", "Retreiving organisations...",true);

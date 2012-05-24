@@ -73,4 +73,5 @@
     <string name="configsearchklubb2">Förvald klubb:</string>
     <string name="configcreatedatabase">Skapa konfigurationsdatabas</string>
     <string name="configupdateeventor">Hämta Eventor data</string>
+    <string name="configsave">Spara</string>
 </resources>

@@ -1,5 +1,6 @@
 package work.Android;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -51,6 +52,10 @@ public class selectklubb  extends Activity {
 	private String mySelForbundId;
 	private String mySelKlubb;
 	private String mySelKlubbId;
+	private String mySearchLength;
+	private String mySelectedForbund;
+	private String mySelectedKlubb;
+	
 	private String mySelClassificationIds;								
 	private int defForbundIndex;
 	private int defKlubbIndex;
@@ -73,13 +78,23 @@ public class selectklubb  extends Activity {
 		super.onCreate(icicle);
 		setContentView(R.layout.selectklubb);
 
+		 Serializable s = this.getIntent().getSerializableExtra("arguments");
+		 Object[] o = (Object[]) s;
+
+		 if (o != null) {
+	       		mySearchLength = o[1].toString();
+	       		mySelectedForbund = o[3].toString();
+	       		mySelectedKlubb = o[5].toString();
+		 }
+
+		 /*		
 		getOrg = new Runnable() {
 			@Override
 			public void run() {
 				loadForbund();
 			}
 		};
-		
+*/		
 		tavlingstyper = new boolean[]{true,true,true,true,true,true};
 		typer = new String[]{"1","2","3","4","5","6"};
 		mySelClassificationIds	= "1,2,3,4,5,6";
@@ -94,10 +109,10 @@ public class selectklubb  extends Activity {
 		klubbar = new ArrayList<String>();
 		klubbid = new ArrayList<String>(); 
 
-		Thread thread = new Thread(null, getOrg, "MagentoBackground");
-		thread.start();
+//		Thread thread = new Thread(null, getOrg, "MagentoBackground");
+//		thread.start();
 		
-		m_ProgressDialog = ProgressDialog.show(selectklubb.this,"Please wait...", "Retreiving data...",true);
+//		m_ProgressDialog = ProgressDialog.show(selectklubb.this,"Please wait...", "Retreiving data...",true);
 
 		mySpinnerArrayAdapter1 =  
    			new ArrayAdapter<String>(this, R.layout.spinnerlayout, oforbund);
@@ -182,9 +197,9 @@ public class selectklubb  extends Activity {
 		} catch (Throwable t){
 			Log.e("SNDESB","loadForbund : Failing to fetch forbund \n" + t.getMessage(),t);
 		}
-		runOnUiThread(returnRes);
+//		runOnUiThread(returnRes);
 	}
-
+/*
 	private Runnable returnRes = new Runnable() {
 
 		@Override
@@ -196,7 +211,7 @@ public class selectklubb  extends Activity {
 			m_ProgressDialog.dismiss();
 		}
 	};
-	
+*/	
 	private void loadKlubbar(String forbundid) 
    	{
 		klubbar.clear();

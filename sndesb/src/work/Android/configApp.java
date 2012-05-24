@@ -2,6 +2,7 @@ package work.Android;
 
 //import android.app.Activity;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,11 +36,13 @@ import android.widget.AdapterView.OnItemSelectedListener;
 public class configApp extends Activity {
 //public class configApp extends PreferenceActivity { 
 	final int MAX_FORBUND = 24;
+
 	private ArrayList<String> organisationId;
 	private ArrayList<String> organisationTypeId;
 	private ArrayList<String> name;
 	private ArrayList<String> shortName;
 	private ArrayList<String> parentOrganisationId;
+	
 	private List<Organisation> organisations;
 	private ArrayAdapter<String> mySpinnerForbundArrayAdapter;
 	private ArrayAdapter<String> mySpinnerKlubbArrayAdapter;
@@ -48,16 +51,26 @@ public class configApp extends Activity {
 	private Spinner  myKlubbSpinner;
 	private Button myCreateDatabase; 
 	private Button myUpdateEventor;
+	private Button mySaveConfig;
 	private ArrayList<String> oforbund;
 	private ArrayList<String> oforbundid;
 	private ArrayList<String> oklubbar;
 	private ArrayList<String> oklubbarid;
 	private String mySelKlubb;
 	private String mySelKlubbId;	
-	private String mySelKlubbIndx;	
 	private String mySelForbund;
 	private String mySelForbundId;
+	
 	private int mySelForbundIndx;
+	private int mySelKlubbIndx;	
+	
+	private int myKlubbIdCreated;
+
+	private String myBuffSearchLength;
+	private String myBuffSelectedForbund;
+	private String myBuffSelectedKlubb;
+	
+	
 	private List <Organisation> allaOrg;
 	private Config cfg;
 	private Context cont;
@@ -77,44 +90,34 @@ public class configApp extends Activity {
 		oklubbar.clear();
 		oklubbarid.clear();
 		mySelForbundIndx = 0;
+		myKlubbIdCreated = 0;
 
 		mySearchLength = (TextView)findViewById(R.id.configSearchLengthField);
    		myForbundSpinner = (Spinner)findViewById(R.id.configSearchForbundField);
 		myKlubbSpinner = (Spinner)findViewById(R.id.configSearchKlubbField);
 		myCreateDatabase = (Button)findViewById(R.id.configcreatedatabase);
-   		myUpdateEventor = (Button)findViewById(R.id.configupdateeventor);
+   		mySaveConfig = (Button)findViewById(R.id.configsave);
    		
- //   	//createConfigTable();
-   		fetchConfig();
+		 Serializable s = this.getIntent().getSerializableExtra("arguments");
+		 Object[] o = (Object[]) s;
 
-   		mySearchLength.setText(String.valueOf(cfg.getSearchIntervall()));
+		 if (o != null) {
+	       		myBuffSearchLength = o[1].toString();
+	       		myBuffSelectedForbund = o[3].toString();
+	       		myBuffSelectedKlubb = o[5].toString();
+		 }
+
+   		mySearchLength.setText(String.valueOf(myBuffSearchLength));
+   		mySelForbundId = myBuffSelectedForbund;
+   		mySelKlubbId = myBuffSelectedKlubb;
    		
 		Log.d("SNDESB","configApp: Fetch all forbund records from config database");
 		fetchAllOrganisationNamesAndIds();
 //		fetchOrgClubs(1);
-		Log.d("SNDESB","configApp: Fetch all clubs belonging to configured forbund: " + cfg.getSelectedOrg() + " from config database");
-		fetchOrgClubNamesAndIds(cfg.getSelectedOrg());
+		Log.d("SNDESB","configApp: Fetch all clubs belonging to configured forbund: " + myBuffSelectedForbund + " from config database");
+		int forbId = Integer.parseInt(myBuffSelectedForbund);
+		fetchOrgClubNamesAndIds(forbId);
    		  		
-//		addPreferencesFromResource(R.layout.configapp);
-
-/*		organisationId = new ArrayList<String>();
-		organisationTypeId = new ArrayList<String>();
-		name= new ArrayList<String>();
-		parentOrganisationId = new ArrayList<String>();
-		shortName = new ArrayList<String>();
-*/	    
-//		openstate = 0; //0=readwrite, 1 = readonly
-		
-//		int rec = fetchOrganisations();
-//		Log.e("SNDESB","configApp Fetched:" + rec + " records from eventor");
-
-//		if (rec>0) {
-//			updateDatabase(rec);
-//		}
-
-//		updateDatabase(0);
-		
-//		fetchOneOrganisation(1200);
 		cont = this;
 
 		mySpinnerForbundArrayAdapter =  
@@ -129,10 +132,8 @@ public class configApp extends Activity {
 		myKlubbSpinner.setAdapter(mySpinnerKlubbArrayAdapter);
 		myKlubbSpinner.setOnItemSelectedListener(new MyOnKlubbItemSelectedListener());		
 		
-		mySpinnerForbundArrayAdapter.notifyDataSetChanged();
-		mySpinnerKlubbArrayAdapter.notifyDataSetChanged();
 		myForbundSpinner.setSelection(mySelForbundIndx,true);
-		myKlubbSpinner.setSelection(0,true);
+		myKlubbSpinner.setSelection(mySelKlubbIndx,true);
 	}
 
     ///////////////////////////////////////////////////////////
@@ -225,7 +226,6 @@ public class configApp extends Activity {
 		oforbund = myDbHelper.getAllForbundNames();
 		oforbundid = myDbHelper.getAllForbundIds();
 
-   		mySelForbundId = String.valueOf(cfg.getSelectedOrg());
 		int i = 0;
 
 		Log.d("SNDESB","Search for selected forbundid: " + mySelForbundId + " among forbunds");
@@ -272,38 +272,33 @@ public class configApp extends Activity {
     //
     //
     ///////////////////////////////////////////////////////////
-	public void fetchOrgClubNamesAndIds(int id) {
+	public void fetchOrgClubNamesAndIds(int forbId) {
 
 		DataBaseHelper myDbHelper = new DataBaseHelper(this);
-		
+		int i = 0;
+	
         try {
         	myDbHelper.openDataBase(openstate);
         }catch(SQLException sqle){ 
         	throw sqle;
         }
-/*		oklubbar.clear();
+		oklubbar.clear();
 		oklubbarid.clear();
-		oklubbarid.add("11");
-		oklubbarid.add("12");
-		oklubbarid.add("13");
-		oklubbarid.add("14");
-		oklubbarid.add("15");
-		oklubbarid.add("16");
-		oklubbarid.add("17");
-		oklubbar.add("Skogsluffarna 1");
-		oklubbar.add("Skogsluffarna 2");
-		oklubbar.add("Skogsluffarna 3");
-		oklubbar.add("Skogsluffarna 4");
-		oklubbar.add("Skogsluffarna 5");
-		oklubbar.add("Skogsluffarna 6");
-		oklubbar.add("Skogsluffarna 7");
-*/
-		oklubbar = myDbHelper.getOrgClubNames(id);
-		oklubbarid = myDbHelper.getOrgClubNameIds(id);
-	
-		for (String klubb : oklubbar) {
-            Log.d("SNDESB", "Klubb: "+ klubb);
+		oklubbar = myDbHelper.getOrgClubNames(forbId);
+		oklubbarid = myDbHelper.getOrgClubNameIds(forbId);
+
+		
+		for (String klubbid : oklubbarid) {
+//			Log.d("SNDESB","Klubbid: " + klubbid + " val : " + mySelKlubbId);
+
+			if (klubbid.equals(mySelKlubbId)) {
+				mySelKlubbIndx = i;
+				mySelKlubbId = oklubbarid.get(i);
+				Log.d("SNDESB","Found klubbid: " + mySelKlubbId + " in index : " + i + " name:" + oklubbar.get(i));
+			}
+			i++;
 		}
+		myKlubbIdCreated = 1;
 		myDbHelper.close();
 	}
 	
@@ -354,44 +349,16 @@ public class configApp extends Activity {
         	throw sqle;
         }
 
-// create main table
-/*
-          try {
-        	myDbHelper.createTable();
-        }catch(SQLException sqle){ 
-        	throw sqle;
-        }
-*/       
+        Organisation org = new Organisation();
+        int ind = 0;
 
-// create config table
-/*        try {
-       	myDbHelper.createConfigTable();
-       }catch(SQLException sqle){ 
-       	throw sqle;
-       }
- */       
-       	try {
-       		myDbHelper.addConfigRecord();
-       	}
-       	catch(SQLException sqle) {
-       		throw sqle;
-       	}
- //       organisation org = new organisation();
- //       int ind = 0;
-
-/*
-         while (ind < records) {
- 
-        	Log.e("SNDESB","configApp: OrganisationId       " + organisationId.get(ind));
+        while (ind < records) {
+/*        	Log.e("SNDESB","configApp: OrganisationId       " + organisationId.get(ind));
         	Log.e("SNDESB","configApp: OrganisationTypeId   " + organisationTypeId.get(ind));
         	Log.e("SNDESB","configApp: Name                 " + name.get(ind));
         	Log.e("SNDESB","configApp: ParentOrganisationId " + parentOrganisationId.get(ind));
         	Log.e("SNDESB","configApp: ShortName            " + shortName.get(ind));
-        	ind++;
-        }
- */
-        // To be done each time the organisations have changed
-/*        while (ind < records) {
+*/
             org.setOrganisationId(organisationId.get(ind));
             org.setOrganisationTypeId(organisationTypeId.get(ind));
             org.setName(name.get(ind));
@@ -403,14 +370,36 @@ public class configApp extends Activity {
            	}
            	catch(SQLException sqle) {
            		throw sqle;
-           		
            	}
            	ind++;
-        }       
-*/
+        }
         myDbHelper.close();
 	}	
 
+	///////////////////////////////////////////////////////////
+	//	
+	//
+	//
+	///////////////////////////////////////////////////////////
+	public void createOrganisationsTable() {
+
+		DataBaseHelper myDbHelper = new DataBaseHelper(this);
+
+		try {
+			myDbHelper.openDataBase(openstate);
+		}catch(SQLException sqle){ 
+			throw sqle;
+		}
+
+		try {
+			myDbHelper.createOrganisationsTable();
+		}catch (SQLException sqle){ 
+			throw sqle;
+		}
+		
+		myDbHelper.close();
+	}	
+	
 	///////////////////////////////////////////////////////////
 	//
 	//
@@ -426,7 +415,6 @@ public class configApp extends Activity {
 			throw sqle;
 		}
 
-		//create config table
 		try {
 			myDbHelper.createConfigTable();
 		}catch(SQLException sqle){ 
@@ -448,7 +436,7 @@ public class configApp extends Activity {
     //
     //
     ///////////////////////////////////////////////////////////
-	public int fetchOrganisations() {
+	public int fetchOrganisationsFromEventor() {
 	
 		int count = 0;
 		String urlString = "organisations";
@@ -457,6 +445,12 @@ public class configApp extends Activity {
 
 		Log.d("SNDESB","configApp: fetchOrganisations");
 
+		organisationId = new ArrayList<String>();
+		organisationTypeId = new ArrayList<String>();
+		name= new ArrayList<String>();
+		parentOrganisationId = new ArrayList<String>();
+		shortName = new ArrayList<String>();
+		
 		organisationId.clear();
 		organisationTypeId.clear();
 		name.clear();
@@ -505,7 +499,7 @@ public class configApp extends Activity {
 						Toast.LENGTH_LONG).show();
 			}
 		} catch (Throwable t){
-			Log.e("SNDESB","loadForbund : Failing to fetch forbund : " + t.getMessage(),t);
+			Log.e("SNDESB","loadForbund : Failing to fetch forbund : " + t.getMessage(), t);
 		}
 
 		return count;
@@ -521,14 +515,23 @@ public class configApp extends Activity {
    		switch (view.getId()) {
    			case R.id.configcreatedatabase:
    			{	   				
-   				Log.d("SNDESB","myCreateDatabaseClickHandler Want to create Config database");
-   				mySpinnerForbundArrayAdapter.notifyDataSetChanged();
-   				mySpinnerKlubbArrayAdapter.notifyDataSetChanged();
+   				Log.d("SNDESB","myCreateDatabaseClickHandler: Create Config and Fetch Organisations from Eventor");
+   				createConfigTable();
+   				createOrganisationsTable();
+   				int rec = fetchOrganisationsFromEventor();
+   	        	updateDatabase(rec);
+   	        	mySpinnerForbundArrayAdapter =  
+   	        			new ArrayAdapter<String>(this, R.layout.spinnerlayout, oforbund);
+   	        	mySpinnerForbundArrayAdapter.setDropDownViewResource(R.layout.spinnerlayout);		   		
+   	        	myForbundSpinner.setAdapter(mySpinnerForbundArrayAdapter);	
+   				mySpinnerKlubbArrayAdapter = new ArrayAdapter<String>(cont, R.layout.spinnerlayout, oklubbar);
+   				mySpinnerKlubbArrayAdapter.setDropDownViewResource(R.layout.spinnerlayout);
+   				myKlubbSpinner.setAdapter(mySpinnerKlubbArrayAdapter);	
    	            return;
    			}
-   			case R.id.configupdateeventor:
+   			case R.id.configsave:
    			{	   				
-   				Log.d("SNDESB","myCreateDatabaseClickHandler Want to fill database from Eventor");
+   				Log.d("SNDESB","myCreateDatabaseClickHandler Want to save the configuation");
    	            return;
    			}
    		}		
@@ -554,12 +557,7 @@ public class configApp extends Activity {
 			mySpinnerKlubbArrayAdapter = new ArrayAdapter<String>(cont, R.layout.spinnerlayout, oklubbar);
 			mySpinnerKlubbArrayAdapter.setDropDownViewResource(R.layout.spinnerlayout);
 			myKlubbSpinner.setAdapter(mySpinnerKlubbArrayAdapter);
-//			myKlubbSpinner.setOnItemSelectedListener(new MyOnKlubbItemSelectedListener());		
-			
-			
-//			mySpinnerKlubbArrayAdapter.notifyDataSetChanged();
-//			myKlubbSpinner.setAdapter(mySpinnerKlubbArrayAdapter);
-	   		myKlubbSpinner.setSelection(0,true);	
+	   		myKlubbSpinner.setSelection(0,true);
 			Log.d("SNDESB","MyOnForbundItemSelectedListener: After" );
 			Log.d("SNDESB","oklubbar:" + oklubbar.get(0) + oklubbar.get(1) + oklubbar.get(2) );			
    	    }
@@ -582,11 +580,11 @@ public class configApp extends Activity {
   		public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
   			Log.d("SNDESB","MyOnKlubbItemSelectedListener: Selected pos : " + pos + "som Šr : " + parent.getItemAtPosition(pos).toString() );
   			mySelKlubb = parent.getItemAtPosition(pos).toString();
-  			Log.d("SNDESB","MyOnKlubbItemSelectedListener: Selected:" + pos + " som Šr: " + mySelKlubb );
 
-  			//if (klubbIdCreated == 1) {
-  			//mySelKlubbId = klubbid.get(pos);			}
-  			//}
+  			if (myKlubbIdCreated == 1) {
+  				mySelKlubbId = oklubbarid.get(pos);
+  	  			Log.d("SNDESB","MyOnKlubbItemSelectedListener: Selected klubb id : " + mySelKlubbId );
+  			}
   		}
   		public void onNothingSelected(AdapterView<?> parent) {
   			Log.d("SNDESB","MyOnKlubbItemSelectedListener: Nothing selected" );

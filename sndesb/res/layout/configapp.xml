@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/myBackgroundColour"   
-    android:layout_width="fill_parent" 
-    android:layout_height="fill_parent" 
-    android:paddingBottom="20dp"
-    android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/myBackgroundColour"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingBottom="20dp" >
+
     <TextView
         android:text="@string/configheading1"
         android:id="@+id/configheading1" 
@@ -122,15 +123,26 @@
         	android:onClick="myCreateDatabaseClickHandler"         	
             android:textColor="@color/myTextColour">
         </Button>
-        <Button 
-        	android:id="@+id/configupdateeventor" 
-        	android:text="@string/configupdateeventor" 
-            android:layout_width="200dip"
-        	android:layout_height="wrap_content"
-        	android:textSize="16dp" 
+    </LinearLayout>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent" 
+        android:layout_height="fill_parent" 
+        android:background="@color/myBackgroundColour"   
+        android:clickable="false"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/configsave"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="myCreateDatabaseClickHandler"
+            android:text="@string/configsave"
+            android:textColor="@color/myTextColour"
+            android:textSize="16dp"
             android:textStyle="bold"
-        	android:onClick="myCreateDatabaseClickHandler"
-            android:textColor="@color/myTextColour">
-        </Button>    
-        </LinearLayout>    
+            android:width="160dip" />
+
+        </LinearLayout>   
 </LinearLayout>
