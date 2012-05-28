@@ -36,6 +36,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.content.SharedPreferences;
+import android.database.SQLException;
 import android.preference.PreferenceManager;
 // import work.Android.forbund;
 
@@ -65,8 +66,13 @@ public class selecttavling  extends Activity {
 	private String mySelDateTo;
 	private String mySelForbund;
 	private String mySelForbundId;
-	private String mySelClassificationIds;								
+	private String mySelClassificationIds;			
+
+	private String myBuffSelectedForbundId;
+	
+	private int mySelForbundIndx;
 	private int activeIndex;
+	private int openstate;
     static final int DATE_DIALOG_ID1 = 0;
     static final int DATE_DIALOG_ID2 = 2;
 
@@ -78,59 +84,65 @@ public class selecttavling  extends Activity {
     private boolean[] tavlingstyper; 
     private String[] typer; 
    
-    
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////    
 	@Override
 	public void onCreate(Bundle icicle)
 	{
 		super.onCreate(icicle);
 		setContentView(R.layout.selecttavling);
 
-		getOrg = new Runnable() {
+   		Serializable s = this.getIntent().getSerializableExtra("arguments");
+   		Object[] o = (Object[]) s;
+
+   		if ((o != null) && (o[0].toString().equals("FORBUNDID"))) {
+   			myBuffSelectedForbundId = o[1].toString();
+   		}
+/*		getOrg = new Runnable() {
 			@Override
 			public void run() {
 				loadForbund();
 			}
 		};
-		
+*/		
+		openstate = 0;
 		tavlingstyper = new boolean[]{true,true,true,true,true,true};
 		typer = new String[]{"1","2","3","4","5","6"};
 		mySelClassificationIds	= "1,2,3,4,5,6";
 		oforbund = new ArrayList<String>();
 		oforbundid = new ArrayList<String>(); 
 		orforbund = new Hashtable();
-		orforbund.put("18","Stockholms Orienteringsfšrbund");
-
+//		orforbund.put("18","Stockholms Orienteringsfšrbund");
+/*
 		if (orforbund.containsValue("Stockholms Orienteringsfšrbund")) {
 			Log.e("XTRACTOR","Stockholms Orienteringsfšrbund finns i hash tabell ");
 		}
+*/
 		//		klubbarFetched = new ArrayList<String>();
 		klubbarSelected = new ArrayList<String>();
-   		myDateFrom = (TextView)findViewById(R.id.selectFDate);
+
+		myDateFrom = (TextView)findViewById(R.id.selectFDate);
    		myDateTo = (TextView)findViewById(R.id.selectTDate);
    		mySpinner = (Spinner)findViewById(R.id.spinner1);
-
    		
-		 Serializable s = this.getIntent().getSerializableExtra("arguments");
-		 Object[] o = (Object[]) s;
+   		fetchAllOrganisationNamesAndIds();
 
-		 if (o != null) {
-	       		myBuffSearchLength = o[1].toString();
-	       		myBuffSelectedForbund = o[3].toString();
-	       		myBuffSelectedKlubb = o[5].toString();
-		 }
-   		
-		Thread thread = new Thread(null, getOrg, "MagentoBackground");
-		thread.start();
-		m_ProgressDialog = ProgressDialog.show(selecttavling.this,"Please wait...", "Retreiving organisations...",true);
+//		Thread thread = new Thread(null, getOrg, "MagentoBackground");
+//		thread.start();
+//		m_ProgressDialog = ProgressDialog.show(selecttavling.this,"Please wait...", "Retreiving organisations...",true);
 
 		mySpinnerArrayAdapter =  
    			new ArrayAdapter<String>(this, R.layout.spinnerlayout, oforbund);
 	   		mySpinnerArrayAdapter.setDropDownViewResource(R.layout.spinnerlayout);
 	   		mySpinner.setAdapter(mySpinnerArrayAdapter);
 	   		mySpinner.setOnItemSelectedListener(new MyOnItemSelectedListener());
+			mySpinner.setSelection(mySelForbundIndx,true);
 		
-		mySelForbund = "Inga forbund hittade";
-   		mySelForbundId = "0";
+//		mySelForbund = "Inga forbund hittade";
+// 		mySelForbundId = "0";
    		activeIndex = 0;
    		// get the current date
         final Calendar c = Calendar.getInstance();
@@ -149,6 +161,49 @@ public class selecttavling  extends Activity {
         updateDisplay2();		
    	}
 
+	///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
+	public void fetchAllOrganisationNamesAndIds() {
+
+		DataBaseHelper myDbHelper = new DataBaseHelper(this);
+		
+        try {
+        	myDbHelper.openDataBase(openstate);
+        }catch(SQLException sqle){ 
+        	throw sqle;
+        }
+		
+		oforbund = myDbHelper.getAllForbundNames();
+		oforbundid = myDbHelper.getAllForbundIds();
+
+		int i = 0;
+
+		Log.d("SNDESB","Search for selected forbundid: " + myBuffSelectedForbundId + " among forbunds");
+
+		for (String oforbid : oforbundid) {
+		//	Log.d("SNDESB","Search index: " + i + "forbundid: " + oforbid);
+
+			if (oforbid.equals(myBuffSelectedForbundId)) {
+				mySelForbundIndx = i;
+				mySelForbundId = oforbundid.get(i);
+				mySelForbund = oforbund.get(i);
+				Log.d("SNDESB","Found forbundsid: " + myBuffSelectedForbundId + " in index : " + i + " name:" + oforbund.get(i));
+			}
+	//		String log = "ForbundId: " + oforbid;
+    //        Log.d("Organisation: ", log);
+            i++;
+		}
+		myDbHelper.close();
+	}
+	
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
 	private void loadForbund() 
    	{
 		Log.e("XTRACTOR","Start of loadForbund");
@@ -206,10 +261,15 @@ public class selecttavling  extends Activity {
   		}
 */
 /* END OF COMMENTED OUT */  		
-		runOnUiThread(returnRes);
+//		runOnUiThread(returnRes);
 	}
 
-	private Runnable returnRes = new Runnable() {
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
+/*	private Runnable returnRes = new Runnable() {
 
 		@Override
 		public void run() {
@@ -218,7 +278,12 @@ public class selecttavling  extends Activity {
 			m_ProgressDialog.dismiss();
 		}
 	};
-
+*/
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
    	public class MyOnItemSelectedListener implements OnItemSelectedListener 
    	{
    	    public void onItemSelected(AdapterView<?> parent,
@@ -226,6 +291,7 @@ public class selecttavling  extends Activity {
 //			Log.e("XTRACTOR","Selected pos : " + pos + " som Šr : " + parent.getItemAtPosition(pos).toString() );
 			mySelForbund = parent.getItemAtPosition(pos).toString();
 			mySelForbundId = oforbundid.get(pos);
+			mySelForbundIndx = pos;
 			Log.e("XTRACTOR","Selected pos : " + pos + " som Šr : " + mySelForbund + " och id:" + oforbundid.get(pos) );
    	    }
 
@@ -235,7 +301,12 @@ public class selecttavling  extends Activity {
    	    }
    	}
 
-    // updates the date in the TextView
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
+   	// updates the date in the TextView
    	private void updateDisplay1() {
    		String mZeroMonth = "";
    		String mZeroDay = "";
@@ -260,6 +331,11 @@ public class selecttavling  extends Activity {
 			Log.e("XTRACTOR","update display1 : " + mySelDateFrom);
     }
 
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
     private void updateDisplay2() {
    		String mZeroMonth = "";
    		String mZeroDay = "";
@@ -283,6 +359,11 @@ public class selecttavling  extends Activity {
 			Log.e("XTRACTOR","update display2 : " + mySelDateTo);
     }
 
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
     private DatePickerDialog.OnDateSetListener mDateSetListener1 =
         new DatePickerDialog.OnDateSetListener() {
 
@@ -295,78 +376,88 @@ public class selecttavling  extends Activity {
             }
         };
 
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
     private DatePickerDialog.OnDateSetListener mDateSetListener2 =
         new DatePickerDialog.OnDateSetListener() {
-             public void onDateSet(DatePicker view, int year, 
+
+    	public void onDateSet(DatePicker view, int year, 
                                   int monthOfYear, int dayOfMonth) {
                 mDay = dayOfMonth;
                 mMonth = monthOfYear+1;
                 mYear = year;
                 updateDisplay2();
-            }
-        };
+    	}
+    };
         
     
-        ///////////////////////////////////////////////////////////
-        //
-        //
-        //
-        ///////////////////////////////////////////////////////////
-        public void konfigurera() {
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
+    public void konfigurera() {
 
-        	Intent i = new Intent();
-        	i.setClassName("work.Android", "work.Android.configApp");
-        	startActivity(i);               
-        	return;
+    	Intent i = new Intent();
+    	i.setClassName("work.Android", "work.Android.configApp");
+    	startActivity(i);               
+    	return;
 
-        }
+    }
 
-        ///////////////////////////////////////////////////////////
-        //
-        //
-        //
-        ///////////////////////////////////////////////////////////
-        public void showAbout() {
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
+    public void showAbout() {
 
-        	showabout sab = new showabout(this);
-        	sab.show();
-        	return;
+    	showabout sab = new showabout(this);
+    	sab.show();
+    	return;
+    }
 
-        }
-
-        ///////////////////////////////////////////////////////////
-        //
-        //
-        //
-        ///////////////////////////////////////////////////////////
-        @Override
-        public boolean onCreateOptionsMenu(Menu menu) {
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
         	MenuInflater inflater = getMenuInflater();
         	inflater.inflate(R.menu.menu, menu);
         	return true;		
-        }
+    }
 
-        ///////////////////////////////////////////////////////////
-        //
-        //
-        //
-        ///////////////////////////////////////////////////////////
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-        	// Handle item selection
-        	switch (item.getItemId()) {
-        	case R.id.konfig:
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    // Handle item selection
+    	switch (item.getItemId()) {
+    	case R.id.konfig:
         		konfigurera();
         		return true;
-        	case R.id.aboutme:
-        		showAbout();
-        		return true;
-        	default:
-        		return super.onOptionsItemSelected(item);
-        	}
-}    
+    	case R.id.aboutme:
+    		showAbout();
+    		return true;
+        default:
+        	return super.onOptionsItemSelected(item);
+    	}
+    }    
 
         
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
@@ -382,8 +473,11 @@ public class selecttavling  extends Activity {
         return null;
     }
 
-
-
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
    	public void mySelectFrDateClickHandler(View view) {
 
    		switch (view.getId()) {
@@ -395,6 +489,11 @@ public class selecttavling  extends Activity {
    		}		
    	}
 	
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
    	public void mySelectToDateClickHandler(View view) {
    		switch (view.getId()) {
    			case R.id.selectTDate:
@@ -405,7 +504,12 @@ public class selecttavling  extends Activity {
    		}		
    	}
    	
-   	private class OnReadyListener implements tavltyper.ReadyListener {
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
+  	private class OnReadyListener implements tavltyper.ReadyListener {
         @Override
 
         public void ready(boolean typ1, boolean typ2, boolean typ3, 
@@ -451,9 +555,11 @@ public class selecttavling  extends Activity {
         }
    	}
    	
-  	
-   	// This method is called at button click because we assigned the name to the
-	// "On Click property" of the button
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
 	public void myTavlingSearchClickHandler(View view) {
 		switch (view.getId()) {
 		

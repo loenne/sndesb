@@ -72,6 +72,11 @@ public class selectklubb  extends Activity {
     private boolean[] tavlingstyper; 
     private String[] typer; 
     
+	///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
 	@Override
 	public void onCreate(Bundle icicle)
 	{
@@ -141,6 +146,11 @@ public class selectklubb  extends Activity {
         klubbIdCreated = 0;
    	}
 
+	///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
 	private void loadForbund() 
 	{
 		oforbund.clear();
@@ -212,6 +222,12 @@ public class selectklubb  extends Activity {
 		}
 	};
 */	
+	///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
+	
 	private void loadKlubbar(String forbundid) 
    	{
 		klubbar.clear();

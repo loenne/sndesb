@@ -91,6 +91,7 @@ public class configApp extends Activity {
 		oklubbarid.clear();
 		mySelForbundIndx = 0;
 		myKlubbIdCreated = 0;
+		openstate = 0;
 
 		mySearchLength = (TextView)findViewById(R.id.configSearchLengthField);
    		myForbundSpinner = (Spinner)findViewById(R.id.configSearchForbundField);

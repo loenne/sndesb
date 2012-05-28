@@ -98,6 +98,7 @@ public class tavlingar extends Activity  {
 		mySelForbund   = interfaceArray.get(7);
 		mySelClassificationIds = interfaceArray.get(9);
 			
+		Log.i("XTRACTOR","tavlingar, onCreate: Received: " + mySelForbundId + ":" + mySelForbund);    			
 //		while (i < size-1) {
 //			klubbArray.put(interfaceArray.get(i), interfaceArray.get(i+1));
 //			Log.i("XTRACTOR","tavlingar, onCreate: Fetched : " + interfaceArray.get(i) + ", " + interfaceArray.get(i+1) + " size:" + interfaceArray.size());    			

@@ -37,9 +37,9 @@ public class AndroB extends Activity {
 	private String mySelForbund;
 	private String mySelForbundId;
 	private Config cfg;
-	private Integer mySearchInterval;
-	private Integer mySelectedForbund;
-	private Integer mySelectedClub;
+	private Integer mySelectedSearchInterval;
+	private Integer mySelectedForbundId;
+	private Integer mySelectedClubId;
 		
 	private int activeIndex;
     static final int DATE_DIALOG_ID1 = 0;
@@ -135,8 +135,9 @@ public class AndroB extends Activity {
 
 		DataBaseHelper myDbHelper = new DataBaseHelper(this);
 		int openstate = 0;
-		
-        try {
+		Integer kalle;
+
+		try {
         	myDbHelper.openDataBase(openstate);
         }catch(SQLException sqle){ 
         	throw sqle;
@@ -144,9 +145,9 @@ public class AndroB extends Activity {
 		
 		cfg = myDbHelper.getConfig();
 		String log = "SearchIntervall: "+cfg.getSearchIntervall() + " SelectedOrg: "+cfg.getSelectedOrg()+" SelectedClub: " + cfg.getSelectedClub();
-		mySearchInterval  = cfg.getSearchIntervall();
-		mySelectedForbund = cfg.getSelectedOrg();
-		mySelectedClub   = cfg.getSelectedClub();
+		mySelectedSearchInterval  = cfg.getSearchIntervall();
+		mySelectedForbundId = cfg.getSelectedOrg();
+		mySelectedClubId   = cfg.getSelectedClub();
 
 		Log.d("Fetched config: ", log);		
 		myDbHelper.close();
@@ -242,6 +243,11 @@ public class AndroB extends Activity {
 			{
                 Intent i = new Intent();
                 i.setClassName("work.Android", "work.Android.selecttavling");
+        		String sendbuff[] = new String[2];
+        		sendbuff[0] = "FORBUNDID";
+        		sendbuff[1] = mySelectedForbundId.toString();
+      			Log.e("SNDESB","AndroB: Start selectTavling with forbundsid: " + sendbuff[1]);
+        		i.putExtra("arguments", sendbuff); 
                 startActivity(i);
 				return;
 			}
@@ -250,6 +256,12 @@ public class AndroB extends Activity {
 			{
                 Intent i = new Intent();
                 i.setClassName("work.Android", "work.Android.selectklubb");
+        		String sendbuff[] = new String[4];
+        		sendbuff[0] = "FORBUNDID";
+        		sendbuff[1] = mySelectedForbundId.toString();
+        		sendbuff[2] = "CLUBID";
+        		sendbuff[3] = mySelectedClubId.toString();
+                i.putExtra("arguments", sendbuff); 
                 startActivity(i);               
 				return;
 			} 
@@ -280,11 +292,11 @@ public class AndroB extends Activity {
 		String sendbuff[] = new String[6];
         i.setClassName("work.Android", "work.Android.configApp");
 		sendbuff[0] = "SEARCH_LENGTH";
-		sendbuff[1] = mySearchInterval.toString();
+		sendbuff[1] = mySelectedSearchInterval.toString();
 		sendbuff[2] = "FORBUND";
-		sendbuff[3] = mySelectedForbund.toString();
+		sendbuff[3] = mySelectedForbundId.toString();
 		sendbuff[4] = "KLUBB";
-		sendbuff[5] = mySelectedClub.toString();
+		sendbuff[5] = mySelectedClubId.toString();
         i.putExtra("arguments", sendbuff); 
         startActivity(i);               
 		return;
