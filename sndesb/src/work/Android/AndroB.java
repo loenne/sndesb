@@ -256,11 +256,13 @@ public class AndroB extends Activity {
 			{
                 Intent i = new Intent();
                 i.setClassName("work.Android", "work.Android.selectklubb");
-        		String sendbuff[] = new String[4];
-        		sendbuff[0] = "FORBUNDID";
-        		sendbuff[1] = mySelectedForbundId.toString();
-        		sendbuff[2] = "CLUBID";
-        		sendbuff[3] = mySelectedClubId.toString();
+        		String sendbuff[] = new String[6];
+        		sendbuff[0] = "SEARCHLENGTH";
+        		sendbuff[1] = mySelectedSearchInterval.toString();
+        		sendbuff[2] = "FORBUNDID";
+        		sendbuff[3] = mySelectedForbundId.toString();
+        		sendbuff[4] = "CLUBID";
+        		sendbuff[5] = mySelectedClubId.toString();
                 i.putExtra("arguments", sendbuff); 
                 startActivity(i);               
 				return;
