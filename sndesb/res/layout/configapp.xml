@@ -8,129 +8,132 @@
     android:paddingBottom="20dp" >
 
     <TextView
-        android:text="@string/configheading1"
-        android:id="@+id/configheading1" 
-        android:textSize="18dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        android:clickable="false"
-        android:textStyle="bold"
-        android:layout_gravity="center"
-        android:gravity="center"
+        android:id="@+id/configheading1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/myTextColour">
+        android:layout_gravity="center"
+        android:clickable="false"
+        android:gravity="center"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp"
+        android:text="@string/configheading1"
+        android:textColor="@color/myTextColour"
+        android:textSize="18dp"
+        android:textStyle="bold" >
     </TextView>
+
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent" 
-        android:layout_height="wrap_content" 
-        android:background="@color/myBackgroundColour"   
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/myBackgroundColour"
         android:clickable="false"
-        android:orientation="horizontal">
+        android:orientation="horizontal" >
+
         <TextView
-            android:text="@string/configsearchlength"
-            android:id="@+id/configsearchlength" 
-            android:clickable="false"
-            android:textSize="16dp"
-            android:paddingBottom="20dp"
-            android:textStyle="bold"
-            android:gravity="left"
+            android:id="@+id/configsearchlength"
             android:layout_width="190dip"
             android:layout_height="wrap_content"
-            android:textColor="@color/myTextColour">
+            android:clickable="false"
+            android:gravity="left"
+            android:paddingBottom="20dp"
+            android:text="@string/configsearchlength"
+            android:textColor="@color/myTextColour"
+            android:textSize="16dp"
+            android:textStyle="bold" >
         </TextView>
-        <EditText 
-         	android:id="@+id/configSearchLengthField" 
-         	android:layout_height="wrap_content" 
-	        android:textColor="@color/myTextColour" 
-		    android:textSize="16dp"
-			android:textStyle="bold"
-        	android:layout_width="80dp"
-         	android:inputType="number">
+
+        <EditText
+            android:id="@+id/configSearchLengthField"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:textColor="@color/myTextColour"
+            android:textSize="16dp"
+            android:textStyle="bold" >
         </EditText>
     </LinearLayout>
+
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent" 
-        android:layout_height="wrap_content" 
-        android:background="@color/myBackgroundColour"   
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/myBackgroundColour"
         android:clickable="false"
-        android:orientation="vertical">
-        <TextView 
-            android:text="@string/configsearchforbund"
-            android:id="@+id/configsearchforbund" 
-            android:clickable="false"
-            android:textSize="16dp"
-            android:paddingBottom="20dp"
-            android:textStyle="bold"
-            android:gravity="left" 
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/configsearchforbund"
             android:layout_width="174dp"
-            android:layout_height="wrap_content" 
-            android:textColor="@color/myTextColour">
-        </TextView>
-        <Spinner 
-            android:id="@+id/configSearchForbundField" 
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:gravity="left"
+            android:paddingBottom="5dp"
+            android:text="@string/configsearchforbund"
+            android:textColor="@color/myTextColour"
             android:textSize="16dp"
-            android:layout_width="fill_parent" 
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
-            android:layout_height="wrap_content">
+            android:textStyle="bold" >
+        </TextView>
+
+        <Spinner
+            android:id="@+id/configSearchForbundField"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:textSize="16dp" >
         </Spinner>
     </LinearLayout>
+
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent" 
-        android:layout_height="wrap_content" 
-        android:background="@color/myBackgroundColour"   
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/myBackgroundColour"
         android:clickable="false"
-        android:orientation="vertical">
+        android:orientation="vertical" >
+
         <TextView
-            android:text="@string/configsearchklubb"
-            android:id="@+id/configsearchklubb" 
-            android:clickable="false"
-            android:textSize="16dp"
-            android:paddingBottom="20dp"
-            android:textStyle="bold"
-            android:gravity="left" 
+            android:id="@+id/configsearchklubb"
             android:layout_width="174dp"
-            android:layout_height="wrap_content" 
-            android:textColor="@color/myTextColour">
-        </TextView>
-        <Spinner 
-            android:id="@+id/configSearchKlubbField" 
-            android:textSize="16dp"
-            android:layout_width="fill_parent" 
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
-            android:layout_height="wrap_content">
-        </Spinner>    
-	</LinearLayout>
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent" 
-        android:layout_height="wrap_content" 
-        android:background="@color/myBackgroundColour"   
-        android:clickable="false"
-        android:orientation="vertical">
-        <Button 
-        	android:id="@+id/configcreatedatabase" 
-        	android:text="@string/configcreatedatabase" 
-            android:layout_width="200dip"
             android:layout_height="wrap_content"
-        	android:textSize="16dp" 
-            android:textStyle="bold"
-        	android:onClick="myCreateDatabaseClickHandler"         	
-            android:textColor="@color/myTextColour">
-        </Button>
+            android:clickable="false"
+            android:gravity="left"
+            android:paddingBottom="5dp"
+            android:text="@string/configsearchklubb"
+            android:textColor="@color/myTextColour"
+            android:textSize="16dp"
+            android:textStyle="bold" >
+        </TextView>
+
+        <Spinner
+            android:id="@+id/configSearchKlubbField"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:textSize="16dp" >
+        </Spinner>
     </LinearLayout>
+
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent" 
-        android:layout_height="fill_parent" 
-        android:background="@color/myBackgroundColour"   
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.12"
+        android:background="@color/myBackgroundColour"
         android:clickable="false"
-        android:orientation="horizontal">
+        android:orientation="vertical" >
+
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="122dp"
+        android:background="@color/myBackgroundColour"
+        android:clickable="false"
+        android:orientation="horizontal" >
 
         <Button
             android:id="@+id/configsave"
@@ -141,8 +144,19 @@
             android:text="@string/configsave"
             android:textColor="@color/myTextColour"
             android:textSize="16dp"
-            android:textStyle="bold"
-            android:width="160dip" />
+            android:textStyle="bold">
+        </Button>
+        <Button
+            android:id="@+id/configcreatedatabase"
+            android:layout_width="200dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="myCreateDatabaseClickHandler"
+            android:text="@string/configcreatedatabase"
+            android:textColor="@color/myTextColour"
+            android:textSize="16dp"
+            android:textStyle="bold" >
+        </Button>
+        </LinearLayout>
 
-        </LinearLayout>   
 </LinearLayout>

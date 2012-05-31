@@ -382,7 +382,7 @@ public class configApp extends Activity {
 	//
 	//
 	///////////////////////////////////////////////////////////
-	public void createOrganisationsTable() {
+	public void createOrganisationsTable(boolean drop) {
 
 		DataBaseHelper myDbHelper = new DataBaseHelper(this);
 
@@ -393,7 +393,7 @@ public class configApp extends Activity {
 		}
 
 		try {
-			myDbHelper.createOrganisationsTable();
+			myDbHelper.createOrganisationsTable(drop);
 		}catch (SQLException sqle){ 
 			throw sqle;
 		}
@@ -406,7 +406,7 @@ public class configApp extends Activity {
 	//
 	//
 	///////////////////////////////////////////////////////////
-	public void createConfigTable() {
+	public void createConfigTable(boolean drop) {
 
 		DataBaseHelper myDbHelper = new DataBaseHelper(this);
 
@@ -417,7 +417,7 @@ public class configApp extends Activity {
 		}
 
 		try {
-			myDbHelper.createConfigTable();
+			myDbHelper.createConfigTable(true);
 		}catch(SQLException sqle){ 
 			throw sqle;
 		}
@@ -517,8 +517,8 @@ public class configApp extends Activity {
    			case R.id.configcreatedatabase:
    			{	   				
    				Log.d("SNDESB","myCreateDatabaseClickHandler: Create Config and Fetch Organisations from Eventor");
-   				createConfigTable();
-   				createOrganisationsTable();
+   				createConfigTable(true);
+   				createOrganisationsTable(true);
    				int rec = fetchOrganisationsFromEventor();
    	        	updateDatabase(rec);
    	        	mySpinnerForbundArrayAdapter =  

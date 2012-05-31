@@ -1,13 +1,8 @@
 package work.Android;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-
+import java.io.IOException;
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.SQLException;
 
 ///////////////////////////////////////////////////////////
@@ -25,23 +19,15 @@ import android.database.SQLException;
 ///////////////////////////////////////////////////////////
 public class AndroB extends Activity {
 
-//	String urlString = "https://eventor.orientering.se/api/";
 	String urlString = "organisations";
 
 	boolean fetchOk = false;
-	private Runnable getOrg;
-	private List<Organisation> organisations;
-	private ArrayList<String> oforbund;
-	private ArrayList<String> oforbundid;
-	private Hashtable orforbund;
-	private String mySelForbund;
-	private String mySelForbundId;
 	private Config cfg;
 	private Integer mySelectedSearchInterval;
 	private Integer mySelectedForbundId;
 	private Integer mySelectedClubId;
+	private int openstate;
 		
-	private int activeIndex;
     static final int DATE_DIALOG_ID1 = 0;
     static final int DATE_DIALOG_ID2 = 2;
 
@@ -50,81 +36,18 @@ public class AndroB extends Activity {
     static final String ORGTYPE_KLUBB = "3";
     static final String ORG_STOCKHOLM = "18";
 	
-    @Override
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
+   @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-		oforbund = new ArrayList<String>();
-		oforbundid = new ArrayList<String>(); 
-		orforbund = new Hashtable();
-
-//		Log.e("SNDESB","AndroB: Create new DownloadForbund task");
-//    	DownloadForbundTask task = new DownloadForbundTask();
-//    	task.execute();
-/*		getOrg = new Runnable() {
-			@Override
-			public void run() {
-				loadForbund();
-			}
-		};
-
-		Thread thread = new Thread(null, getOrg, "MagentoBackground");
-		thread.start();
-*/
-		
-   		fetchConfig();
-		
+		fetchConfig();
 	}
-
-    ///////////////////////////////////////////////////////////
-    //
-    //
-    //
-    ///////////////////////////////////////////////////////////
-/*    private class DownloadForbundTask extends AsyncTask<String, Void, String> {
-    	@Override
-    	protected String doInBackground(String... urls) {
-    		Log.e("SNDESB","AndroB: doInBackground started");
-    		
-    		String response = "";
-    		loadForbund();
-    		Log.e("SNDESB","AndroB: doInBackground ended");
-*/	/*
-				for (String url : urls) {
-					DefaultHttpClient client = new DefaultHttpClient();
-					HttpGet httpGet = new HttpGet(url);
-					try {
-						HttpResponse execute = client.execute(httpGet);
-						InputStream content = execute.getEntity().getContent();
-
-						BufferedReader buffer = new BufferedReader(
-								new InputStreamReader(content));
-						String s = "";
-						while ((s = buffer.readLine()) != null) {
-							response += s;
-						}
-
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-    		 */
-/*    		return response;
-    	}
-
-    	@Override
-    	protected void onPostExecute(String result) {
-    		
-    		Log.e("SNDESB","AndroB: onPostExecute");
-    		//textView.setText(result);
-    	}
-    }
-*/
-//    public void readWebpage(View view) {
-//    	DownloadWebPageTask task = new DownloadWebPageTask();
-//    	task.execute(new String[] { "http://www.vogella.com" });
-//    }
 
     ///////////////////////////////////////////////////////////
     //
@@ -135,108 +58,118 @@ public class AndroB extends Activity {
 
 		DataBaseHelper myDbHelper = new DataBaseHelper(this);
 		int openstate = 0;
-		Integer kalle;
 
 		try {
         	myDbHelper.openDataBase(openstate);
         }catch(SQLException sqle){ 
-        	throw sqle;
+    		Log.d("Fetch config: ", "Database does not seem to exist. Try creating it");		
+    		createDatabase();
+    		createConfigTable();
+    		
+    		try {
+            	myDbHelper.openDataBase(openstate);
+            }catch(SQLException sqle2){ 
+               	throw sqle2;
+            }
         }
-		
+//		Log.d("Fetch config: ", "Try to create config table");		
+//		createConfigTable();
+		Log.d("Fetch config: ", "Try to create organisations table");		
+		createOrganisationsTable(false);
+		Log.d("Fetch config: ", "Try to fetch config");		
 		cfg = myDbHelper.getConfig();
-		String log = "SearchIntervall: "+cfg.getSearchIntervall() + " SelectedOrg: "+cfg.getSelectedOrg()+" SelectedClub: " + cfg.getSelectedClub();
 		mySelectedSearchInterval  = cfg.getSearchIntervall();
 		mySelectedForbundId = cfg.getSelectedOrg();
 		mySelectedClubId   = cfg.getSelectedClub();
 
-		Log.d("Fetched config: ", log);		
+		Log.d("Fetched config: ", "SearchIntervall: "+mySelectedSearchInterval + " SelectedOrg: "+mySelectedForbundId+" SelectedClub: " + mySelectedClubId);		
 		myDbHelper.close();
-	}
-	    
+	}	    
     
+
     ///////////////////////////////////////////////////////////
     //
     //
     //
     ///////////////////////////////////////////////////////////
-    private void loadForbund() 
-   	{
-		Log.e("SNDESB","AndroB: Start of loadForbund");
+	public void createDatabase() {
 
-		oforbund.clear();
-		oforbundid.clear();
-		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-		StringBuilder builder = new StringBuilder();
-//		builder.append("\n" + sharedPrefs.getString("Forbund", "NULL"));
-//		oforbund.add(builder.toString());
-
-//		oforbund.add(sharedPrefs.getString("forbund", "NULL"));
-//		oforbundid.add("18");
-		activeIndex = 0;
-
-		try{
-   			RestAPI andRest = new RestAPI();
-   			fetchOk = andRest.queryRESTurl(urlString);
-
-   			if (fetchOk) {
-   				Log.e("SNDESB","AndroB: fetchOK");
-   				organisations = andRest.parseOrganisations();    		
-   				
-   				// 1 = Orienteringsfšrbundet
-   				// 2 = Forbund
-   				// 3 = Klubb
-   				int i = 1;
-
-				oforbund.add("Alla fšrbund");
-				oforbundid.add("1");
-   				   				
-   				for (Organisation org : organisations){
-   					
-  					if ((org.getOrganisationTypeId().equals(ORGTYPE_SOFT)) ||
-  						(org.getOrganisationTypeId().equals(ORGTYPE_FORB))) {
-  						oforbund.add(org.getShortName());
-  						oforbundid.add(org.getOrganisationId());
-  						Log.e("SNDESB","Stored : " + org.getShortName() + " id: " + org.getOrganisationId() + " in pos : " + i);
-  						
-  						if (org.getOrganisationId().equals(ORG_STOCKHOLM)) {
-  							activeIndex = i;
-  	  						Log.e("SNDESB","Found Stockholm as 18 in index : " + i);
-  	  						mySelForbund = oforbund.get(i);
-  	  	   	    			mySelForbundId = oforbundid.get(i);  	  						
-  						}  						
-  						i++;
-  					}
-   				}
-   			} else {
-				Toast.makeText(this, "No network connection. Check mobile newtwok",
-						Toast.LENGTH_LONG).show();
-				oforbund.add("Inga fšrbund hittade");
-				oforbundid.add("0");
-  			}
-   		} catch (Throwable t){
-  			Log.e("SNDESB","loadForbund : Failing to fetch forbund : " + t.getMessage(),t);
-  		}
-
-		/* END OF COMMENTED OUT */  		
-//		runOnUiThread(returnRes);
-	}
-
-/*	private Runnable returnRes = new Runnable() {
-
-		@Override
-		public void run() {
-//			mySpinnerArrayAdapter.notifyDataSetChanged();
-//	   		mySpinner.setSelection(activeIndex,true);			
-//			m_ProgressDialog.dismiss();
+		DataBaseHelper myDbHelper = new DataBaseHelper(this);
+	 
+		// To be done once to create the database
+		try { 
+			myDbHelper.createDataBase(); 
+		} catch (IOException ioe) {
+			throw new Error("Unable to create database"); 
 		}
-	};
-*/    
-    ///////////////////////////////////////////////////////////
+		myDbHelper.close();
+	}	
+	
+	///////////////////////////////////////////////////////////
+	//
+	//
+	//
+	///////////////////////////////////////////////////////////
+	public void createConfigTable() {
+
+		DataBaseHelper myDbHelper = new DataBaseHelper(this);
+
+		try {
+			myDbHelper.openDataBase(openstate);
+		}catch(SQLException sqle){ 
+			throw sqle;
+		}
+
+		try {
+			Log.d("sndesb", "Create config Table");		
+			myDbHelper.createConfigTable(false);
+		}catch(SQLException sqle){ 
+			throw sqle;
+		}
+
+		try {
+			Log.d("sndesb", "Add record in config Table");		
+			myDbHelper.addConfigRecord();
+		}
+		catch(SQLException sqle) {
+			throw sqle;
+		}
+
+		myDbHelper.close();
+	}	
+
+	///////////////////////////////////////////////////////////
+	//
+	//
+	//
+	///////////////////////////////////////////////////////////
+	public void createOrganisationsTable(boolean drop) {
+
+		DataBaseHelper myDbHelper = new DataBaseHelper(this);
+
+		try {
+			myDbHelper.openDataBase(openstate);
+		}catch(SQLException sqle){ 
+			throw sqle;
+		}
+
+		try {
+			Log.d("sndesb", "Create Organisations Table");		
+			myDbHelper.createOrganisationsTable(drop);	
+		}catch(SQLException sqle){ 
+			throw sqle;
+		}
+
+		myDbHelper.close();
+	}	
+
+	///////////////////////////////////////////////////////////
     //
     //
     //
     ///////////////////////////////////////////////////////////
 	public void myClickHandler(View view) {
+
 		switch (view.getId()) {
 			// TŠvlingar
 			case R.id.tavlingsval:
@@ -263,6 +196,7 @@ public class AndroB extends Activity {
         		sendbuff[3] = mySelectedForbundId.toString();
         		sendbuff[4] = "CLUBID";
         		sendbuff[5] = mySelectedClubId.toString();
+      			Log.e("SNDESB","AndroB: Start selectKlubb with SearchInterval: " + sendbuff[1] + " forbundsid: " + sendbuff[3] + " KlubbId:" + sendbuff[5]);
                 i.putExtra("arguments", sendbuff); 
                 startActivity(i);               
 				return;
@@ -305,7 +239,7 @@ public class AndroB extends Activity {
 	
 	}
 	
-	   ///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////
     //
     //
     //
@@ -337,8 +271,8 @@ public class AndroB extends Activity {
 	///////////////////////////////////////////////////////////
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
+
+    	switch (item.getItemId()) {
         case R.id.konfig:
             konfigurera();
             return true;
@@ -349,7 +283,4 @@ public class AndroB extends Activity {
             return super.onOptionsItemSelected(item);
         }
     }    
-
-
-
 }		

@@ -67,15 +67,17 @@ public class maphandler extends MapActivity
 		Object[] o = (Object[]) s;
 
 		if (o != null) {
-   			Log.i("XTRACTOR","maphandler : onCreate : Y/X "+ o[1].toString() + o[3].toString());
+   			Log.i("XTRACTOR","maphandler : onCreate : Y/X "+ o[1].toString() + " " + o[3].toString());
 			coordinates[0] = (o[1].toString());
 			coordinates[1] = (o[3].toString());
 		}
 		
         mapView = (MapView) findViewById(R.id.mapView);
+        Log.i("XTRACTOR","maphandler : After findView ");
 //        LinearLayout zoomLayout = (LinearLayout)findViewById(R.id.zoom);  
 
         mapView.setBuiltInZoomControls(true);
+        Log.i("XTRACTOR","maphandler : After setbuiltinzoom ");
         
 /*        View zoomView = mapView.getZoomControls(); 
  
@@ -86,6 +88,7 @@ public class maphandler extends MapActivity
         mapView.displayZoomControls(true);
 */ 
         mc = mapView.getController();
+        Log.i("XTRACTOR","maphandler : After getcontroller");
 //        String coordinates[] = {"1.352566007", "103.78921587"};
 //         String coordinates[] = {"59.22928", "18.48135"};
         double lat = Double.parseDouble(coordinates[0]);
@@ -103,15 +106,20 @@ public class maphandler extends MapActivity
             (int) (lat * 1E6), 
             (int) (lng * 1E6));
  
+        Log.i("XTRACTOR","maphandler : After new geopoint ");
         mc.animateTo(p);
+        Log.i("XTRACTOR","maphandler : After new animateto ");
         mc.setZoom(17); 
+        Log.i("XTRACTOR","maphandler : After new setzoom ");
         
         MapOverlay mapOverlay = new MapOverlay();
         List<Overlay> listOfOverlays = mapView.getOverlays();
         listOfOverlays.clear();
         listOfOverlays.add(mapOverlay);              
+        Log.i("XTRACTOR","maphandler : After new getOverlays");
         
         mapView.invalidate();        
+        Log.i("XTRACTOR","maphandler : After new invalidate");
     }
  
     @Override

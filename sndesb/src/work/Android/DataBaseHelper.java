@@ -87,14 +87,14 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 			this.getReadableDatabase();
 			Log.e("SNDESB","DataBaseHelper : after getReadableDatabase");
 
-			try {
+/*			try {
 				Log.e("SNDESB","DataBaseHelper : copy database:");
 				copyDataBase();
 
 			} catch (IOException e) {
 				throw new Error("DataBaseHelper: Error copying database");
 			}
-		}
+*/		}
 	}
 
 	///////////////////////////////////////////////////////////
@@ -219,9 +219,11 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	//
 	//
 	///////////////////////////////////////////////////////////
-	public void createOrganisationsTable() {		
+	public void createOrganisationsTable(boolean drop) {		
 
-		myDataBase.execSQL("DROP TABLE Organisation");
+		if (drop) {
+			myDataBase.execSQL("DROP TABLE Organisation");			
+		}
 		String CREATE_TABLE_ORG = "CREATE TABLE Organisation (_id INTEGER PRIMARY KEY, OrganisationId TEXT, Name TEXT, ShortName TEXT, OrganisationTypeId TEXT, ParentOrganisationId TEXT);";
 		myDataBase.execSQL(CREATE_TABLE_ORG);
 	}
@@ -504,10 +506,12 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	//
 	//
 	///////////////////////////////////////////////////////////
-	public void createConfigTable() {		
+	public void createConfigTable(boolean drop) {		
 
 		// FIX Not good to just drop the table !!!
-		myDataBase.execSQL("DROP TABLE Config");
+		if (drop) {
+			myDataBase.execSQL("DROP TABLE Config");
+		}
 		String CREATE_TABLE_CONFIG = "CREATE TABLE Config (_id INTEGER PRIMARY KEY, SearchIntervall INTEGER, SelectedOrg INTEGER, SelectedClub INTEGER);";
 		myDataBase.execSQL(CREATE_TABLE_CONFIG);
 	}

@@ -3,12 +3,6 @@ package work.Android;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
-
-// import work.Android.selecttavling.OnReadyListener;
-// import work.Android.tavltyper.ReadyListener;
-
-import android.app.ProgressDialog;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -24,21 +18,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.TextView;
-//import android.widget.EditText;
-//import android.widget.ListView;
 import android.widget.Spinner;
-// import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 public class selectklubb  extends Activity {
 	String urlString = "organisations";
-	private boolean fetchOk; 
-	private Runnable getOrg;
-	private ProgressDialog m_ProgressDialog = null;
 	private ArrayList<String> oforbund;
 	private ArrayList<String> oforbundid;
-	private List<Organisation> organisations;
 	private ArrayList<String> oklubbar;
 	private ArrayList<String> oklubbarid;
     private int mYear;
@@ -46,29 +32,25 @@ public class selectklubb  extends Activity {
     private int mDay;
 	private ArrayAdapter<String> mySpinnerArrayAdapter1;
 	private ArrayAdapter<String> mySpinnerArrayAdapter2;
-	private String mySearchLength;
 	private Spinner  mySpinner1;
 	private Spinner  mySpinner2;
 	private Button myDateFrom; 
 	private Button myDateTo; 
 	private String mySelDateFrom;
 	private String mySelDateTo;
+	private String mySelSearchLength;
 	private String mySelForbundId;
 	private String mySelKlubb;
 	private String mySelKlubbId;
-	private String mySelectedForbund;
-	private String mySelectedForbundId;
-	private String mySelectedKlubb;
+
+	private int mySelForbundIndx;
+	private int mySelKlubbIndx;
 	
 	private String myBuffSelectedForbundId;
 	private String myBuffSelectedKlubb;
 	private String myBuffSearchLength;
 
-	private int mySelForbundIndx;
-	private int mySelKlubbIndx;
 	private String mySelClassificationIds;								
-	private int defForbundIndex;
-	private int defKlubbIndex;
 	private int openstate;
 	private int myKlubbIdCreated;
 	
@@ -95,23 +77,18 @@ public class selectklubb  extends Activity {
 		super.onCreate(icicle);
 		setContentView(R.layout.selectklubb);
 
-		 Serializable s = this.getIntent().getSerializableExtra("arguments");
-		 Object[] o = (Object[]) s;
+		Serializable s = this.getIntent().getSerializableExtra("arguments");
+		Object[] o = (Object[]) s;
 
-		 if (o != null) {
-	       		myBuffSearchLength = o[1].toString();
-	   			myBuffSelectedForbundId = o[3].toString();
-	       		myBuffSelectedKlubb = o[5].toString();
-		 }
+		if (o != null) {
+			myBuffSearchLength = o[1].toString();
+			myBuffSelectedForbundId = o[3].toString();
+			myBuffSelectedKlubb = o[5].toString();
+		}
+		mySelSearchLength = myBuffSearchLength;
+		mySelForbundId = myBuffSelectedForbundId;
+		mySelKlubbId = myBuffSelectedKlubb;
 
-		 /*		
-		getOrg = new Runnable() {
-			@Override
-			public void run() {
-				loadForbund();
-			}
-		};
-*/		
 		openstate = 0;
 		tavlingstyper = new boolean[]{true,true,true,true,true,true};
 		typer = new String[]{"1","2","3","4","5","6"};
@@ -126,36 +103,27 @@ public class selectklubb  extends Activity {
 		oforbundid = new ArrayList<String>(); 
 		oklubbar = new ArrayList<String>();
 		oklubbarid = new ArrayList<String>(); 
-
-		mySearchLength = myBuffSearchLength;
-   		mySelForbundId = myBuffSelectedForbundId;
-   		mySelKlubbId = myBuffSelectedKlubb;
    		
-
    		fetchAllOrganisationNamesAndIds();
 		int forbId = Integer.parseInt(myBuffSelectedForbundId);
 		fetchOrgClubNamesAndIds(forbId);
    		  		
 		cont = this;
 
-		//		Thread thread = new Thread(null, getOrg, "MagentoBackground");
-//		thread.start();
-		
-//		m_ProgressDialog = ProgressDialog.show(selectklubb.this,"Please wait...", "Retreiving data...",true);
-
 		mySpinnerArrayAdapter1 =  
    			new ArrayAdapter<String>(this, R.layout.spinnerlayout, oforbund);
-	   		mySpinnerArrayAdapter1.setDropDownViewResource(R.layout.spinnerlayout);
-	   		mySpinner1.setAdapter(mySpinnerArrayAdapter1);
-	   		mySpinner1.setOnItemSelectedListener(new MyOnItemSelectedListener1()); 	   	 	   		 	   		 	   		 	   		
+		mySpinnerArrayAdapter1.setDropDownViewResource(R.layout.spinnerlayout);
+		mySpinner1.setAdapter(mySpinnerArrayAdapter1);
+		mySpinner1.setOnItemSelectedListener(new MyOnItemSelectedListener1()); 	   	 	   		 	   		 	   		 	   		
 			
 		mySpinnerArrayAdapter2 =  
    			new ArrayAdapter<String>(this, R.layout.spinnerlayout, oklubbar);
-	   		mySpinnerArrayAdapter2.setDropDownViewResource(R.layout.spinnerlayout);
-	   		mySpinner2.setAdapter(mySpinnerArrayAdapter2);
-	   		mySpinner2.setOnItemSelectedListener(new MyOnItemSelectedListener2()); 	   	 	   		 	   		 	   		 	   						
-		defForbundIndex = 0;
-		defKlubbIndex = 0;
+		mySpinnerArrayAdapter2.setDropDownViewResource(R.layout.spinnerlayout);
+		mySpinner2.setAdapter(mySpinnerArrayAdapter2);
+		mySpinner2.setOnItemSelectedListener(new MyOnItemSelectedListener2()); 	   	 	   		 	   		 	   		 	   						
+
+		mySpinner1.setSelection(mySelForbundIndx,true);
+		mySpinner2.setSelection(mySelKlubbIndx,true);
 
 		// get the current date
         final Calendar c = Calendar.getInstance();
@@ -193,16 +161,13 @@ public class selectklubb  extends Activity {
 		Log.d("SNDESB","Search for selected forbundid: " + myBuffSelectedForbundId + " among forbunds");
 
 		for (String oforbid : oforbundid) {
-		//	Log.d("SNDESB","Search index: " + i + "forbundid: " + oforbid);
 
 			if (oforbid.equals(myBuffSelectedForbundId)) {
 				mySelForbundIndx = i;
-				mySelectedForbundId = oforbundid.get(i);
-				mySelectedForbund = oforbund.get(i);
+//				mySelectedForbundId = oforbundid.get(i);
+//				mySelectedForbund = oforbund.get(i);
 				Log.d("SNDESB","Found forbundsid: " + myBuffSelectedForbundId + " in index : " + i + " name:" + oforbund.get(i));
 			}
-	//		String log = "ForbundId: " + oforbid;
-    //        Log.d("Organisation: ", log);
             i++;
 		}
 		myDbHelper.close();
@@ -248,162 +213,36 @@ public class selectklubb  extends Activity {
     //
     //
     ///////////////////////////////////////////////////////////
-	private void loadForbund() 
-	{
-		oforbund.clear();
-		oforbundid.clear();
-
-		// Specialläsning start. Eftersom man inte får hämta andra klubbar !!
-//		oforbund.add("[Alla]");
-//		oforbundid.add("0");
-/*
- 		oforbund.add("Stockholms Orienteringsförbund");		
-		oforbundid.add("18");
-		defForbundIndex = 0;
-		mySelForbundId = "18";
-*/
-		// Speciallösning stop. Eftersom man inte får hämta andra klubbar !!
-		
-		try{
-			RestAPI andRest = new RestAPI();
-			fetchOk = andRest.queryRESTurl(urlString);
-
-			if (fetchOk) {
-				organisations = andRest.parseOrganisations();    		
-
-				// 1 = Orienteringsförbundet
-				// 2 = Forbund
-				// 3 = Klubb
-				int i = 0;
-
-				for (Organisation org : organisations){
-
-					if (org.getOrganisationTypeId().equals("2")) {
-						// Log.e("SNDESB","Stored : " + org.getShortName() + " id: " + org.getOrganisationId() + " in pos : " + i);
-						oforbund.add(org.getShortName());
-						oforbundid.add(org.getOrganisationId());
-
-						String stof = "Stockholms Orienteringsfˆrbund";
-
-						if (org.getShortName().equals(stof)) {
-							defForbundIndex = i;
-							Log.e("SNDESB","Found " + stof + " in index : " + i + " id:" + oforbundid.get(i));
-							//mySelForbund = oforbund.get(i);
-							mySelForbundId = oforbundid.get(i);  	  						
-						}
-						i++;
-					}
-				}
-			} else {
-/*	
- 				Toast.makeText(this, "No network connection. Check mobile network",
-						Toast.LENGTH_LONG).show();
-*/				oforbund.add("Inga förbund hittade");
-				oforbundid.add("1");
-			}  			
-		} catch (Throwable t){
-			Log.e("SNDESB","loadForbund : Failing to fetch forbund \n" + t.getMessage(),t);
-		}
-//		runOnUiThread(returnRes);
-	}
-/*
-	private Runnable returnRes = new Runnable() {
-
-		@Override
-		public void run() {
-			mySpinnerArrayAdapter1.notifyDataSetChanged();
-			mySpinnerArrayAdapter2.notifyDataSetChanged();
-	   		mySpinner1.setSelection(defForbundIndex,true);			
-	   		mySpinner2.setSelection(defKlubbIndex,true);			
-			m_ProgressDialog.dismiss();
-		}
-	};
-*/	
-	///////////////////////////////////////////////////////////
-    //
-    //
-    //
-    ///////////////////////////////////////////////////////////
-	
-	private void loadKlubbar(String forbundid) 
-   	{
-		oklubbar.clear();
-		oklubbarid.clear();
-//		Log.e("SNDESB","loadKlubbar : antal organis :" + organisations.size() + " forbund : " + forbundid);
-		myKlubbIdCreated = 1;
-
-		// Specialläsning start. Eftersom man inte får hämta andra klubbar !!
-//		klubbar.add("[Alla]");
-//		klubbid.add("1");
-//		klubbar.add("Skarpn‰cks OL");
-//		klubbid.add("335");
-//		defKlubbIndex = 0;
-		// Speciallˆsning stop. Eftersom man inte fÂr h‰mta andra klubbar !!
-
-		// 1 = Orienteringsfˆrbundet
-		// 2 = Forbund
-		// 3 = Klubb
-		
- 		int i = 0;
-				
-		for (Organisation org : organisations){
-
-			if ((org.getOrganisationTypeId().equals("3")) &&
-				(org.getParentOrganisationId().equals(forbundid))) {
-				oklubbar.add(org.getShortName());
-				oklubbarid.add(org.getOrganisationId());
-				// Log.e("SNDESB","Load klubbar : Added : " + org.getShortName() + " :" + org.getOrganisationId());    			
-
-				String sol = "Skarpnäcks OL";
-
-				if (org.getShortName().equals(sol)) {
-					defKlubbIndex = i;
-					// Log.e("SNDESB","Found Skarpnäck as 335 in index : " + i);
-					mySelKlubb = oklubbar.get(i);
-   	    			mySelKlubbId = oklubbarid.get(i);  	  						
-				}			
-				i++;
-			}
-		}
-		mySpinnerArrayAdapter2.notifyDataSetChanged();		
-   	}		
-
-   	public class MyOnItemSelectedListener1 implements OnItemSelectedListener 
+  	public class MyOnItemSelectedListener1 implements OnItemSelectedListener 
    	{
    	    public void onItemSelected(AdapterView<?> parent,
    	        View view, int pos, long id) {
-			// Log.e("SNDESB","onItemSelected1 Selected pos : " + pos + "som ‰r : " + parent.getItemAtPosition(pos).toString() + " och id:" + oforbundid.get(pos) );
-			// mySelForbund = parent.getItemAtPosition(pos).toString();
 			mySelForbundId = oforbundid.get(pos);
-
 			Log.d("SNDESB","MyOnItemSelectedListener1: Selected pos : " + pos + " som är : " + parent.getItemAtPosition(pos).toString() + " och id:" + oforbundid.get(pos) );
-//			mySelForbund = parent.getItemAtPosition(pos).toString();
-			mySelForbundId = oforbundid.get(pos);
 			mySelForbundIndx = pos;
 			Integer val = new Integer(mySelForbundId);
-			Log.d("SNDESB","MyOnForbundItemSelectedListener: Before fetching klubbs for " + val);
 			fetchOrgClubNamesAndIds(val);
 
 			mySpinnerArrayAdapter2 = new ArrayAdapter<String>(cont, R.layout.spinnerlayout, oklubbar);
 			mySpinnerArrayAdapter2.setDropDownViewResource(R.layout.spinnerlayout);
 			mySpinner2.setAdapter(mySpinnerArrayAdapter2);
 	   		mySpinner2.setSelection(0,true);
-			Log.d("SNDESB","MyOnForbundItemSelectedListener: After" );
-			Log.d("SNDESB","oklubbar:" + oklubbar.get(0) + oklubbar.get(1) + oklubbar.get(2) );			
-			//			loadKlubbar(mySelForbundId);
    	    }
 
    	    public void onNothingSelected(AdapterView<?> parent) {
-//   	    	mySelForbund = oforbund.get(0);
 			mySelForbundId = oforbundid.get(0);
    	    }
    	}
 	
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
    	public class MyOnItemSelectedListener2 implements OnItemSelectedListener 
    	{
    	    public void onItemSelected(AdapterView<?> parent,
    	        View view, int pos, long id) {
-			// Log.e("SNDESB","onItemSelected2 Selected pos : " + pos + "som ‰r : " + parent.getItemAtPosition(pos).toString() );
   			mySelKlubb = parent.getItemAtPosition(pos).toString();
 
   			if (myKlubbIdCreated == 1) {
@@ -417,8 +256,13 @@ public class selectklubb  extends Activity {
    	    }
    	}
 	
+    ///////////////////////////////////////////////////////////
+    //
+    //
     // updates the date in the TextView
-   	private void updateDisplay1() {
+    //
+    ///////////////////////////////////////////////////////////
+  	private void updateDisplay1() {
    		String mZeroMonth = "";
    		String mZeroDay = "";
    		
@@ -442,6 +286,11 @@ public class selectklubb  extends Activity {
         mySelDateFrom = myDateFrom.getText().toString();
     }
 
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
     private void updateDisplay2() {
    		String mZeroMonth = "";
    		String mZeroDay = "";
@@ -465,6 +314,11 @@ public class selectklubb  extends Activity {
         mySelDateTo = myDateTo.getText().toString();
     }
 
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
     private DatePickerDialog.OnDateSetListener mDateSetListener1 =
         new DatePickerDialog.OnDateSetListener() {
 
@@ -475,142 +329,173 @@ public class selectklubb  extends Activity {
                 mDay = dayOfMonth;
                 updateDisplay1();
             }
-        };
+    };
 
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
     private DatePickerDialog.OnDateSetListener mDateSetListener2 =
         new DatePickerDialog.OnDateSetListener() {
-             public void onDateSet(DatePicker view, int year, 
-                                  int monthOfYear, int dayOfMonth) {
-                mYear = year;
-                mMonth = monthOfYear+1;
-                mDay = dayOfMonth;
-                updateDisplay2();
-            }
-        };
+    	public void onDateSet(DatePicker view, int year, 
+    			int monthOfYear, int dayOfMonth) {
+    		mYear = year;
+    		mMonth = monthOfYear+1;
+    		mDay = dayOfMonth;
+    		updateDisplay2();
+    	}
+    };
         
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
     @Override
     protected Dialog onCreateDialog(int id) {
-        switch (id) {
-        case DATE_DIALOG_ID1:
-            return new DatePickerDialog(this,
-                       mDateSetListener1,
-                       mYear, mMonth, mDay);
-        case DATE_DIALOG_ID2:
-            return new DatePickerDialog(this,
-            		mDateSetListener2,
-                    mYear, mMonth, mDay);
-        }
-        return null;
+    	switch (id) {
+    	case DATE_DIALOG_ID1:
+    		return new DatePickerDialog(this,
+    				mDateSetListener1,
+    				mYear, mMonth, mDay);
+    	case DATE_DIALOG_ID2:
+    		return new DatePickerDialog(this,
+    				mDateSetListener2,
+    				mYear, mMonth, mDay);
+    	}
+    	return null;
     }
 
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
+    public void mySelectFrDateClickHandler(View view) {
 
+    	switch (view.getId()) {
+    	case R.id.selectFDate:
+    	{	   				
+    		showDialog(DATE_DIALOG_ID1);
+    		return;
+    	}
+    	}		
+    }
 
-   	public void mySelectFrDateClickHandler(View view) {
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
+    public void mySelectToDateClickHandler(View view) {
+    	switch (view.getId()) {
+    	case R.id.selectTDate:
+    	{	
+    		showDialog(DATE_DIALOG_ID2);
+    		return;
+    	}
+    	}
+    }
 
-   		switch (view.getId()) {
-   			case R.id.selectFDate:
-   			{	   				
-   	            showDialog(DATE_DIALOG_ID1);
-   	            return;
-   			}
-   		}		
-   	}
-	
-   	public void mySelectToDateClickHandler(View view) {
-   		switch (view.getId()) {
-   			case R.id.selectTDate:
-   			{	
-   	            showDialog(DATE_DIALOG_ID2);
-   	            return;
-   			}
-   		}		
-   	}
-   	  	
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
     @Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.menu, menu);
-		return true;		
-	}
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	MenuInflater inflater = getMenuInflater();
+    	inflater.inflate(R.menu.menu, menu);
+    	return true;		
+    }
 
-   	private class OnReadyListener implements tavltyper.ReadyListener {
-        @Override
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
+    private class OnReadyListener implements tavltyper.ReadyListener {
+    	@Override
 
-        public void ready(boolean typ1, boolean typ2, boolean typ3, 
-        				  boolean typ4, boolean typ5, boolean typ6) {
+    	public void ready(boolean typ1, boolean typ2, boolean typ3, 
+    			boolean typ4, boolean typ5, boolean typ6) {
 
-        	tavlingstyper[0] = typ1;                
-        	tavlingstyper[1] = typ2;                
-        	tavlingstyper[2] = typ3;                
-        	tavlingstyper[3] = typ4;                
-        	tavlingstyper[4] = typ5;                
-        	tavlingstyper[5] = typ6;
+    		tavlingstyper[0] = typ1;                
+    		tavlingstyper[1] = typ2;                
+    		tavlingstyper[2] = typ3;                
+    		tavlingstyper[3] = typ4;                
+    		tavlingstyper[4] = typ5;                
+    		tavlingstyper[5] = typ6;
 
-        	mySelClassificationIds = "";
-        	int i;
-        	boolean commaneeded = false;
- //       	boolean commaplaced = false;
+    		mySelClassificationIds = "";
+    		int i;
+    		boolean commaneeded = false;
 
-        	for (i = 0; i<5; i++) {
-        		
-        		if (tavlingstyper[i]) { 
-            		mySelClassificationIds = mySelClassificationIds + typer[i];        		
+    		for (i = 0; i<5; i++) {
+
+    			if (tavlingstyper[i]) { 
+    				mySelClassificationIds = mySelClassificationIds + typer[i];        		
     				commaneeded = false;
-    				
-            		for (int j=i+1; j<6; j++) {
 
-            			if (tavlingstyper[j]) {
-            				commaneeded = true;
-            			}
-            		}
-            		if (commaneeded) {
-            			mySelClassificationIds = mySelClassificationIds + ",";
-            		}
-        		}
-        		Log.e("SNDESB OnReadyListener"," just nu: " + mySelClassificationIds);
-        	}            		
+    				for (int j=i+1; j<6; j++) {
 
-        	if (tavlingstyper[5]) { 
-        		mySelClassificationIds = mySelClassificationIds + typer[5];        		
+    					if (tavlingstyper[j]) {
+    						commaneeded = true;
+    					}
+    				}
+    				if (commaneeded) {
+    					mySelClassificationIds = mySelClassificationIds + ",";
+    				}
+    			}
+    			Log.e("SNDESB OnReadyListener"," just nu: " + mySelClassificationIds);
+    		}            		
+
+    		if (tavlingstyper[5]) { 
+    			mySelClassificationIds = mySelClassificationIds + typer[5];        		
     			Log.e("SNDESB OnReadyListener"," slutkl‰mm: " + mySelClassificationIds);
-        	}
-        	
-			Log.e("SNDESB OnReadyListener"," resultat: " + mySelClassificationIds);        	
-        }
-   	}
-        
-   	// This method is called at button click because we assigned the name to the
-	// "On Click property" of the button
-	public void myKlubbSearchClickHandler(View view) {
-		switch (view.getId()) {
-			case R.id.tavlingstypval:
-			{
-                tavltyper ttyp = new tavltyper(this, tavlingstyper[0],tavlingstyper[1], tavlingstyper[2],
-                		tavlingstyper[3], tavlingstyper[4], tavlingstyper[5], new OnReadyListener());
-                ttyp.show();
-                return;
-			}
-			case R.id.sokval:
-			{	
-				Log.e("SNDESB","myKlubbSearchClickHandler klubbid" + mySelKlubbId + " som är : " + mySelKlubb );
-				String kalle[] = new String[8];
-				kalle[0] = "DATE_FROM";
-				kalle[1] = mySelDateFrom;
-				kalle[2] = "DATE_TO";
-				kalle[3] = mySelDateTo;
-				kalle[4] = "KLUBBID";
-				kalle[5] = mySelKlubbId;
-				kalle[6] = "KLUBB";
-				kalle[7] = mySelKlubb;
-//				kalle[8] = "CLASSIFICATIONIDS";
-//				kalle[9] = mySelClassificationIds;
+    		}
 
-				Intent i = new Intent();
-				i.setClassName("work.Android", "work.Android.klubbanmalning");
-                i.putExtra("arguments", kalle);
-				startActivity(i);
-				return;
-			}
-		}		
-	}
+    		Log.e("SNDESB OnReadyListener"," resultat: " + mySelClassificationIds);        	
+    	}
+    }
+
+    ///////////////////////////////////////////////////////////
+    //
+    // This method is called at button click because we assigned the name to the
+    // "On Click property" of the button
+    //
+    ///////////////////////////////////////////////////////////
+    public void myKlubbSearchClickHandler(View view) {
+    	switch (view.getId()) {
+    	case R.id.tavlingstypval:
+    	{
+    		tavltyper ttyp = new tavltyper(this, tavlingstyper[0],tavlingstyper[1], tavlingstyper[2],
+    				tavlingstyper[3], tavlingstyper[4], tavlingstyper[5], new OnReadyListener());
+    		ttyp.show();
+    		return;
+    	}
+    	case R.id.sokval:
+    	{	
+    		Log.e("SNDESB","myKlubbSearchClickHandler klubbid" + mySelKlubbId + " som är : " + mySelKlubb );
+    		String kalle[] = new String[8];
+    		kalle[0] = "DATE_FROM";
+    		kalle[1] = mySelDateFrom;
+    		kalle[2] = "DATE_TO";
+    		kalle[3] = mySelDateTo;
+    		kalle[4] = "KLUBBID";
+    		kalle[5] = mySelKlubbId;
+    		kalle[6] = "KLUBB";
+    		kalle[7] = mySelKlubb;
+    		//				kalle[8] = "CLASSIFICATIONIDS";
+    		//				kalle[9] = mySelClassificationIds;
+
+    		Intent i = new Intent();
+    		i.setClassName("work.Android", "work.Android.klubbanmalning");
+    		i.putExtra("arguments", kalle);
+    		startActivity(i);
+    		return;
+    	}
+    	}		
+    }
 }

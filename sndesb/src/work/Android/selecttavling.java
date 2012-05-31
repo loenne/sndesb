@@ -2,22 +2,10 @@ package work.Android;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-//import java.util.Collections;
-//import java.util.Comparator;
-//import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.List;
 import java.util.Calendar;
-
-// import work.Android.tavltyper.ReadyListener;
-import android.app.ProgressDialog;
-
-// import work.Android.selectklubb.MyOnItemSelectedListener;
-
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-// import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,36 +13,24 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-// import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-// import android.widget.Button;
-// import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.content.SharedPreferences;
 import android.database.SQLException;
-import android.preference.PreferenceManager;
-// import work.Android.forbund;
 
+///////////////////////////////////////////////////////////
+//
+//
+//
+///////////////////////////////////////////////////////////    
 public class selecttavling  extends Activity {
 	String urlString = "organisations";
-	private boolean fetchOk; 
-	private Runnable getOrg;
-	private ProgressDialog m_ProgressDialog = null;
-	private List<Organisation> organisations;
 	private ArrayList<String> oforbund;
 	private ArrayList<String> oforbundid;
-	private Hashtable orforbund;
-//	private HashMap<String, String> forbundFetched;	
-//	private  ArrayList<String> klubbarFetched;	
 	private  ArrayList<String> klubbarSelected;	
-
-	
-//	private String[] oforbundid;
     private int mYear;
     private int mMonth;
     private int mDay;
@@ -71,7 +47,6 @@ public class selecttavling  extends Activity {
 	private String myBuffSelectedForbundId;
 	
 	private int mySelForbundIndx;
-	private int activeIndex;
 	private int openstate;
     static final int DATE_DIALOG_ID1 = 0;
     static final int DATE_DIALOG_ID2 = 2;
@@ -101,27 +76,13 @@ public class selecttavling  extends Activity {
    		if ((o != null) && (o[0].toString().equals("FORBUNDID"))) {
    			myBuffSelectedForbundId = o[1].toString();
    		}
-/*		getOrg = new Runnable() {
-			@Override
-			public void run() {
-				loadForbund();
-			}
-		};
-*/		
-		openstate = 0;
+
+   		openstate = 0;
 		tavlingstyper = new boolean[]{true,true,true,true,true,true};
 		typer = new String[]{"1","2","3","4","5","6"};
 		mySelClassificationIds	= "1,2,3,4,5,6";
 		oforbund = new ArrayList<String>();
 		oforbundid = new ArrayList<String>(); 
-		orforbund = new Hashtable();
-//		orforbund.put("18","Stockholms Orienteringsfšrbund");
-/*
-		if (orforbund.containsValue("Stockholms Orienteringsfšrbund")) {
-			Log.e("XTRACTOR","Stockholms Orienteringsfšrbund finns i hash tabell ");
-		}
-*/
-		//		klubbarFetched = new ArrayList<String>();
 		klubbarSelected = new ArrayList<String>();
 
 		myDateFrom = (TextView)findViewById(R.id.selectFDate);
@@ -130,10 +91,6 @@ public class selecttavling  extends Activity {
    		
    		fetchAllOrganisationNamesAndIds();
 
-//		Thread thread = new Thread(null, getOrg, "MagentoBackground");
-//		thread.start();
-//		m_ProgressDialog = ProgressDialog.show(selecttavling.this,"Please wait...", "Retreiving organisations...",true);
-
 		mySpinnerArrayAdapter =  
    			new ArrayAdapter<String>(this, R.layout.spinnerlayout, oforbund);
 	   		mySpinnerArrayAdapter.setDropDownViewResource(R.layout.spinnerlayout);
@@ -141,9 +98,6 @@ public class selecttavling  extends Activity {
 	   		mySpinner.setOnItemSelectedListener(new MyOnItemSelectedListener());
 			mySpinner.setSelection(mySelForbundIndx,true);
 		
-//		mySelForbund = "Inga forbund hittade";
-// 		mySelForbundId = "0";
-   		activeIndex = 0;
    		// get the current date
         final Calendar c = Calendar.getInstance();
         mYear = c.get(Calendar.YEAR);
@@ -204,86 +158,6 @@ public class selecttavling  extends Activity {
     //
     //
     ///////////////////////////////////////////////////////////
-	private void loadForbund() 
-   	{
-		Log.e("XTRACTOR","Start of loadForbund");
-		oforbund.clear();
-		oforbundid.clear();
-		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-		StringBuilder builder = new StringBuilder();		
-		builder.append(sharedPrefs.getString("forbund", "NULL"));
-			
-		oforbund.add(orforbund.get(sharedPrefs.getString("forbund", "NULL")).toString());
-		oforbundid.add("18");
-		activeIndex = 0;
-
-/* START COMMENT OUT */
-/*		try{
-   			RestAPI andRest = new RestAPI();
-   			fetchOk = andRest.queryRESTurl(urlString);
-
-   			if (fetchOk) {
-   				organisations = andRest.parseOrganisations();    		
-   				
-   				// 1 = Orienteringsfšrbundet
-   				// 2 = Forbund
-   				// 3 = Klubb
-   				int i = 1;
-
-				oforbund.add("Alla fšrbund");
-				oforbundid.add("1");
-   				   				
-   				for (organisation org : organisations){
-   					
-  					if ((org.getOrganisationTypeId().equals(ORGTYPE_SOFT)) ||
-  						(org.getOrganisationTypeId().equals(ORGTYPE_FORB))) {
-  						oforbund.add(org.getShortName());
-  						oforbundid.add(org.getOrganisationId());
-//  						Log.e("XTRACTOR","Stored : " + org.getShortName() + " id: " + org.getOrganisationId() + " in pos : " + i);
-  						
-  						if (org.getOrganisationId().equals(ORG_STOCKHOLM)) {
-  							activeIndex = i;
-//  	  						Log.e("XTRACTOR","Found Stockholm as 18 in index : " + i);
-  	  						mySelForbund = oforbund.get(i);
-  	  	   	    			mySelForbundId = oforbundid.get(i);  	  						
-  						}  						
-  						i++;
-  					}
-   				}
-   			} else {
-				Toast.makeText(this, "No network connection. Check mobile newtwok",
-						Toast.LENGTH_LONG).show();
-				oforbund.add("Inga fšrbund hittade");
-				oforbundid.add("0");
-  			}
-   		} catch (Throwable t){
-  			Log.e("XTRACTOR","loadForbund : Failing to fetch forbund : " + t.getMessage(),t);
-  		}
-*/
-/* END OF COMMENTED OUT */  		
-//		runOnUiThread(returnRes);
-	}
-
-    ///////////////////////////////////////////////////////////
-    //
-    //
-    //
-    ///////////////////////////////////////////////////////////
-/*	private Runnable returnRes = new Runnable() {
-
-		@Override
-		public void run() {
-			mySpinnerArrayAdapter.notifyDataSetChanged();
-	   		mySpinner.setSelection(activeIndex,true);			
-			m_ProgressDialog.dismiss();
-		}
-	};
-*/
-    ///////////////////////////////////////////////////////////
-    //
-    //
-    //
-    ///////////////////////////////////////////////////////////
    	public class MyOnItemSelectedListener implements OnItemSelectedListener 
    	{
    	    public void onItemSelected(AdapterView<?> parent,
@@ -303,10 +177,9 @@ public class selecttavling  extends Activity {
 
     ///////////////////////////////////////////////////////////
     //
-    //
+   	// updates the date in the TextView
     //
     ///////////////////////////////////////////////////////////
-   	// updates the date in the TextView
    	private void updateDisplay1() {
    		String mZeroMonth = "";
    		String mZeroDay = "";
@@ -525,7 +398,6 @@ public class selecttavling  extends Activity {
         	mySelClassificationIds = "";
         	int i;
         	boolean commaneeded = false;
-//        	boolean commaplaced = false;
 
         	for (i = 0; i<5; i++) {
         		
@@ -586,7 +458,7 @@ public class selecttavling  extends Activity {
 				klubbarSelected.add("CLASSIFICATIONIDS");
 				klubbarSelected.add(mySelClassificationIds);								
 
-				Log.e("XTRACTOR"," myTavlingSearchClickHandler 1 : array size (borde vara 10) : " + klubbarSelected.size());
+				Log.e("XTRACTOR"," myTavlingSearchClickHandler : array size (borde vara 10) : " + klubbarSelected.size());
 				
 				// Store Klubbar belonging to selected forbund
 				// Since it's possible to select "allaFšrbund" we need to even store getParentOrganisationId 
