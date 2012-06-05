@@ -77,7 +77,7 @@ public class tavlingar extends Activity  {
 		mySelDateFrom  = interfaceArray.get(g);
 		interfaceArray.remove(g);
 
-		Log.i("XTRACTOR","tavlingar, onCreate: Fetched : " + mySelDateFrom + "from indx:" + g);    			
+		Log.i("SNDESB","tavlingar, onCreate: Fetched : " + mySelDateFrom + "from indx:" + g);    			
 
 
 		mySelForbundId  = interfaceArray.get(interfaceArray.indexOf("FORBUNDID"));
@@ -85,7 +85,7 @@ public class tavlingar extends Activity  {
 		mySelForbund  = interfaceArray.get(interfaceArray.indexOf("FORBUND"));
 		interfaceArray.remove(interfaceArray.indexOf("FORBUND"));
 
-		Log.i("XTRACTOR","tavlingar, onCreate: Fetched : " + mySelDateFrom + ":" + mySelDateTo + ":" + mySelForbundId + ":" + mySelForbund );    			
+		Log.i("SNDESB","tavlingar, onCreate: Fetched : " + mySelDateFrom + ":" + mySelDateTo + ":" + mySelForbundId + ":" + mySelForbund );    			
 
 */		
 //		if (o != null) {
@@ -98,10 +98,10 @@ public class tavlingar extends Activity  {
 		mySelForbund   = interfaceArray.get(7);
 		mySelClassificationIds = interfaceArray.get(9);
 			
-		Log.i("XTRACTOR","tavlingar, onCreate: Received: " + mySelForbundId + ":" + mySelForbund);    			
+		Log.i("SNDESB","tavlingar, onCreate: Received: " + mySelForbundId + ":" + mySelForbund);    			
 //		while (i < size-1) {
 //			klubbArray.put(interfaceArray.get(i), interfaceArray.get(i+1));
-//			Log.i("XTRACTOR","tavlingar, onCreate: Fetched : " + interfaceArray.get(i) + ", " + interfaceArray.get(i+1) + " size:" + interfaceArray.size());    			
+//			Log.i("SNDESB","tavlingar, onCreate: Fetched : " + interfaceArray.get(i) + ", " + interfaceArray.get(i+1) + " size:" + interfaceArray.size());    			
 //			i = i + 2;
 //		}
 
@@ -113,7 +113,7 @@ public class tavlingar extends Activity  {
 		urlString = urlString + "&classificationIds=" + mySelClassificationIds + "&includeEntryBreaks=true";
 
 		//			urlString = urlString + "?fromDate=" + mySelDateFrom + "&toDate=" + mySelDateTo + "&organisationIds=" + mySelForbundId;
-		Log.e("XTRACTOR","tavling.onCreate : urlString sent to Eventor : "+urlString);
+		Log.e("SNDESB","tavling.onCreate : urlString sent to Eventor : "+urlString);
 //		}		 
 
 		list = (ListView) findViewById(R.id.listview);
@@ -135,16 +135,16 @@ public class tavlingar extends Activity  {
 		list.setTextFilterEnabled(true);
 		list.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-				Log.i("XTRACTOR","loadTavlingar : Selected : " + list.getItemAtPosition(position));    			
-//				Log.i("XTRACTOR","loadTavlingar : Selected : view :" + v + "pos: "+ position + " id : " +id);
+				Log.i("SNDESB","loadTavlingar : Selected : " + list.getItemAtPosition(position));    			
+//				Log.i("SNDESB","loadTavlingar : Selected : view :" + v + "pos: "+ position + " id : " +id);
 
 				tavling valdTavl = new tavling();
 				valdTavl = tavlingar.get(position);
 //				String name; 				
 //				name = selecttavling.getKlubbarFetched(valdTavl.getOrganisationId());
 
-//				Log.i("XTRACTOR","setOnItemClickListener : organisationid : " + valdTavl.getOrganisationId() + "klubb: "+ klubbArray.get(valdTavl.getOrganisationId()));
-				Log.i("XTRACTOR","setOnItemClickListener : organisationid : " + valdTavl.getOrganisationId());
+//				Log.i("SNDESB","setOnItemClickListener : organisationid : " + valdTavl.getOrganisationId() + "klubb: "+ klubbArray.get(valdTavl.getOrganisationId()));
+				Log.i("SNDESB","setOnItemClickListener : organisationid : " + valdTavl.getOrganisationId());
 				
 				String interfaceArray[] = new String[26];
 //				interfaceArray[0] = "EVENTID";
@@ -153,7 +153,7 @@ public class tavlingar extends Activity  {
 				String tmp = new String();
 				tmp = valdTavl.getEventForm();
 
-				Log.i("XTRACTOR","setOnItemClickListener : tmp: " + tmp);
+				Log.i("SNDESB","setOnItemClickListener : tmp: " + tmp);
 				
 				if ((tmp.compareTo("IndSingleDay") == 0) ||
 					(tmp.compareTo("IndMultiDay") == 0)) {
@@ -257,7 +257,7 @@ public class tavlingar extends Activity  {
 			fetchOk = andRest.queryRESTurl(urlString); 		 
 
 			if (!fetchOk) {			 
-				Log.i("XTRACTOR","loadTavlingar : Nothing fetched from EVENTOR");
+				Log.i("SNDESB","loadTavlingar : Nothing fetched from EVENTOR");
 			} else {
 				tavlingar = andRest.parseTavlingar();    		
 
@@ -265,13 +265,13 @@ public class tavlingar extends Activity  {
 					map = new HashMap<String, String>();
 					map.put("datum", tavl.getStartDate());
 					map.put("namn", tavl.getName());
-					Log.i("XTRACTOR","loadTavlingar : Fetched : " + tavl.getStartDate() + " " + tavl.getName() +"from EVENTOR");    			
+					Log.i("SNDESB","loadTavlingar : Fetched : " + tavl.getStartDate() + " " + tavl.getName() +"from EVENTOR");    			
 					mylist.add(map);
 				}
 			}		 
 		} catch (Throwable t)
 		{
-			Log.e("XTRACTOR",t.getMessage(),t);
+			Log.e("SNDESB",t.getMessage(),t);
 		}
 		runOnUiThread(returnRes);
 	}   			 
@@ -305,6 +305,6 @@ AlertDialog.Builder adb=new AlertDialog.Builder(tavlingar.this);
 adb.setTitle("Tavling");
 adb.setMessage("Selected Item is = "+list.getItemAtPosition(position));
 adb.setPositiveButton("Ok", null);
-	 Log.i("XTRACTOR","loadTavlingar : C");    			
+	 Log.i("SNDESB","loadTavlingar : C");    			
 adb.show();
  */

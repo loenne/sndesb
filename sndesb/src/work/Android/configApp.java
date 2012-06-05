@@ -267,6 +267,26 @@ public class configApp extends Activity {
 		myDbHelper.close();
 	}
 	
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
+	public void updateConfig() {
+
+		DataBaseHelper myDbHelper = new DataBaseHelper(this);
+		
+        try {
+        	myDbHelper.openDataBase(openstate);
+        }catch(SQLException sqle){ 
+        	throw sqle;
+        }
+		
+		//cfg = myDbHelper.updateConfig();
+		String log = "SearchIntervall: "+cfg.getSearchIntervall() + " SelectedOrg: "+cfg.getSelectedOrg()+" SelectedClub: " + cfg.getSelectedClub();
+		Log.d("Fetched config: ", log);		
+		myDbHelper.close();
+	}
 	
     ///////////////////////////////////////////////////////////
     //
@@ -471,7 +491,7 @@ public class configApp extends Activity {
 				// 3 = Klubb
 
 				for (Organisation org : organisations){
-					Log.d("SNDESB","configApp: loop index:" + count);
+//					Log.d("SNDESB","configApp: loop index:" + count);
 					
 					organisationId.add(org.getOrganisationId());
 					organisationTypeId.add(org.getOrganisationTypeId());
@@ -502,7 +522,7 @@ public class configApp extends Activity {
 		} catch (Throwable t){
 			Log.e("SNDESB","loadForbund : Failing to fetch forbund : " + t.getMessage(), t);
 		}
-
+		Log.d("SNDESB","configApp: fetched:" + count + " forbund from Eventor");
 		return count;
 	}
 	
@@ -517,8 +537,8 @@ public class configApp extends Activity {
    			case R.id.configcreatedatabase:
    			{	   				
    				Log.d("SNDESB","myCreateDatabaseClickHandler: Create Config and Fetch Organisations from Eventor");
-   				createConfigTable(true);
-   				createOrganisationsTable(true);
+//   				createConfigTable(true);
+//   				createOrganisationsTable(true);
    				int rec = fetchOrganisationsFromEventor();
    	        	updateDatabase(rec);
    	        	mySpinnerForbundArrayAdapter =  
@@ -533,7 +553,12 @@ public class configApp extends Activity {
    			case R.id.configsave:
    			{	   				
    				Log.d("SNDESB","myCreateDatabaseClickHandler Want to save the configuation");
-   	            return;
+
+   				// konfig 1 = activeConfig1;
+   				// konfig 2 = activeConfig2;
+   				// konfig 3 = activeConfig3;
+   				//UpdateConfig
+   				return;
    			}
    		}		
    	}

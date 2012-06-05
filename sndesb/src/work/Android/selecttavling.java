@@ -105,13 +105,13 @@ public class selecttavling  extends Activity {
         mDay = c.get(Calendar.DAY_OF_MONTH);       
         updateDisplay1();
         mMonth = c.get(Calendar.MONTH);       
-		Log.e("XTRACTOR","Month1 : " + mMonth);
+		Log.e("SNDESB","Month1 : " + mMonth);
 		// Adjust for new year
 		if (mMonth > 8) { 
         	mYear = mYear+1;
         }
 		mMonth=(mMonth+3)%11;
-   		Log.e("XTRACTOR","Month2 : " + mMonth);
+   		Log.e("SNDESB","Month2 : " + mMonth);
         updateDisplay2();		
    	}
 
@@ -162,11 +162,11 @@ public class selecttavling  extends Activity {
    	{
    	    public void onItemSelected(AdapterView<?> parent,
    	        View view, int pos, long id) {
-//			Log.e("XTRACTOR","Selected pos : " + pos + " som Šr : " + parent.getItemAtPosition(pos).toString() );
+//			Log.e("SNDESB","Selected pos : " + pos + " som Šr : " + parent.getItemAtPosition(pos).toString() );
 			mySelForbund = parent.getItemAtPosition(pos).toString();
 			mySelForbundId = oforbundid.get(pos);
 			mySelForbundIndx = pos;
-			Log.e("XTRACTOR","Selected pos : " + pos + " som Šr : " + mySelForbund + " och id:" + oforbundid.get(pos) );
+			Log.e("SNDESB","Selected pos : " + pos + " som Šr : " + mySelForbund + " och id:" + oforbundid.get(pos) );
    	    }
 
    	    public void onNothingSelected(AdapterView<?> parent) {
@@ -201,7 +201,7 @@ public class selecttavling  extends Activity {
    	                .append(mZeroDay)
    	                .append(mDay));
    	        mySelDateFrom = myDateFrom.getText().toString();
-			Log.e("XTRACTOR","update display1 : " + mySelDateFrom);
+			Log.e("SNDESB","update display1 : " + mySelDateFrom);
     }
 
     ///////////////////////////////////////////////////////////
@@ -229,7 +229,7 @@ public class selecttavling  extends Activity {
 	                .append(mZeroDay)
 	                .append(mDay));
    	        mySelDateTo = myDateTo.getText().toString();
-			Log.e("XTRACTOR","update display2 : " + mySelDateTo);
+			Log.e("SNDESB","update display2 : " + mySelDateTo);
     }
 
     ///////////////////////////////////////////////////////////
@@ -415,15 +415,15 @@ public class selecttavling  extends Activity {
             			mySelClassificationIds = mySelClassificationIds + ",";
             		}
         		}
-        		Log.e("XTRACTOR OnReadyListener"," just nu: " + mySelClassificationIds);
+        		Log.e("SNDESB OnReadyListener"," just nu: " + mySelClassificationIds);
         	}            		
 
         	if (tavlingstyper[5]) { 
         		mySelClassificationIds = mySelClassificationIds + typer[5];        		
-    			Log.e("XTRACTOR OnReadyListener"," slutklämm: " + mySelClassificationIds);
+    			Log.e("SNDESB OnReadyListener"," slutklämm: " + mySelClassificationIds);
         	}
         	
-			Log.e("XTRACTOR OnReadyListener"," resultat: " + mySelClassificationIds);        	
+			Log.e("SNDESB OnReadyListener"," resultat: " + mySelClassificationIds);        	
         }
    	}
    	
@@ -444,7 +444,7 @@ public class selecttavling  extends Activity {
 			}
 			case R.id.sokval:
 			{
-				Log.e("XTRACTOR"," myTavlingSearchClickHandler : DateFrom:" + mySelDateFrom + " DateTo:" + 
+				Log.e("SNDESB"," myTavlingSearchClickHandler : DateFrom:" + mySelDateFrom + " DateTo:" + 
 						mySelDateTo + " ForbundId: " + mySelForbundId + " Forbund: " + mySelForbund + " ClassificationIds:" + mySelClassificationIds );
 				klubbarSelected.clear();
 				klubbarSelected.add("DATE_FROM");
@@ -458,7 +458,7 @@ public class selecttavling  extends Activity {
 				klubbarSelected.add("CLASSIFICATIONIDS");
 				klubbarSelected.add(mySelClassificationIds);								
 
-				Log.e("XTRACTOR"," myTavlingSearchClickHandler : array size (borde vara 10) : " + klubbarSelected.size());
+				Log.e("SNDESB"," myTavlingSearchClickHandler : array size (borde vara 10) : " + klubbarSelected.size());
 				
 				// Store Klubbar belonging to selected forbund
 				// Since it's possible to select "allaFšrbund" we need to even store getParentOrganisationId 
@@ -472,13 +472,13 @@ public class selecttavling  extends Activity {
 //								(org.getParentOrganisationId().equals(mySelForbundId))) {
 //							klubbarSelected.add(org.getOrganisationId());
 //							klubbarSelected.add(org.getShortName());
-//							Log.e("XTRACTOR"," myTavlingSearchClickHandler 2 : stored org : " + org.getShortName() + ", " + org.getOrganisationId());
+//							Log.e("SNDESB"," myTavlingSearchClickHandler 2 : stored org : " + org.getShortName() + ", " + org.getOrganisationId());
 //						} else {
-//							Log.e("XTRACTOR"," myTavlingSearchClickHandler 3 : org not part of : " + mySelForbundId + ": " + org.getShortName() + ", " + org.getOrganisationId());
+//							Log.e("SNDESB"," myTavlingSearchClickHandler 3 : org not part of : " + mySelForbundId + ": " + org.getShortName() + ", " + org.getOrganisationId());
 //						}	   															
 //					}
 //				}
-//				Log.e("XTRACTOR"," myTavlingSearchClickHandler 4 : array size : " + klubbarSelected.size());
+//				Log.e("SNDESB"," myTavlingSearchClickHandler 4 : array size : " + klubbarSelected.size());
 				
 				Intent i = new Intent();
 				i.setClassName("work.Android", "work.Android.tavlingar");

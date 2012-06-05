@@ -139,7 +139,7 @@ public class tavlingsinfo extends Activity {
 			fetchOk = andRest.queryRESTurl(urlString); 		 
 
 			if (!fetchOk) {			 
-				Log.i("XTRACTOR","loadTavlingar : Nothing fetched from EVENTOR");
+				Log.i("SNDESB","loadTavlingar : Nothing fetched from EVENTOR");
 			} else {
 				tavlingar = andRest.parseTavlingar();    		
 
@@ -147,13 +147,13 @@ public class tavlingsinfo extends Activity {
 					map = new HashMap<String, String>();
 					map.put("datum", tavl.getStartDate());
 					map.put("namn", tavl.getName());
-					Log.i("XTRACTOR","loadTavlingar : Fetched : " + tavl.getStartDate() + " " + tavl.getName() +"from EVENTOR");    			
+					Log.i("SNDESB","loadTavlingar : Fetched : " + tavl.getStartDate() + " " + tavl.getName() +"from EVENTOR");    			
 					mylist.add(map);
 				}
 			}		 
 		} catch (Throwable t)
 		{
-			Log.e("XTRACTOR",t.getMessage(),t);
+			Log.e("SNDESB",t.getMessage(),t);
 		}
 		runOnUiThread(returnRes);
 	}   			 
@@ -181,7 +181,7 @@ public class tavlingsinfo extends Activity {
 			kalle[1] = myTavlingGPSY;
 			kalle[2] = "GPSX";
 			kalle[3] = myTavlingGPSX;
-			//Log.i("XTRACTOR","tavlingsinfo : clickhandler : Y/X "+ kalle[1] + kalle[3]);
+			//Log.i("SNDESB","tavlingsinfo : clickhandler : Y/X "+ kalle[1] + kalle[3]);
 
 			Intent i = new Intent();
 			i.setClassName("work.Android", "work.Android.maphandler");
@@ -191,7 +191,7 @@ public class tavlingsinfo extends Activity {
 		}
 		case R.id.inbjudan:
 		{
-			Toast.makeText(this, "Du vill h‰mta inbjudan !!",
+			Toast.makeText(this, "Du vill hämta inbjudan !!",
 			Toast.LENGTH_LONG).show();
 /*			
 			String kalle[] = new String[4];
@@ -199,7 +199,7 @@ public class tavlingsinfo extends Activity {
 			kalle[1] = myTavlingGPSY;
 			kalle[2] = "GPSX";
 			kalle[3] = myTavlingGPSX;
-			//Log.i("XTRACTOR","tavlingsinfo : clickhandler : Y/X "+ kalle[1] + kalle[3]);
+			//Log.i("SNDESB","tavlingsinfo : clickhandler : Y/X "+ kalle[1] + kalle[3]);
 
 			Intent i = new Intent();
 			i.setClassName("work.Android", "work.Android.maphandler");
@@ -210,7 +210,7 @@ public class tavlingsinfo extends Activity {
 		}
 		case R.id.pm:
 		{
-			Toast.makeText(this, "Du vill h‰mta PM !!",
+			Toast.makeText(this, "Du vill hämta PM !!",
 			Toast.LENGTH_LONG).show();
 /*			
 			String kalle[] = new String[4];
@@ -218,7 +218,7 @@ public class tavlingsinfo extends Activity {
 			kalle[1] = myTavlingGPSY;
 			kalle[2] = "GPSX";
 			kalle[3] = myTavlingGPSX;
-			//Log.i("XTRACTOR","tavlingsinfo : clickhandler : Y/X "+ kalle[1] + kalle[3]);
+			//Log.i("SNDESB","tavlingsinfo : clickhandler : Y/X "+ kalle[1] + kalle[3]);
 
 			Intent i = new Intent();
 			i.setClassName("work.Android", "work.Android.maphandler");
@@ -229,7 +229,7 @@ public class tavlingsinfo extends Activity {
 		}
 		case R.id.startlist:
 		{
-			Toast.makeText(this, "Du vill h‰mta startlist !!",
+			Toast.makeText(this, "Du vill hämta startlist !!",
 			Toast.LENGTH_LONG).show();
 /*			
 			String kalle[] = new String[4];
@@ -237,7 +237,7 @@ public class tavlingsinfo extends Activity {
 			kalle[1] = myTavlingGPSY;
 			kalle[2] = "GPSX";
 			kalle[3] = myTavlingGPSX;
-			//Log.i("XTRACTOR","tavlingsinfo : clickhandler : Y/X "+ kalle[1] + kalle[3]);
+			//Log.i("SNDESB","tavlingsinfo : clickhandler : Y/X "+ kalle[1] + kalle[3]);
 
 			Intent i = new Intent();
 			i.setClassName("work.Android", "work.Android.maphandler");

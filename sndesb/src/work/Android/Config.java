@@ -33,10 +33,10 @@ public class Config {
 		}
 
 		public void printRecord() {
-			Log.e("XTRACTOR","organisation: record:");	
-			Log.e("XTRACTOR","organisation: " + this.SearchIntervall);	
-			Log.e("XTRACTOR","organisation: " + this.SelectedOrg );	
-			Log.e("XTRACTOR","organisation: " + this.SelectedClub );	
+			Log.e("SNDESB","organisation: record:");	
+			Log.e("SNDESB","organisation: " + this.SearchIntervall);	
+			Log.e("SNDESB","organisation: " + this.SelectedOrg );	
+			Log.e("SNDESB","organisation: " + this.SelectedClub );	
 		}
 		
 

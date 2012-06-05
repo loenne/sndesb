@@ -64,7 +64,10 @@ public class AndroB extends Activity {
         }catch(SQLException sqle){ 
     		Log.d("Fetch config: ", "Database does not seem to exist. Try creating it");		
     		createDatabase();
+    		Log.d("Fetch config: ", "Try to create config table");		
     		createConfigTable();
+    		Log.d("Fetch config: ", "Try to create organisations table");		
+    		createOrganisationsTable(false);
     		
     		try {
             	myDbHelper.openDataBase(openstate);
@@ -72,10 +75,6 @@ public class AndroB extends Activity {
                	throw sqle2;
             }
         }
-//		Log.d("Fetch config: ", "Try to create config table");		
-//		createConfigTable();
-		Log.d("Fetch config: ", "Try to create organisations table");		
-		createOrganisationsTable(false);
 		Log.d("Fetch config: ", "Try to fetch config");		
 		cfg = myDbHelper.getConfig();
 		mySelectedSearchInterval  = cfg.getSearchIntervall();
