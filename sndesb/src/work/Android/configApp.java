@@ -394,6 +394,8 @@ public class configApp extends Activity {
            	}
            	ind++;
         }
+        Log.e("SNDESB","configApp: Added: " + ind + " organisations to database");
+        
         myDbHelper.close();
 	}	
 
