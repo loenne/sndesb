@@ -7,6 +7,8 @@ import android.content.Context;
 import android.database.SQLException;
 import android.os.Bundle;
 import android.app.Activity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -108,6 +110,27 @@ public class configApp extends Activity {
    		  		
 		cont = this;
 
+		mySearchLength.addTextChangedListener(new TextWatcher() {
+		    @Override
+		    public void afterTextChanged(Editable s) {
+		        // TODO Auto-generated method stub
+				Log.d("SNDESB","configApp: mySearchLength changed to: " + s.toString() + " ");
+				if (s.toString().length() >0) {
+					mySelSearchLength = Integer.parseInt(s.toString());
+				}
+		    }
+
+		    @Override
+		    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+		        // TODO Auto-generated method stub
+		    }
+
+		    @Override
+		    public void onTextChanged(CharSequence s, int start, int before, int count) {
+		        // TODO Auto-generated method stub
+		    }
+		});
+				
 		mySpinnerForbundArrayAdapter =  
 	   			new ArrayAdapter<String>(this, R.layout.spinnerlayout, oforbund);
 	   	mySpinnerForbundArrayAdapter.setDropDownViewResource(R.layout.spinnerlayout);		   		
@@ -268,6 +291,7 @@ public class configApp extends Activity {
         	throw sqle;
         }
 		
+		Config cfg = new Config();
    		cfg.setSearchIntervall(mySelSearchLength);
    		cfg.setSelectedOrg(mySelForbundId);
    		cfg.setSelectedClub(mySelKlubbId);

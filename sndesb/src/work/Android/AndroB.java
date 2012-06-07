@@ -2,7 +2,6 @@ package work.Android;
 
 import java.io.IOException;
 
-import work.android.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
