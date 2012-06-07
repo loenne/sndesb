@@ -1,27 +1,12 @@
 package work.Android;
 
-//import android.app.Activity;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import work.Android.selectklubb.MyOnItemSelectedListener1;
-
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.SQLException;
 import android.os.Bundle;
-// import android.os.Parcelable;
-//import android.content.SharedPreferences;
-//import android.preference.ListPreference;
-//import android.preference.PreferenceManager;
-//import android.preference.Preference;
-//import android.preference.PreferenceActivity;
 import android.app.Activity;
-//import android.preference.Preference.OnPreferenceClickListener;
-//import android.widget.Toast;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -34,7 +19,6 @@ import android.widget.AdapterView.OnItemSelectedListener;
 
 
 public class configApp extends Activity {
-//public class configApp extends PreferenceActivity { 
 	final int MAX_FORBUND = 24;
 
 	private ArrayList<String> organisationId;
@@ -50,17 +34,20 @@ public class configApp extends Activity {
 	private Spinner  myForbundSpinner;
 	private Spinner  myKlubbSpinner;
 	private Button myCreateDatabase; 
-	private Button myUpdateEventor;
+//	private Button myUpdateEventor;
 	private Button mySaveConfig;
 	private ArrayList<String> oforbund;
 	private ArrayList<String> oforbundid;
 	private ArrayList<String> oklubbar;
 	private ArrayList<String> oklubbarid;
-	private String mySelKlubb;
-	private String mySelKlubbId;	
-	private String mySelForbund;
-	private String mySelForbundId;
+//	private String mySelKlubb;
+//	private String mySelForbund;
 	
+	// Selected config values
+	private int mySelSearchLength;
+	private int mySelForbundId;
+	private int mySelKlubbId;	
+
 	private int mySelForbundIndx;
 	private int mySelKlubbIndx;	
 	
@@ -68,8 +55,7 @@ public class configApp extends Activity {
 
 	private String myBuffSearchLength;
 	private String myBuffSelectedForbund;
-	private String myBuffSelectedKlubb;
-	
+	private String myBuffSelectedKlubb;	
 	
 	private List <Organisation> allaOrg;
 	private Config cfg;
@@ -109,12 +95,13 @@ public class configApp extends Activity {
 		 }
 
    		mySearchLength.setText(String.valueOf(myBuffSearchLength));
-   		mySelForbundId = myBuffSelectedForbund;
-   		mySelKlubbId = myBuffSelectedKlubb;
+
+   		mySelSearchLength = Integer.parseInt(myBuffSearchLength);
+   		mySelForbundId = Integer.parseInt(myBuffSelectedForbund);
+   		mySelKlubbId = Integer.parseInt(myBuffSelectedKlubb);
    		
 		Log.d("SNDESB","configApp: Fetch all forbund records from config database");
 		fetchAllOrganisationNamesAndIds();
-//		fetchOrgClubs(1);
 		Log.d("SNDESB","configApp: Fetch all clubs belonging to configured forbund: " + myBuffSelectedForbund + " from config database");
 		int forbId = Integer.parseInt(myBuffSelectedForbund);
 		fetchOrgClubNamesAndIds(forbId);
@@ -126,14 +113,13 @@ public class configApp extends Activity {
 	   	mySpinnerForbundArrayAdapter.setDropDownViewResource(R.layout.spinnerlayout);		   		
 		myForbundSpinner.setAdapter(mySpinnerForbundArrayAdapter);
 		myForbundSpinner.setOnItemSelectedListener(new MyOnForbundItemSelectedListener()); 	   	 	   		 	   		 	   		 	   		
+		myForbundSpinner.setSelection(mySelForbundIndx,true);
 
 		mySpinnerKlubbArrayAdapter =  
 			   			new ArrayAdapter<String>(this, R.layout.spinnerlayout, oklubbar);
 		mySpinnerKlubbArrayAdapter.setDropDownViewResource(R.layout.spinnerlayout);
 		myKlubbSpinner.setAdapter(mySpinnerKlubbArrayAdapter);
-		myKlubbSpinner.setOnItemSelectedListener(new MyOnKlubbItemSelectedListener());		
-		
-		myForbundSpinner.setSelection(mySelForbundIndx,true);
+		myKlubbSpinner.setOnItemSelectedListener(new MyOnKlubbItemSelectedListener());
 		myKlubbSpinner.setSelection(mySelKlubbIndx,true);
 	}
 
@@ -236,7 +222,7 @@ public class configApp extends Activity {
 
 			if (oforbid.equals(mySelForbundId)) {
 				mySelForbundIndx = i;
-				mySelForbundId = oforbundid.get(i);
+				mySelForbundId = Integer.parseInt(oforbundid.get(i));
 				Log.d("SNDESB","Found forbundsid: " + mySelForbundId + " in index : " + i + " name:" + oforbund.get(i));
 			}
 	//		String log = "ForbundId: " + oforbid;
@@ -282,9 +268,13 @@ public class configApp extends Activity {
         	throw sqle;
         }
 		
-		//cfg = myDbHelper.updateConfig();
+   		cfg.setSearchIntervall(mySelSearchLength);
+   		cfg.setSelectedOrg(mySelForbundId);
+   		cfg.setSelectedClub(mySelKlubbId);
+
+   		myDbHelper.updateConfig(cfg);
 		String log = "SearchIntervall: "+cfg.getSearchIntervall() + " SelectedOrg: "+cfg.getSelectedOrg()+" SelectedClub: " + cfg.getSelectedClub();
-		Log.d("Fetched config: ", log);		
+		Log.d("Config updated with: ", log);		
 		myDbHelper.close();
 	}
 	
@@ -314,7 +304,7 @@ public class configApp extends Activity {
 
 			if (klubbid.equals(mySelKlubbId)) {
 				mySelKlubbIndx = i;
-				mySelKlubbId = oklubbarid.get(i);
+				mySelKlubbId = Integer.parseInt(oklubbarid.get(i));
 				Log.d("SNDESB","Found klubbid: " + mySelKlubbId + " in index : " + i + " name:" + oklubbar.get(i));
 			}
 			i++;
@@ -353,7 +343,7 @@ public class configApp extends Activity {
     //
     //
     ///////////////////////////////////////////////////////////
-	public void updateDatabase(int records) {
+	public void storeOrganisationsToDatabase(int records) {
 		
 		DataBaseHelper myDbHelper = new DataBaseHelper(this);
  
@@ -542,7 +532,7 @@ public class configApp extends Activity {
 //   				createConfigTable(true);
 //   				createOrganisationsTable(true);
    				int rec = fetchOrganisationsFromEventor();
-   	        	updateDatabase(rec);
+   				storeOrganisationsToDatabase(rec);
    	        	mySpinnerForbundArrayAdapter =  
    	        			new ArrayAdapter<String>(this, R.layout.spinnerlayout, oforbund);
    	        	mySpinnerForbundArrayAdapter.setDropDownViewResource(R.layout.spinnerlayout);		   		
@@ -555,11 +545,7 @@ public class configApp extends Activity {
    			case R.id.configsave:
    			{	   				
    				Log.d("SNDESB","myCreateDatabaseClickHandler Want to save the configuation");
-
-   				// konfig 1 = activeConfig1;
-   				// konfig 2 = activeConfig2;
-   				// konfig 3 = activeConfig3;
-   				//UpdateConfig
+   				updateConfig();
    				return;
    			}
    		}		
@@ -574,9 +560,9 @@ public class configApp extends Activity {
   	public class MyOnForbundItemSelectedListener implements OnItemSelectedListener 
    	{
    	    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-			Log.d("SNDESB","MyOnForbundItemSelectedListener: Selected pos : " + pos + " som Šr : " + parent.getItemAtPosition(pos).toString() + " och id:" + oforbundid.get(pos) );
-			mySelForbund = parent.getItemAtPosition(pos).toString();
-			mySelForbundId = oforbundid.get(pos);
+			Log.d("SNDESB","MyOnForbundItemSelectedListener: Selected pos : " + pos + " som är : " + parent.getItemAtPosition(pos).toString() + " och id:" + oforbundid.get(pos) );
+//			mySelForbund = parent.getItemAtPosition(pos).toString();
+			mySelForbundId = Integer.parseInt(oforbundid.get(pos));
 			mySelForbundIndx = pos;
 			Integer val = new Integer(mySelForbundId);
 			Log.d("SNDESB","MyOnForbundItemSelectedListener: Before fetching klubbs for " + val);
@@ -607,10 +593,10 @@ public class configApp extends Activity {
   	{
   		public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
   			Log.d("SNDESB","MyOnKlubbItemSelectedListener: Selected pos : " + pos + "som Šr : " + parent.getItemAtPosition(pos).toString() );
-  			mySelKlubb = parent.getItemAtPosition(pos).toString();
+//  			mySelKlubb = parent.getItemAtPosition(pos).toString();
 
   			if (myKlubbIdCreated == 1) {
-  				mySelKlubbId = oklubbarid.get(pos);
+  				mySelKlubbId = Integer.parseInt(oklubbarid.get(pos));
   	  			Log.d("SNDESB","MyOnKlubbItemSelectedListener: Selected klubb id : " + mySelKlubbId );
   			}
   		}

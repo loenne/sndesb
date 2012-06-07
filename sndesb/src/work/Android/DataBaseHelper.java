@@ -1,6 +1,5 @@
 package work.Android;
 
-//import android.database.Cursor;
 import android.database.Cursor;
 import android.database.SQLException;
 
@@ -14,10 +13,10 @@ import android.content.Context;
 import android.util.Log;
 
 //import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+//import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+//import java.io.InputStream;
+//import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 //import java.io.OutputStreamWriter;
@@ -142,7 +141,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	 * system folder, from where it can be accessed and handled.
 	 * This is done by transfering bytestream.
 	 * */
-	private void copyDataBase() throws IOException{
+/*	private void copyDataBase() throws IOException{
 	
 		Log.e("SNDESB","DataBaseHelper : copyDatabase: database:" + DB_NAME);
 		//Open your local db as the input stream
@@ -171,7 +170,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 		myInput.close();
 
 	}
-
+*/
 	///////////////////////////////////////////////////////////
 	//
 	//
@@ -541,6 +540,25 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 		// return contact list
 		return conf;
 	}
+
+	///////////////////////////////////////////////////////////
+	//
+	//
+	//
+	///////////////////////////////////////////////////////////
+	public void updateConfig(Config cfg) {		
+
+        ContentValues values = new ContentValues();
+        
+    	values.put("SearchIntervall", cfg.getSearchIntervall() );
+    	values.put("SelectedOrg", cfg.getSelectedOrg());
+    	values.put("SelectedClub", cfg.getSelectedClub());
+
+    	int count = myDataBase.update("Config", values, null, null);
+
+		Log.d("SNDESB","UpdateConfig: " + count + " Rows updated");
+}
+
 	
 	///////////////////////////////////////////////////////////
 	//
