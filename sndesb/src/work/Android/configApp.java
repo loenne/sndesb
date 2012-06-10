@@ -110,26 +110,22 @@ public class configApp extends Activity {
    		  		
 		cont = this;
 
-		mySearchLength.addTextChangedListener(new TextWatcher() {
-		    @Override
-		    public void afterTextChanged(Editable s) {
-		        // TODO Auto-generated method stub
+		TextWatcher myTextWatcher = new TextWatcher() {
+			public void afterTextChanged(Editable s) {
 				Log.d("SNDESB","configApp: mySearchLength changed to: " + s.toString() + " ");
 				if (s.toString().length() >0) {
 					mySelSearchLength = Integer.parseInt(s.toString());
 				}
 		    }
 
-		    @Override
 		    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-		        // TODO Auto-generated method stub
 		    }
 
-		    @Override
 		    public void onTextChanged(CharSequence s, int start, int before, int count) {
-		        // TODO Auto-generated method stub
 		    }
-		});
+		};
+
+		mySearchLength.addTextChangedListener(myTextWatcher);
 				
 		mySpinnerForbundArrayAdapter =  
 	   			new ArrayAdapter<String>(this, R.layout.spinnerlayout, oforbund);
@@ -241,9 +237,9 @@ public class configApp extends Activity {
 		Log.d("SNDESB","Search for selected forbundid: " + mySelForbundId + " among forbunds");
 
 		for (String oforbid : oforbundid) {
-		//	Log.d("SNDESB","Search index: " + i + "forbundid: " + oforbid);
-
-			if (oforbid.equals(mySelForbundId)) {
+//			Log.d("SNDESB","Search index: " + i + " forbundid: " + oforbid + " after " + mySelForbundId);
+						
+			if (Integer.parseInt(oforbid) == mySelForbundId) {
 				mySelForbundIndx = i;
 				mySelForbundId = Integer.parseInt(oforbundid.get(i));
 				Log.d("SNDESB","Found forbundsid: " + mySelForbundId + " in index : " + i + " name:" + oforbund.get(i));
@@ -326,7 +322,7 @@ public class configApp extends Activity {
 		for (String klubbid : oklubbarid) {
 //			Log.d("SNDESB","Klubbid: " + klubbid + " val : " + mySelKlubbId);
 
-			if (klubbid.equals(mySelKlubbId)) {
+			if (Integer.parseInt(klubbid) == mySelKlubbId) {
 				mySelKlubbIndx = i;
 				mySelKlubbId = Integer.parseInt(oklubbarid.get(i));
 				Log.d("SNDESB","Found klubbid: " + mySelKlubbId + " in index : " + i + " name:" + oklubbar.get(i));
