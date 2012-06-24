@@ -91,11 +91,11 @@ public class configApp extends Activity {
 		 Object[] o = (Object[]) s;
 
 		 if (o != null) {
-	       		myBuffSearchLength = o[1].toString();
-	       		myBuffSelectedForbund = o[3].toString();
-	       		myBuffSelectedKlubb = o[5].toString();
+			 myBuffSearchLength = o[1].toString();
+			 myBuffSelectedForbund = o[3].toString();
+			 myBuffSelectedKlubb = o[5].toString();		 
 		 }else {
-		   		Log.e("SNDESB","cinfigApp start. Passed arguments from main app to config not correct");			 
+			 Log.e("SNDESB","cinfigApp start. Passed arguments from main app to config not correct");			 
 		 }
 
    		mySearchLength.setText(String.valueOf(myBuffSearchLength));
@@ -103,7 +103,6 @@ public class configApp extends Activity {
    		mySelSearchLength = Integer.parseInt(myBuffSearchLength);
    		mySelForbundId = Integer.parseInt(myBuffSelectedForbund);
    		mySelKlubbId = Integer.parseInt(myBuffSelectedKlubb);
-   		Log.d("SNDESB","SELFORBUNDID Från app config buff : " + mySelForbundId);
    		
 		Log.d("SNDESB","configApp: Fetch all forbund records from config database");
 		fetchAllOrganisationNamesAndIds();
@@ -237,14 +236,14 @@ public class configApp extends Activity {
 
 		int i = 0;
 
-		Log.d("SNDESB","Search for index of selected forbundid: " + mySelForbundId + " among forbundindxs");
+		Log.d("SNDESB","Search for selected forbundid: " + mySelForbundId + " among forbunds");
 
 		for (String oforbid : oforbundid) {
 //			Log.d("SNDESB","Search index: " + i + " forbundid: " + oforbid + " after " + mySelForbundId);
 						
 			if (Integer.parseInt(oforbid) == mySelForbundId) {
 				mySelForbundIndx = i;
-//				mySelForbundId = Integer.parseInt(oforbundid.get(i));
+				mySelForbundId = Integer.parseInt(oforbundid.get(i));
 				Log.d("SNDESB","Found forbundsid: " + mySelForbundId + " in index : " + i + " name:" + oforbund.get(i));
 			}
 	//		String log = "ForbundId: " + oforbid;
@@ -583,10 +582,8 @@ public class configApp extends Activity {
   	public class MyOnForbundItemSelectedListener implements OnItemSelectedListener 
    	{
    	    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-			Log.d("SNDESB","MyOnForbundItemSelectedListener: Selected pos : " + pos + " som är : " + parent.getItemAtPosition(pos).toString() + " och id:" + oforbundid.get(pos) );
+			Log.d("SNDESB","MyOnForbundItemSelectedListener: Selected pos : " + pos + " som ‰r : " + parent.getItemAtPosition(pos).toString() + " och id:" + oforbundid.get(pos) );
 //			mySelForbund = parent.getItemAtPosition(pos).toString();
-	   		Log.d("SNDESB","SELFORBUNDID ändrad i SelectedListener från: " + mySelForbundId + " till: " + Integer.parseInt(oforbundid.get(pos)));
-
 			mySelForbundId = Integer.parseInt(oforbundid.get(pos));
 			mySelForbundIndx = pos;
 			Integer val = new Integer(mySelForbundId);
