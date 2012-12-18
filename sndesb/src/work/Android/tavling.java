@@ -56,7 +56,7 @@ public class tavling implements Comparable<tavling>{
 	}
 
 	public void setEventClassificationId(String eventClassificationId) {
-		Log.i("XTRACTOR","Found competition with clasificationid: " + eventClassificationId );
+		Log.i("SNDESB","Found competition with clasificationid: " + eventClassificationId );
 		this.eventClassificationId = eventClassificationId.trim();
 	}
 
@@ -65,7 +65,7 @@ public class tavling implements Comparable<tavling>{
 	}
 
 	public void setEventStatusId(String eventStatusId) {
-		Log.i("XTRACTOR","Found competition with eventStatusid: " + eventStatusId );
+		Log.i("SNDESB","Found competition with eventStatusid: " + eventStatusId );
 		this.eventStatusId = eventStatusId.trim();
 	}
 
@@ -74,7 +74,7 @@ public class tavling implements Comparable<tavling>{
 	}
 
 	public void setName(String name) {
-		Log.i("XTRACTOR","Found competition with name: " + name );
+		Log.i("SNDESB","Found competition with name: " + name );
 		this.name = name.trim();
 	}
 

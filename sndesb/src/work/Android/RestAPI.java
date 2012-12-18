@@ -118,18 +118,18 @@ public class RestAPI {
 		HttpClient httpclient = new DefaultHttpClient();	
 		urlString = urlString + url;
 
-		Log.i("XTRACTOR", "queryRESTUrl : 1");
+		Log.i("SNDESB", "queryRESTUrl : 1");
 
 		HttpGet httpget = new HttpGet(urlString);
 		httpget.setHeader("ApiKey","b969340e6fd1409b8b6948b9c89f19b8");
 		HttpResponse response;
 
 		counter++;
-//		Log.i("XTRACTOR", "queryRESTUrl : 2 : counter:" + counter);
+//		Log.i("SNDESB", "queryRESTUrl : 2 : counter:" + counter);
 
 		try {
 			response = httpclient.execute(httpget);
-			Log.i("XTRACTOR", "queryResturl : Status:[" + response.getStatusLine().toString() + "]");
+			Log.i("SNDESB", "queryResturl : Status:[" + response.getStatusLine().toString() + "]");
 			HttpEntity entity = response.getEntity();
 
 			if (entity != null) {
@@ -137,21 +137,21 @@ public class RestAPI {
 //				if (counter == 1) {
 //					String result = convertStreamToString(instream);
 //				}
-//				Log.i("XTRACTOR", "queryRESTurl : entity not null");
+//				Log.i("SNDESB", "queryRESTurl : entity not null");
 //				instream.close();
 //				return instream;
 				return true;
 			} else {				
-				Log.i("XTRACTOR", "queryRESTurl : entity null");				
+				Log.i("SNDESB", "queryRESTurl : entity null");				
 			}
 		} catch (ClientProtocolException e) {
-			Log.e("XTRACTOR", "There was a protocol based error", e);
+			Log.e("SNDESB", "There was a protocol based error", e);
 		} catch (UnknownHostException e) {
-			Log.e("XTRACTOR", "There was an unknown host error", e);
+			Log.e("SNDESB", "There was an unknown host error", e);
 		} catch (IOException e) {
-			Log.e("XTRACTOR", "There was an IO Stream related error", e);
+			Log.e("SNDESB", "There was an IO Stream related error", e);
 		}
-		Log.i("XTRACTOR", "queryRESTurl : AFTER try/catch. Returning false from function");
+		Log.i("SNDESB", "queryRESTurl : AFTER try/catch. Returning false from function");
 		return false;
 	}
 		
@@ -190,11 +190,11 @@ public class RestAPI {
 				String attr = attributes.getValue("eventForm");
 				// Make sure 'eventForm' is present.
 				if (attr == null) {
-					Log.i("XTRACTOR", "Event element does not contain attribute eventForm");
+					Log.i("SNDESB", "Event element does not contain attribute eventForm");
 					currentTavling.setEventForm("unknown");
 					return;
 				} else {
-//					Log.i("XTRACTOR", "Event element is set to :" + attr);				
+//					Log.i("SNDESB", "Event element is set to :" + attr);				
 					currentTavling.setEventForm(attr);
 				}
 				// Om det är en multiday event så spara undan alla subelement (Name/Date)
@@ -202,11 +202,11 @@ public class RestAPI {
 					multiIndex = 0;
 					multiDayNameList.clear();
 					multiDayDateList.clear();
-//					Log.i("XTRACTOR", "Event is a multiDay event");									
+//					Log.i("SNDESB", "Event is a multiDay event");									
 				}
 			}
 		});		
-//		Log.i("XTRACTOR", "parseTavling : item1 :" + item1.toString());
+//		Log.i("SNDESB", "parseTavling : item1 :" + item1.toString());
 
 		// End of EVENT element
 		item.setEndElementListener(new EndElementListener(){
@@ -221,7 +221,7 @@ public class RestAPI {
 						currentTavling.setName(namn + " " + multiDayNameList.get(i));
 						currentTavling.setStartDate(multiDayDateList.get(i));
 						tavlingar.add(currentTavling.copy());
-//						Log.i("XTRACTOR", "Added event : " + currentTavling.getName() + " to tavlingar");						
+//						Log.i("SNDESB", "Added event : " + currentTavling.getName() + " to tavlingar");						
 					}
 				} else {
 					tavlingar.add(currentTavling.copy());
@@ -241,10 +241,10 @@ public class RestAPI {
 				String typeString = attributes.getValue("languageId");
 				// Make sure 'type' is present.
 				if (typeString == null) {
-					Log.i("XTRACTOR", "Name element does not contain attribute languageId");
+					Log.i("SNDESB", "Name element does not contain attribute languageId");
 				    return;
 				} else {
-					Log.i("XTRACTOR", "languageId : " + typeString);					
+					Log.i("SNDESB", "languageId : " + typeString);					
 				}
 			}
 */
@@ -283,7 +283,7 @@ public class RestAPI {
 		item1.getChild(SDATE).setEndTextElementListener(new EndTextElementListener(){
 
 			public void end(String body) {
-//				Log.e("XTRACTOR", "parseTavling : In item1.getChild : " + body);
+//				Log.e("SNDESB", "parseTavling : In item1.getChild : " + body);
 				currentTavling.setStartDate(body);
 			}
 		});
@@ -294,21 +294,21 @@ public class RestAPI {
 				String attr = attributes.getValue("raceDistance");
 				// Make sure 'type' is present.
 				if (attr == null) {
-					Log.i("XTRACTOR", "EventRace element does not contain attribute raceDistance");
+					Log.i("SNDESB", "EventRace element does not contain attribute raceDistance");
 					currentTavling.setRaceDistance("0");
 					return;
 				} else {
-//					Log.i("XTRACTOR", "EventRace/raceDistance : " + attr);					
+//					Log.i("SNDESB", "EventRace/raceDistance : " + attr);					
 					currentTavling.setRaceDistance(attr);
 				}
 				attr = attributes.getValue("raceLightCondition");
 				// Make sure 'type' is present.
 				if (attr == null) {
-					Log.i("XTRACTOR", "EventRace element does not contain attribute raceLightCondition");
+					Log.i("SNDESB", "EventRace element does not contain attribute raceLightCondition");
 					currentTavling.setRaceLightCondition("0");
 					return;
 				} else {
-//					Log.i("XTRACTOR", "EventRace/raceLightCondition : " + attr);					
+//					Log.i("SNDESB", "EventRace/raceLightCondition : " + attr);					
 					currentTavling.setRaceLightCondition(attr);
 				}
 			}
@@ -335,22 +335,22 @@ public class RestAPI {
 				String attr = attributes.getValue("y");
 				// Make sure 'type' is present.
 				if (attr == null) {
-					Log.i("XTRACTOR", "EventCenterPosition element does not contain attribute y");
+					Log.i("SNDESB", "EventCenterPosition element does not contain attribute y");
 					currentTavling.setGPSYCoordinates("0");
 					return;
 				} else {
-//					Log.i("XTRACTOR", "EventCenterPosition/y : " + attr);					
+//					Log.i("SNDESB", "EventCenterPosition/y : " + attr);					
 					currentTavling.setGPSYCoordinates(attr);
 				}
 
 				attr = attributes.getValue("x");
 				// Make sure 'type' is present.
 				if (attr == null) {
-					Log.i("XTRACTOR", "EventCenterPosition element does not contain attribute x");
+					Log.i("SNDESB", "EventCenterPosition element does not contain attribute x");
 					currentTavling.setGPSXCoordinates("0");
 					return;
 				} else {
-//					Log.i("XTRACTOR", "EventCenterPosition/x : " + attr);					
+//					Log.i("SNDESB", "EventCenterPosition/x : " + attr);					
 					currentTavling.setGPSXCoordinates(attr);
 				}
 			}
@@ -360,7 +360,7 @@ public class RestAPI {
 			public void end(String body) {
 				if (currentTavling.getEventForm().compareTo("IndMultiDay") == 0) {
 					multiDayNameList.add(body);
-//					Log.i("XTRACTOR", "Event name " + body + " found");									
+//					Log.i("SNDESB", "Event name " + body + " found");									
 				}
 			}
 		});
@@ -369,7 +369,7 @@ public class RestAPI {
 			public void end(String body) {
 				if (currentTavling.getEventForm().compareTo("IndMultiDay") == 0) {
 					multiDayDateList.add(body);
-//					Log.i("XTRACTOR", "Event date " + body + " found");									
+//					Log.i("SNDESB", "Event date " + body + " found");									
 				}
 			}
 		});
@@ -387,9 +387,9 @@ public class RestAPI {
 			throw new RuntimeException(e);
 		}
 		
-//		Log.i("XTRACTOR", "parsetavlingar : before sort ");
+//		Log.i("SNDESB", "parsetavlingar : before sort ");
 		Collections.sort(tavlingar);
-//		Log.i("XTRACTOR", "parsetavlingar : after sort ");
+//		Log.i("SNDESB", "parsetavlingar : after sort ");
 		return tavlingar;
 	}
 	
@@ -402,7 +402,7 @@ public class RestAPI {
 		RootElement root = new RootElement(ORGANISATIONLIST);
 		Element item = root.getChild(ORGANISATION);
 		Element item2 = item.getChild(PARENTORGANISATION);
-//		Log.i("XTRACTOR", "parseorganisations : item2 " + item2.toString());
+//		Log.i("SNDESB", "parseorganisations : item2 " + item2.toString());
 
 		item.setEndElementListener(new EndElementListener(){
 			public void end() {
@@ -412,7 +412,7 @@ public class RestAPI {
 
 /*		item2.setEndElementListener(new EndElementListener(){
 			public void end() {
-//				Log.e("XTRACTOR", "In item2.setEndElementListener");
+//				Log.e("SNDESB", "In item2.setEndElementListener");
 //				organisationer.add(currentOrganisation.copy());
 			}
 		});
@@ -426,43 +426,43 @@ public class RestAPI {
 */		
 		item.getChild(ORGANISATIONID).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-//				Log.e("XTRACTOR", "organisation : setEndText OrganisationId");
+//				Log.e("SNDESB", "organisation : setEndText OrganisationId");
 				currentOrganisation.setOrganisationId(body);
 			}			
 		});
 
   		item.getChild(ORGANISATIONNAME).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-//				Log.e("XTRACTOR", "organisation : setEndText OrganisationName");
+//				Log.e("SNDESB", "organisation : setEndText OrganisationName");
 				currentOrganisation.setName(body);
 			}
 		});		
 
   		item.getChild(SHORTNAME).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-//				Log.e("XTRACTOR", "organisation : setEndText ShortName");
+//				Log.e("SNDESB", "organisation : setEndText ShortName");
 				currentOrganisation.setShortName(body);
 			}
 		});		
   		
 		item.getChild(ORGANISATIONTYPEID).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-//				Log.e("XTRACTOR", "organisation : setEndText organisationTypeId");
+//				Log.e("SNDESB", "organisation : setEndText organisationTypeId");
 				currentOrganisation.setOrganisationTypeId(body);
 			}			
 		});
 
 		item2.getChild(PARENTORGANISATIONID).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-//				Log.e("XTRACTOR", "organisation : setEndText ParentOrganisationId");
+//				Log.e("SNDESB", "organisation : setEndText ParentOrganisationId");
 				currentOrganisation.setParentOrganisationId(body);
 			}			
 		});
 
 		try {
-			Log.e("XTRACTOR", "organisation : start parsing");		
+			Log.e("SNDESB", "organisation : start parsing");		
 			Xml.parse(instream, Xml.Encoding.UTF_8, root.getContentHandler());
-			Log.e("XTRACTOR", "organisation : stop parsing");		
+			Log.e("SNDESB", "organisation : stop parsing");		
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -485,7 +485,7 @@ public class RestAPI {
 		item.setStartElementListener(new StartElementListener(){
 			public void start(org.xml.sax.Attributes attributes) {
 				currentTavlingsanmalning.setInitialValues();
-//				Log.i("XTRACTOR", "Entry start element");
+//				Log.i("SNDESB", "Entry start element");
 			}
 		});
 
@@ -494,11 +494,11 @@ public class RestAPI {
 				String attr = attributes.getValue("eventForm");
 				// Make sure 'type' is present.
 				if (attr == null) {
-					Log.i("XTRACTOR", "Event element does not contain attribute eventForm");
+					Log.i("SNDESB", "Event element does not contain attribute eventForm");
 					currentTavlingsanmalning.setEventForm("unknown");
 					return;
 				} else {
-//					Log.i("XTRACTOR", "Event/EventForm : " + attr);					
+//					Log.i("SNDESB", "Event/EventForm : " + attr);					
 					currentTavlingsanmalning.setEventForm(attr);
 				}
 			}
@@ -506,7 +506,7 @@ public class RestAPI {
 		
 		item.setEndElementListener(new EndElementListener(){
 			public void end() {
-//				Log.i("XTRACTOR", "parseTavlAnm : endElementListener");
+//				Log.i("SNDESB", "parseTavlAnm : endElementListener");
 				tavlingsanmalningar.add(currentTavlingsanmalning.copy());
 			}
 		});
@@ -514,42 +514,42 @@ public class RestAPI {
 /*		
 		item.getChild(ENTRYID).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-				Log.i("XTRACTOR", "parseTavlAnm : ENTRYID endTextElementListener : " + body);				
+				Log.i("SNDESB", "parseTavlAnm : ENTRYID endTextElementListener : " + body);				
 				currentTavlingsanmalning.setEntryId(body);
 			}
 		});
 
  		item111.getChild(PERSONID).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-				Log.i("XTRACTOR", "parseTavlAnm : PERSONID endTextElementListener : " + body);
+				Log.i("SNDESB", "parseTavlAnm : PERSONID endTextElementListener : " + body);
 				currentTavlingsanmalning.setPersonId(body);
 			}
 		});
 */
         item1111.getChild(FAMILY).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-//				Log.i("XTRACTOR", "parseTavlAnm : FAMILY endTextElementListener : " + body);
+//				Log.i("SNDESB", "parseTavlAnm : FAMILY endTextElementListener : " + body);
 				currentTavlingsanmalning.setFamily(body);
 			}
 		});
 
 		item1111.getChild(GIVEN).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-//				Log.i("XTRACTOR", "parseTavlAnm : GIVEN endTextElementListener : " + body);
+//				Log.i("SNDESB", "parseTavlAnm : GIVEN endTextElementListener : " + body);
 				currentTavlingsanmalning.setGiven(body);
 			}
 		});
 
 		item12.getChild(EVENTCLASSID).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-//				Log.i("XTRACTOR", "parseTavlAnm : EVENTCLASSID endTextElementListener : " + body);
+//				Log.i("SNDESB", "parseTavlAnm : EVENTCLASSID endTextElementListener : " + body);
 				currentTavlingsanmalning.setEventClassId(body);
 			}
 		});
 		
 		item112.getChild(SHORTNAME).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-//				Log.i("XTRACTOR", "parseTavlAnm : SHORTNAME endTextElementListener : " + body);
+//				Log.i("SNDESB", "parseTavlAnm : SHORTNAME endTextElementListener : " + body);
 				currentTavlingsanmalning.setShortName(body);
 			}
 		});
@@ -557,43 +557,43 @@ public class RestAPI {
 /*
  		item112.getChild(ORGANISATIONID).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-				Log.i("XTRACTOR", "parseTavlAnm : ORGANISATIONID endTextElementListener : " + body);
+				Log.i("SNDESB", "parseTavlAnm : ORGANISATIONID endTextElementListener : " + body);
 				currentTavlingsanmalning.setOrganisationId(body);
 			}
 		});
 */					
 		item13.getChild(EVENTID).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-//				Log.i("XTRACTOR", "parseTavlAnm : EVENTID endTextElementListener : " + body);				
+//				Log.i("SNDESB", "parseTavlAnm : EVENTID endTextElementListener : " + body);				
 				currentTavlingsanmalning.setEventId(body);
 			}
 		});
 		
 		item13.getChild(EVENTNAME).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-//				Log.i("XTRACTOR", "parseTavlAnm : EVENTNAME endTextElementListener : " + body);
+//				Log.i("SNDESB", "parseTavlAnm : EVENTNAME endTextElementListener : " + body);
 				currentTavlingsanmalning.setEventName(body);
 			}
 		});
 
 		item131.getChild(DATE).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-//				Log.i("XTRACTOR", "parseTavlAnm : DATE endTextElementListener : " + body);
+//				Log.i("SNDESB", "parseTavlAnm : DATE endTextElementListener : " + body);
 				currentTavlingsanmalning.setEventDate(body);
 			}
 		});
 		
 		try {
-			Log.e("XTRACTOR", "TavlAnm : start parsing");		
+			Log.e("SNDESB", "TavlAnm : start parsing");		
 			Xml.parse(instream, Xml.Encoding.UTF_8, root.getContentHandler());
-			Log.e("XTRACTOR", "TavlAnm : stop parsing");		
+			Log.e("SNDESB", "TavlAnm : stop parsing");		
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 		
-//		Log.i("XTRACTOR", "parsetavlingar : before sort ");
+//		Log.i("SNDESB", "parsetavlingar : before sort ");
 		Collections.sort(tavlingsanmalningar);
-//		Log.i("XTRACTOR", "parsetavlingar : after sort ");
+//		Log.i("SNDESB", "parsetavlingar : after sort ");
 
 		return tavlingsanmalningar;
 	}
@@ -613,43 +613,43 @@ public class RestAPI {
 		
 		item.setEndElementListener(new EndElementListener(){
 			public void end() {
-//				Log.i("XTRACTOR", "parseTavlingsKlasser : endElementListener");
+//				Log.i("SNDESB", "parseTavlingsKlasser : endElementListener");
 				tavlingsklasser.add(currentTavlingsklass.copy());
 			}
 		});
 
 		item.getChild(EVENTCLASSID).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-//				Log.i("XTRACTOR", "parseTavlingsKlasser : EVENTCLASSID endTextElementListener : " + body);				
+//				Log.i("SNDESB", "parseTavlingsKlasser : EVENTCLASSID endTextElementListener : " + body);				
 				currentTavlingsklass.setEventClassId(body);
 			}
 		});
 		
 		item.getChild(EVENTCLASSNAME).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-//				Log.i("XTRACTOR", "parseTavlingsKlasser : EVENTCLASSNAME endTextElementListener : " + body);				
+//				Log.i("SNDESB", "parseTavlingsKlasser : EVENTCLASSNAME endTextElementListener : " + body);				
 				currentTavlingsklass.setClassName(body);
 			}
 		});
 		
 		item.getChild(EVENTCLASSSHORTNAME).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-//				Log.i("XTRACTOR", "parseTavlingsKlasser : EVENTCLASSSHORTNAME endTextElementListener : " + body);				
+//				Log.i("SNDESB", "parseTavlingsKlasser : EVENTCLASSSHORTNAME endTextElementListener : " + body);				
 				currentTavlingsklass.setClassShortName(body);
 			}
 		});
 
 		try {
-			Log.e("XTRACTOR", "TavlingsKlasser : start parsing");		
+			Log.e("SNDESB", "TavlingsKlasser : start parsing");		
 			Xml.parse(instream, Xml.Encoding.UTF_8, root.getContentHandler());
-			Log.e("XTRACTOR", "TavlingsKlasser : stop parsing");		
+			Log.e("SNDESB", "TavlingsKlasser : stop parsing");		
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 		
-//		Log.i("XTRACTOR", "parsetavlingar : before sort ");
+//		Log.i("SNDESB", "parsetavlingar : before sort ");
 //		Collections.sort(tavlingsklasser);
-//		Log.i("XTRACTOR", "parsetavlingar : after sort ");
+//		Log.i("SNDESB", "parsetavlingar : after sort ");
 		
 		return tavlingsklasser;
 	}	

@@ -38,7 +38,7 @@ public class selectklubb  extends Activity {
 	private Button myDateTo; 
 	private String mySelDateFrom;
 	private String mySelDateTo;
-	private String mySelSearchLength;
+//	private String mySelSearchLength;
 	private String mySelForbundId;
 	private String mySelKlubb;
 	private String mySelKlubbId;
@@ -48,7 +48,7 @@ public class selectklubb  extends Activity {
 	
 	private String myBuffSelectedForbundId;
 	private String myBuffSelectedKlubb;
-	private String myBuffSearchLength;
+//	private String myBuffSearchLength;
 
 	private String mySelClassificationIds;								
 	private int openstate;
@@ -81,11 +81,11 @@ public class selectklubb  extends Activity {
 		Object[] o = (Object[]) s;
 
 		if (o != null) {
-			myBuffSearchLength = o[1].toString();
+//			myBuffSearchLength = o[1].toString();
 			myBuffSelectedForbundId = o[3].toString();
 			myBuffSelectedKlubb = o[5].toString();
 		}
-		mySelSearchLength = myBuffSearchLength;
+//		mySelSearchLength = myBuffSearchLength;
 		mySelForbundId = myBuffSelectedForbundId;
 		mySelKlubbId = myBuffSelectedKlubb;
 
@@ -372,7 +372,8 @@ public class selectklubb  extends Activity {
     //
     //
     ///////////////////////////////////////////////////////////
-    public void mySelectFrDateClickHandler(View view) {
+    @SuppressWarnings("deprecation")
+	public void mySelectFrDateClickHandler(View view) {
 
     	switch (view.getId()) {
     	case R.id.selectFDate:
@@ -388,7 +389,8 @@ public class selectklubb  extends Activity {
     //
     //
     ///////////////////////////////////////////////////////////
-    public void mySelectToDateClickHandler(View view) {
+    @SuppressWarnings("deprecation")
+	public void mySelectToDateClickHandler(View view) {
     	switch (view.getId()) {
     	case R.id.selectTDate:
     	{	

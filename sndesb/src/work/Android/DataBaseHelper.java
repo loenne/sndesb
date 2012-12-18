@@ -41,7 +41,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	private static String ORGANISATIONTYPEID = "OrganisationTypeId";
 	private static String PARENTORGANISATIONID = "ParentOrganisationId";
 	private SQLiteDatabase myDataBase;
-	private final Context myContext;
+//	private final Context myContext;
 	long rowId;
 
 	/**
@@ -58,7 +58,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 
 		super(context, DB_NAME, null, 1);
 //		Log.e("SNDESB","DataBaseHelper : Constructor: DB Name:" + DB_NAME);	
-		this.myContext = context;
+//		this.myContext = context;
 	}	
 
 	///////////////////////////////////////////////////////////

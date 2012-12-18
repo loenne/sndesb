@@ -46,7 +46,7 @@ public class klubbanmalning extends Activity
 		int[] to = new int[] { R.id.item1, R.id.item2 };
 		KlubbNamn = new String("");
 		super.onCreate(icicle);
-//		Log.e("XTRACTOR","In klubbanmalningar OnCreate 1");
+//		Log.e("SNDESB","In klubbanmalningar OnCreate 1");
 		setContentView(R.layout.klubbanmalning);
 
 		 Serializable s = this.getIntent().getSerializableExtra("arguments");
@@ -67,7 +67,7 @@ public class klubbanmalning extends Activity
 	       			urlString = urlString + "?organisationIds=" + myKlubbId + "&fromEventDate=" + myDateFrom + "&toEventDate=" + myDateTo;
 	       		}
       			urlString = urlString + "&includePersonElement=true" + "&includeOrganisationElement=true" + "&includeEventElement=true";
-//	       		Log.i("XTRACTOR","klubbanmalning.onCreate : urlString : " + urlString);	       		
+//	       		Log.i("SNDESB","klubbanmalning.onCreate : urlString : " + urlString);	       		
 	     }		 
 
 		 getAnm = new Runnable() {
@@ -84,7 +84,7 @@ public class klubbanmalning extends Activity
 		 list = (ListView) findViewById(R.id.listview);
 		 myAdapter = new SimpleAdapter(this, mylist, R.layout.klubbanmrad, from, to);
 		 list.setAdapter(myAdapter);
-//		 Log.e("XTRACTOR","In klubbanmalningar OnCreate 3");   		
+//		 Log.e("SNDESB","In klubbanmalningar OnCreate 3");   		
    	}
 
 	private void loadAnmalningar() 
@@ -101,14 +101,14 @@ public class klubbanmalning extends Activity
    			if (fetchOk) {
    				tavlingsanmalningar = andRest.parseTavlAnm();
 //   				titles = new ArrayList<String>(tavlingsanmalningar.size());
-//   				Log.e("XTRACTOR","loadAnmalningar : List titles created, size :" + tavlingsanmalningar.size());
+//   				Log.e("SNDESB","loadAnmalningar : List titles created, size :" + tavlingsanmalningar.size());
   				
    				for (tavlingsanmalning tavlAnm : tavlingsanmalningar){
 
 					if (heading == 0) {
 
 						if (tavlAnm.getShortName() != null) {
-//							Log.e("XTRACTOR","loadAnmalningar : Heading updated with : " + tavlAnm.getShortName());					
+//							Log.e("SNDESB","loadAnmalningar : Heading updated with : " + tavlAnm.getShortName());					
 							KlubbNamn = tavlAnm.getShortName();
 							heading = 1;
 						}
@@ -118,18 +118,18 @@ public class klubbanmalning extends Activity
 
 						if ((tavling.compareTo(tavlAnm.getEventName()) != 0) ||
 						    (tavlingsdatum.compareTo(tavlAnm.getEventDate()) != 0)){
-//							Log.e("XTRACTOR","loadAnmalningar : Ny tävling, hämta alla klasser för id " + tavlAnm.getEventId());
+//							Log.e("SNDESB","loadAnmalningar : Ny tävling, hämta alla klasser för id " + tavlAnm.getEventId());
 
 							fetchTavlingsKlasser(tavlAnm.getEventId());							
 
 							// fetchTavlingsStartlista							
 							map = new HashMap<String, String>();
-//							Log.e("XTRACTOR","loadAnmalningar : Ny tävling : " + tavlAnm.getEventName());
+//							Log.e("SNDESB","loadAnmalningar : Ny tävling : " + tavlAnm.getEventName());
 							tavling = tavlAnm.getEventName();
 							tavlingsdatum = tavlAnm.getEventDate();
 							map.put("datum", tavlAnm.getEventDate());
 							map.put("namn", tavlAnm.getEventName());
-//							Log.i("XTRACTOR","loadAnmalningar : Fetched : " + tavlAnm.getEventDate() + " " +tavlAnm.getEventName() +"from EVENTOR");    			
+//							Log.i("SNDESB","loadAnmalningar : Fetched : " + tavlAnm.getEventDate() + " " +tavlAnm.getEventName() +"from EVENTOR");    			
 							mylist.add(map);
 							map = new HashMap<String, String>();
 							map.put("datum", "---------------");
@@ -139,7 +139,7 @@ public class klubbanmalning extends Activity
 					}						
 					// Klass / Namn
 					map = new HashMap<String, String>();
-//	   				Log.e("XTRACTOR","loadAnmalningar : Ny tävlingsanmälning för : " + tavlAnm.getGiven() + " " + tavlAnm.getFamily() + "Form:" + tavlAnm.getEventForm());
+//	   				Log.e("SNDESB","loadAnmalningar : Ny tävlingsanmälning för : " + tavlAnm.getGiven() + " " + tavlAnm.getFamily() + "Form:" + tavlAnm.getEventForm());
 					map.put("datum", tKlasser.get(tavlAnm.getEventClassId()));
 					if ((tavlAnm.getEventForm().compareTo("IndSingleDay") == 0) ||
 						(tavlAnm.getEventForm().compareTo("IndMultiDay") == 0)) {
@@ -147,20 +147,20 @@ public class klubbanmalning extends Activity
 					}else {
 						map.put("namn", KlubbNamn);						
 					}
-//					Log.i("XTRACTOR","loadAnmalningar : Fetched : klassid:" + tavlAnm.getEventClassId() + " Klass: " + tKlasser.get(tavlAnm.getEventClassId()) +" from EVENTOR");    			
+//					Log.i("SNDESB","loadAnmalningar : Fetched : klassid:" + tavlAnm.getEventClassId() + " Klass: " + tKlasser.get(tavlAnm.getEventClassId()) +" from EVENTOR");    			
 					mylist.add(map);
    				}
   			} else {
-  				Log.e("XTRACTOR","loadAnmalningar : Nothing fetched from EVENTOR");    			
+  				Log.e("SNDESB","loadAnmalningar : Nothing fetched from EVENTOR");    			
   			}
   		} catch (Throwable t){
-  			Log.e("XTRACTOR",t.getMessage(),t);
+  			Log.e("SNDESB",t.getMessage(),t);
   		}
   		runOnUiThread(returnRes);
   	}   		
 
 	private void fetchTavlingsKlasser(String id) {
-//		Log.e("XTRACTOR","fetchTavlingsKlasser : tavlId: " + id);
+//		Log.e("SNDESB","fetchTavlingsKlasser : tavlId: " + id);
 
 		try{
    			urlString = urlStringKlass + "?eventId=" + id;
@@ -173,12 +173,12 @@ public class klubbanmalning extends Activity
 				tavlingsklasser = andRest.parseTavlingsKlasser();
 
    				for (tavlingsklass tavlKl : tavlingsklasser){
-//   		  			Log.e("XTRACTOR","fetchTavlingsKlasser : ClassId: " + tavlKl.getEventClassId() + "KlassShortName: " + tavlKl.getClassShortName() );
+//   		  			Log.e("SNDESB","fetchTavlingsKlasser : ClassId: " + tavlKl.getEventClassId() + "KlassShortName: " + tavlKl.getClassShortName() );
    					tKlasser.put(tavlKl.getEventClassId(), tavlKl.getClassShortName());
    				}				
 			}
 		} catch (Throwable t){
-			Log.e("XTRACTOR",t.getMessage(),t);
+			Log.e("SNDESB",t.getMessage(),t);
 		}
 	}
 

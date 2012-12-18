@@ -63,11 +63,11 @@ public class AndroB extends Activity {
 		try {
         	myDbHelper.openDataBase(openstate);
         }catch(SQLException sqle){ 
-    		Log.d("Fetch config: ", "Database does not seem to exist. Try creating it");		
+    		Log.d("SNDESB:","Fetch config: Database does not seem to exist. Try creating it");		
     		createDatabase();
-    		Log.d("Fetch config: ", "Try to create config table");		
+    		Log.d("SNDESB:","Fetch config: Try to create config table");		
     		createConfigTable();
-    		Log.d("Fetch config: ", "Try to create organisations table");		
+    		Log.d("SNDESB:","Fetch config: Try to create organisations table");		
     		createOrganisationsTable(false);
     		
     		try {
@@ -76,13 +76,13 @@ public class AndroB extends Activity {
                	throw sqle2;
             }
         }
-		Log.d("Fetch config: ", "Try to fetch config");		
+		Log.d("SNDESB:","Fetch config: Try to fetch config");		
 		cfg = myDbHelper.getConfig();
 		mySelectedSearchInterval  = cfg.getSearchIntervall();
 		mySelectedForbundId = cfg.getSelectedOrg();
 		mySelectedClubId   = cfg.getSelectedClub();
 
-		Log.d("Fetched config: ", "SearchIntervall: "+mySelectedSearchInterval + " SelectedOrg: "+mySelectedForbundId+" SelectedClub: " + mySelectedClubId);		
+		Log.d("SNDESB:","Fetched config: SearchIntervall: "+mySelectedSearchInterval + " SelectedOrg: "+mySelectedForbundId+" SelectedClub: " + mySelectedClubId);		
 		myDbHelper.close();
 	}	    
     
@@ -121,14 +121,14 @@ public class AndroB extends Activity {
 		}
 
 		try {
-			Log.d("sndesb", "Create config Table");		
+			Log.d("SNDESB", "Create config Table");		
 			myDbHelper.createConfigTable(false);
 		}catch(SQLException sqle){ 
 			throw sqle;
 		}
 
 		try {
-			Log.d("sndesb", "Add record in config Table");		
+			Log.d("SNDESB", "Add record in config Table");		
 			myDbHelper.addConfigRecord();
 		}
 		catch(SQLException sqle) {
@@ -154,7 +154,7 @@ public class AndroB extends Activity {
 		}
 
 		try {
-			Log.d("sndesb", "Create Organisations Table");		
+			Log.d("SNDESB", "Create Organisations Table");		
 			myDbHelper.createOrganisationsTable(drop);	
 		}catch(SQLException sqle){ 
 			throw sqle;
