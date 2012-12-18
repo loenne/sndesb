@@ -102,12 +102,12 @@ public class Organisation implements Comparable<Organisation>{
 	}
 
 	public void printRecord() {
-		Log.e("XTRACTOR","organisation: record:");	
-		Log.e("XTRACTOR","organisation: " + this.organisationId );	
-		Log.e("XTRACTOR","organisation: " + this.organisationTypeId);	
-		Log.e("XTRACTOR","organisation: " + this.name);	
-		Log.e("XTRACTOR","organisation: " + this.shortName);	
-		Log.e("XTRACTOR","organisation: " + this.parentOrganisationId);
+		Log.e("SNDESB","organisation: record:");	
+		Log.e("SNDESB","organisation: " + this.organisationId );	
+		Log.e("SNDESB","organisation: " + this.organisationTypeId);	
+		Log.e("SNDESB","organisation: " + this.name);	
+		Log.e("SNDESB","organisation: " + this.shortName);	
+		Log.e("SNDESB","organisation: " + this.parentOrganisationId);
 	}
 	
 /* 	public void setLink(String link) {

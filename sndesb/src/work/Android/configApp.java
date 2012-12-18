@@ -95,7 +95,7 @@ public class configApp extends Activity {
 			 myBuffSelectedForbund = o[3].toString();
 			 myBuffSelectedKlubb = o[5].toString();		 
 		 }else {
-			 Log.e("SNDESB","cinfigApp start. Passed arguments from main app to config not correct");			 
+			 Log.e("SNDESB","configApp start. Passed arguments from main app to config not correct");			 
 		 }
 
    		mySearchLength.setText(String.valueOf(myBuffSearchLength));
