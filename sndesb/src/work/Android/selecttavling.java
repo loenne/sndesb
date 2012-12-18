@@ -351,7 +351,8 @@ public class selecttavling  extends Activity {
     //
     //
     ///////////////////////////////////////////////////////////
-   	public void mySelectFrDateClickHandler(View view) {
+   	@SuppressWarnings("deprecation")
+	public void mySelectFrDateClickHandler(View view) {
 
    		switch (view.getId()) {
    			case R.id.selectFDate:
@@ -367,7 +368,8 @@ public class selecttavling  extends Activity {
     //
     //
     ///////////////////////////////////////////////////////////
-   	public void mySelectToDateClickHandler(View view) {
+   	@SuppressWarnings("deprecation")
+	public void mySelectToDateClickHandler(View view) {
    		switch (view.getId()) {
    			case R.id.selectTDate:
    			{	

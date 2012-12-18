@@ -13,7 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+//import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,9 +35,9 @@ public class configApp extends Activity {
 	private TextView mySearchLength;
 	private Spinner  myForbundSpinner;
 	private Spinner  myKlubbSpinner;
-	private Button myCreateDatabase; 
+//	private Button myCreateDatabase; 
 //	private Button myUpdateEventor;
-	private Button mySaveConfig;
+//	private Button mySaveConfig;
 	private ArrayList<String> oforbund;
 	private ArrayList<String> oforbundid;
 	private ArrayList<String> oklubbar;
@@ -84,8 +84,8 @@ public class configApp extends Activity {
 		mySearchLength = (TextView)findViewById(R.id.configSearchLengthField);
    		myForbundSpinner = (Spinner)findViewById(R.id.configSearchForbundField);
 		myKlubbSpinner = (Spinner)findViewById(R.id.configSearchKlubbField);
-		myCreateDatabase = (Button)findViewById(R.id.configcreatedatabase);
-   		mySaveConfig = (Button)findViewById(R.id.configsave);
+//		myCreateDatabase = (Button)findViewById(R.id.configcreatedatabase);
+//   		mySaveConfig = (Button)findViewById(R.id.configsave);
    		
 		 Serializable s = this.getIntent().getSerializableExtra("arguments");
 		 Object[] o = (Object[]) s;
