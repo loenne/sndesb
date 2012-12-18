@@ -68,7 +68,6 @@ public class tavltyper extends Dialog {
      
 	private class OKListener implements android.view.View.OnClickListener {
 
-		@Override
 		public void onClick(View v) {
 	        CheckBox typ1 = (CheckBox) findViewById(R.id.ttype1);
 	        CheckBox typ2 = (CheckBox) findViewById(R.id.ttype2);
@@ -84,7 +83,6 @@ public class tavltyper extends Dialog {
 	}
 	private class CancelListener implements android.view.View.OnClickListener {
 
-		@Override
 		public void onClick(View v) {
 /*	        CheckBox typ1 = (CheckBox) findViewById(R.id.ttype1);
 	        CheckBox typ2 = (CheckBox) findViewById(R.id.ttype2);

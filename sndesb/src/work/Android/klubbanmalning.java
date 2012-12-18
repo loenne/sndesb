@@ -71,7 +71,6 @@ public class klubbanmalning extends Activity
 	     }		 
 
 		 getAnm = new Runnable() {
-				@Override
 				public void run() {
 					loadAnmalningar();
 				}
@@ -191,7 +190,6 @@ public class klubbanmalning extends Activity
 	
 	private Runnable returnRes = new Runnable() {
 
-		@Override
 		public void run() {
 			myAdapter.notifyDataSetChanged();
 			mySelectedKlubb.setText(KlubbNamn);

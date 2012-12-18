@@ -119,7 +119,7 @@ public class tavlingar extends Activity  {
 		list = (ListView) findViewById(R.id.listview);
 
 		getComp = new Runnable() {
-			@Override
+
 			public void run() {
 				loadTavlingar();
 			}
@@ -285,7 +285,6 @@ public class tavlingar extends Activity  {
 
 	private Runnable returnRes = new Runnable() {
 
-		@Override
 		public void run() {
 			myAdapter.notifyDataSetChanged();
 /*

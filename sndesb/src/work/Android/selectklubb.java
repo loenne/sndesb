@@ -418,7 +418,6 @@ public class selectklubb  extends Activity {
     //
     ///////////////////////////////////////////////////////////
     private class OnReadyListener implements tavltyper.ReadyListener {
-    	@Override
 
     	public void ready(boolean typ1, boolean typ2, boolean typ3, 
     			boolean typ4, boolean typ5, boolean typ6) {
