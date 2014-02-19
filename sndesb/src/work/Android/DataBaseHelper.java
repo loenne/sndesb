@@ -26,13 +26,14 @@ import java.util.List;
 
 ///////////////////////////////////////////////////////////
 //
-//
+// DataBaseHelper
 //
 ///////////////////////////////////////////////////////////
 public class DataBaseHelper extends SQLiteOpenHelper{
 
 	//The Android's default system path of your application database.
 	private static String DB_PATH = "/data/data/work.Android/databases/";
+//	private static String DB_PATH = "/storage/sdcard0/sndesb/";
 	private static String DB_NAME = "organisations";
 	private static String TABLE_NAME = "Organisation";	
 	private static String ORGANISATIONID = "OrganisationId";
@@ -51,7 +52,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	 */
 	///////////////////////////////////////////////////////////
 	//
-	//
+	// DataBaseHelper constructor
 	//
 	///////////////////////////////////////////////////////////
 	public DataBaseHelper(Context context) {
@@ -63,7 +64,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 
 	///////////////////////////////////////////////////////////
 	//
-	//
+	// createDataBase
 	//
 	///////////////////////////////////////////////////////////
 	/**
@@ -81,8 +82,8 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 		}else{
 			Log.e("SNDESB","DataBaseHelper : database does not exist:");	
 
-			//By calling this method and empty database will be created into the default system path
-			//of your application so we are gonna be able to overwrite that database with our database.
+			//By calling this method an empty database will be created into the default system path
+			//of your application so we are going to be able to overwrite that database with our database.
 			this.getReadableDatabase();
 			Log.e("SNDESB","DataBaseHelper : after getReadableDatabase");
 
@@ -98,20 +99,20 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 
 	///////////////////////////////////////////////////////////
 	//
-	//
+	// checkDataBase
 	//
 	///////////////////////////////////////////////////////////
 	/**
 	 * Check if the database already exist to avoid re-copying the file each time you open the application.
 	 * @return true if it exists, false if it doesn't
 	 */
-	private boolean checkDataBase(){
+	public boolean checkDataBase(){
 
 		SQLiteDatabase checkDB = null;
 
 		try{
 			String myPath = DB_PATH + DB_NAME;
-			Log.e("SNDESB","DataBaseHelper : checkdatabase: open database:");
+			Log.d("SNDESB","DataBaseHelper: checkdatabase: Try to open database");
 
 			checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
 
@@ -133,7 +134,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 
 	///////////////////////////////////////////////////////////
 	//
-	//
+	// copyDataBase
 	//
 	///////////////////////////////////////////////////////////
 	/**
@@ -173,7 +174,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 */
 	///////////////////////////////////////////////////////////
 	//
-	//
+	// openDataBase
 	//
 	///////////////////////////////////////////////////////////
 	public boolean openDataBase(int openstate) throws SQLException{
@@ -192,7 +193,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 
 	///////////////////////////////////////////////////////////
 	//
-	//
+	// close
 	//
 	///////////////////////////////////////////////////////////
 	@Override
@@ -205,7 +206,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 
 	///////////////////////////////////////////////////////////
 	//
-	//
+	// onCreate
 	//
 	///////////////////////////////////////////////////////////
 	@Override
@@ -215,7 +216,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	
 	///////////////////////////////////////////////////////////
 	//
-	//
+	// createOrganisationsTable
 	//
 	///////////////////////////////////////////////////////////
 	public void createOrganisationsTable(boolean drop) {		
@@ -229,7 +230,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	
 	///////////////////////////////////////////////////////////
 	//
-	//
+	// getOrganisation
 	//
 	///////////////////////////////////////////////////////////
 	public Organisation getOrganisation(int id) {		
@@ -265,7 +266,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 
 	///////////////////////////////////////////////////////////
 	//
-	//
+	// getAllOrganisations
 	//
 	///////////////////////////////////////////////////////////
 	public List <Organisation> getAllOrganisations() {		
@@ -299,7 +300,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 
 	///////////////////////////////////////////////////////////
 	//
-	//
+	// getAllForbundNames
 	//
 	///////////////////////////////////////////////////////////
 	public ArrayList <String> getAllForbundNames() {		
@@ -330,7 +331,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	
 	///////////////////////////////////////////////////////////
 	//
-	//
+	// getAllForbundIds
 	//
 	///////////////////////////////////////////////////////////
 	public ArrayList <String> getAllForbundIds() {		
@@ -361,7 +362,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 
 	///////////////////////////////////////////////////////////
 	//
-	//
+	// getOrgClubs
 	//
 	///////////////////////////////////////////////////////////
 	public List <Organisation> getOrgClubs(int id) {		
@@ -495,6 +496,22 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	//
 	//
 	///////////////////////////////////////////////////////////
+	public void deleteAllOrgRecords() {
+		
+		rowId = myDataBase.delete(TABLE_NAME, null, null);
+
+	        // If the insert succeeded, the row ID exists.
+//	        if (rowId <= 0) {
+//	        	// If the insert didn't succeed, then the rowID is <= 0. Throws an exception.
+//	        	throw new SQLException("Failed to insert row into organisations");
+//	        }
+	}		
+	
+	///////////////////////////////////////////////////////////
+	//
+	// onUpgrade
+	//
+	///////////////////////////////////////////////////////////
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
@@ -502,7 +519,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	
 	///////////////////////////////////////////////////////////
 	//
-	//
+	// createConfigTable
 	//
 	///////////////////////////////////////////////////////////
 	public void createConfigTable(boolean drop) {		
@@ -517,7 +534,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	
 	///////////////////////////////////////////////////////////
 	//
-	//
+	// getConfig
 	//
 	///////////////////////////////////////////////////////////
 	public Config getConfig() {		
@@ -543,7 +560,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 
 	///////////////////////////////////////////////////////////
 	//
-	//
+	// updateConfig
 	//
 	///////////////////////////////////////////////////////////
 	public void updateConfig(Config cfg) {		
@@ -562,7 +579,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	
 	///////////////////////////////////////////////////////////
 	//
-	//
+	// addConfigRecord
 	//
 	///////////////////////////////////////////////////////////
 	public void addConfigRecord() {

@@ -28,6 +28,7 @@ public class showabout extends Dialog {
 	
 	private class OKListener implements android.view.View.OnClickListener {
 
+		@Override
 		public void onClick(View v) {
 			showabout.this.dismiss();
 		}		

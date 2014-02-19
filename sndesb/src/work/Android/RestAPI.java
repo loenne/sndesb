@@ -17,12 +17,13 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import work.Android.tavling;
+import work.Android.event;
 import work.Android.Organisation;
 //import org.json.JSONArray;
 //import org.json.JSONException;
 //import org.json.JSONObject;
 
+//import android.os.AsyncTask;
 import android.sax.Element;
 import android.sax.EndElementListener;
 import android.sax.EndTextElementListener;
@@ -31,7 +32,13 @@ import android.sax.StartElementListener;
 import android.util.Log;
 import android.util.Xml;
 
+///////////////////////////////////////////////////////////
+//
+// RestAPI
+//
+///////////////////////////////////////////////////////////
 public class RestAPI {
+//public class RestAPI extends AsyncTask {
 
 	// names of the XML tags
 //	static final String RSS = "rss";
@@ -45,6 +52,8 @@ public class RestAPI {
 	static final String EVENTNAME = "Name";
 	static final String EVENTCLASSIFICATIONID = "EventClassificationId";
 	static final String EVENTSTATUSID = "EventStatusId";
+	static final String DISCIPLINEID = "DisciplineId";
+	static final String DISCIPLINE = "Discipline";
 	static final String STARTDATE = "StartDate";
 	static final String SDATE = "Date";
 	static final String SCLOCK = "Clock";
@@ -108,28 +117,45 @@ public class RestAPI {
 	
 	InputStream instream;
 	String urlString = "https://eventor.orientering.se/api/";
+	String theDisciplinIds;
 	static int counter = 0; 
 	int multiIndex;
 	private ArrayList<String> multiDayNameList;
 	private ArrayList<String> multiDayDateList;
 
+
+//	@Override
+//	protected Object doInBackground(Object... arg0) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}	
+	
+	
+	///////////////////////////////////////////////////////////
+    //
+    // queryRESTurl
+    //
+    ///////////////////////////////////////////////////////////
 	Boolean queryRESTurl(String url) {
+
+//	@Override
+//	protected Boolean doInBackground(String url) {
 		// URLConnection connection;
 		HttpClient httpclient = new DefaultHttpClient();	
 		urlString = urlString + url;
-
-		Log.i("SNDESB", "queryRESTUrl : 1");
+		
+		Log.d("SNDESB", "queryRESTUrl : 1 URL:" + urlString);
 
 		HttpGet httpget = new HttpGet(urlString);
 		httpget.setHeader("ApiKey","b969340e6fd1409b8b6948b9c89f19b8");
 		HttpResponse response;
 
 		counter++;
-//		Log.i("SNDESB", "queryRESTUrl : 2 : counter:" + counter);
+		Log.d("SNDESB", "queryRESTUrl : 2 : counter:" + counter);
 
 		try {
 			response = httpclient.execute(httpget);
-			Log.i("SNDESB", "queryResturl : Status:[" + response.getStatusLine().toString() + "]");
+			Log.d("SNDESB", "queryResturl : Status:[" + response.getStatusLine().toString() + "]");
 			HttpEntity entity = response.getEntity();
 
 			if (entity != null) {
@@ -154,12 +180,32 @@ public class RestAPI {
 		Log.i("SNDESB", "queryRESTurl : AFTER try/catch. Returning false from function");
 		return false;
 	}
+	
+	///////////////////////////////////////////////////////////
+    //
+    // disciplinIdAmongSelection
+    //
+    ///////////////////////////////////////////////////////////
+	boolean disciplinIdAmongSelection(String disciplinId) {
+
+		if (disciplinId.compareTo("1") == 0) {
+			return true;
+		}
+		return false;
+	}
 		
-	public ArrayList<tavling> parseTavlingar() {
-		final tavling currentTavling = new tavling();
-		final ArrayList<tavling> tavlingar = new ArrayList<tavling>();
+	///////////////////////////////////////////////////////////
+    //
+    // parseEvents
+    //
+    ///////////////////////////////////////////////////////////
+	public ArrayList<event> parseEvents(String disciplinIds) {
+		final event currentEvent = new event();
+		final ArrayList<event> events = new ArrayList<event>();
 		multiDayNameList = new ArrayList<String>();
 		multiDayDateList = new ArrayList<String>();
+		
+		theDisciplinIds = disciplinIds;
 		
 		RootElement root = new RootElement(EVENTLIST);
 		Element item = root.getChild(EVENT);
@@ -185,53 +231,63 @@ public class RestAPI {
 //		root.getChild(EVENT).setStartElementListener(new StartElementListener(){
 		item.setStartElementListener(new StartElementListener(){
 			public void start(org.xml.sax.Attributes attributes) {
-				currentTavling.setInitialValues();
+				currentEvent.setInitialValues();
 
 				String attr = attributes.getValue("eventForm");
 				// Make sure 'eventForm' is present.
 				if (attr == null) {
 					Log.i("SNDESB", "Event element does not contain attribute eventForm");
-					currentTavling.setEventForm("unknown");
+					currentEvent.setEventForm("unknown");
 					return;
 				} else {
 //					Log.i("SNDESB", "Event element is set to :" + attr);				
-					currentTavling.setEventForm(attr);
+					currentEvent.setEventForm(attr);
 				}
-				// Om det är en multiday event så spara undan alla subelement (Name/Date)
+				// If it's a multiday event then save all subelements (Name/Date)
 				if (attr.compareTo("IndMultiDay") == 0) {
 					multiIndex = 0;
 					multiDayNameList.clear();
 					multiDayDateList.clear();
-//					Log.i("SNDESB", "Event is a multiDay event");									
+					Log.i("SNDESB", "Event is a multiDay event");									
 				}
 			}
 		});		
-//		Log.i("SNDESB", "parseTavling : item1 :" + item1.toString());
+//		Log.i("SNDESB", "parseEvents : item1 :" + item1.toString());
 
 		// End of EVENT element
 		item.setEndElementListener(new EndElementListener(){
 			public void end() {
-				if (currentTavling.getEventForm().compareTo("IndMultiDay") == 0 ) {
+
+				Log.i("SNDESB", "RestAPI: end(): disciplinId:" + currentEvent.getDisciplineId() + " sel:" + theDisciplinIds);
+
+				// TBD Can multiday events have different disciplinid's ? In that case this needs to be rewritten
+				if (!disciplinIdAmongSelection(currentEvent.getDisciplineId())) {
+					Log.i("SNDESB", "RestAPI: end() Skip competition with disciplinId:" + currentEvent.getDisciplineId());
+					return;
+				}
+
+				if (currentEvent.getEventForm().compareTo("IndMultiDay") == 0 ) {
 
 					//Loopa igenom array
 					int i = 0;
-					String namn = currentTavling.getName();
+					String namn = currentEvent.getName();
 
 					for (i=0; i < multiIndex; i++) {
-						currentTavling.setName(namn + " " + multiDayNameList.get(i));
-						currentTavling.setStartDate(multiDayDateList.get(i));
-						tavlingar.add(currentTavling.copy());
-//						Log.i("SNDESB", "Added event : " + currentTavling.getName() + " to tavlingar");						
+						currentEvent.setName(namn + " " + multiDayNameList.get(i));
+						currentEvent.setStartDate(multiDayDateList.get(i));
+						events.add(currentEvent.copy());
+						Log.i("SNDESB", "RestAPI: end() Add multiday competition (day:" + i + ") Name:" + currentEvent.getName() + " with disciplinId:" + currentEvent.getDisciplineId());									
 					}
 				} else {
-					tavlingar.add(currentTavling.copy());
+					Log.i("SNDESB", "RestAPI: end() Add singleday competition with disciplinId:" + currentEvent.getDisciplineId());									
+					events.add(currentEvent.copy());
 				}
 			}
 		});
-
+		
 		item.getChild(EVENTID).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-				currentTavling.setEventId(body);
+				currentEvent.setEventId(body);
 			}
 		});
 
@@ -250,7 +306,7 @@ public class RestAPI {
 */
 		item.getChild(EVENTNAME).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-				currentTavling.setName(body);
+				currentEvent.setName(body);
 //				 atts.getValue("id"); 
 
 			}
@@ -258,25 +314,37 @@ public class RestAPI {
 
 		item.getChild(EVENTCLASSIFICATIONID).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-				currentTavling.setEventClassificationId(body);
+				currentEvent.setEventClassificationId(body);
 			}
 		});
 
 		item.getChild(EVENTSTATUSID).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-				currentTavling.setEventStatusId(body);
+				currentEvent.setEventStatusId(body);
 			}
 		});
 
+		item.getChild(DISCIPLINEID).setEndTextElementListener(new EndTextElementListener(){
+			public void end(String body) {
+				currentEvent.setDisciplineId(body);
+			}
+		});
+
+		item.getChild(DISCIPLINE).setEndTextElementListener(new EndTextElementListener(){
+			public void end(String body) {
+				currentEvent.setDiscipline(body);
+			}
+		});
+		
 		item.getChild(WEBURL).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-				currentTavling.setWebURL(body);
+				currentEvent.setWebURL(body);
 			}
 		});
 
 		item.getChild(COMMENT).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-				currentTavling.setComment(body);
+				currentEvent.setComment(body);
 			}
 		});
 
@@ -284,7 +352,7 @@ public class RestAPI {
 
 			public void end(String body) {
 //				Log.e("SNDESB", "parseTavling : In item1.getChild : " + body);
-				currentTavling.setStartDate(body);
+				currentEvent.setStartDate(body);
 			}
 		});
 		
@@ -295,21 +363,21 @@ public class RestAPI {
 				// Make sure 'type' is present.
 				if (attr == null) {
 					Log.i("SNDESB", "EventRace element does not contain attribute raceDistance");
-					currentTavling.setRaceDistance("0");
+					currentEvent.setRaceDistance("0");
 					return;
 				} else {
 //					Log.i("SNDESB", "EventRace/raceDistance : " + attr);					
-					currentTavling.setRaceDistance(attr);
+					currentEvent.setRaceDistance(attr);
 				}
 				attr = attributes.getValue("raceLightCondition");
 				// Make sure 'type' is present.
 				if (attr == null) {
 					Log.i("SNDESB", "EventRace element does not contain attribute raceLightCondition");
-					currentTavling.setRaceLightCondition("0");
+					currentEvent.setRaceLightCondition("0");
 					return;
 				} else {
 //					Log.i("SNDESB", "EventRace/raceLightCondition : " + attr);					
-					currentTavling.setRaceLightCondition(attr);
+					currentEvent.setRaceLightCondition(attr);
 				}
 			}
 		});
@@ -319,7 +387,7 @@ public class RestAPI {
 			public void end() {
 				// Skapa ett eventRace objekt. Alla eventRace objeckt ska sedan skapa tavlingsobjekt när item.endElement
 				multiIndex = multiIndex + 1;
-				//				tavlingar.add(currentTavling.copy());
+				//				events.add(currentEvent.copy());
 			}
 		});
 		
@@ -336,29 +404,29 @@ public class RestAPI {
 				// Make sure 'type' is present.
 				if (attr == null) {
 					Log.i("SNDESB", "EventCenterPosition element does not contain attribute y");
-					currentTavling.setGPSYCoordinates("0");
+					currentEvent.setGPSYCoordinates("0");
 					return;
 				} else {
 //					Log.i("SNDESB", "EventCenterPosition/y : " + attr);					
-					currentTavling.setGPSYCoordinates(attr);
+					currentEvent.setGPSYCoordinates(attr);
 				}
 
 				attr = attributes.getValue("x");
 				// Make sure 'type' is present.
 				if (attr == null) {
 					Log.i("SNDESB", "EventCenterPosition element does not contain attribute x");
-					currentTavling.setGPSXCoordinates("0");
+					currentEvent.setGPSXCoordinates("0");
 					return;
 				} else {
 //					Log.i("SNDESB", "EventCenterPosition/x : " + attr);					
-					currentTavling.setGPSXCoordinates(attr);
+					currentEvent.setGPSXCoordinates(attr);
 				}
 			}
 		});
 
 		item2.getChild(EVENTRACENAME).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-				if (currentTavling.getEventForm().compareTo("IndMultiDay") == 0) {
+				if (currentEvent.getEventForm().compareTo("IndMultiDay") == 0) {
 					multiDayNameList.add(body);
 //					Log.i("SNDESB", "Event name " + body + " found");									
 				}
@@ -367,7 +435,7 @@ public class RestAPI {
 
 		item4.getChild(DATE).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-				if (currentTavling.getEventForm().compareTo("IndMultiDay") == 0) {
+				if (currentEvent.getEventForm().compareTo("IndMultiDay") == 0) {
 					multiDayDateList.add(body);
 //					Log.i("SNDESB", "Event date " + body + " found");									
 				}
@@ -376,8 +444,8 @@ public class RestAPI {
 		
 		item3.getChild(ORGANISATIONID).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-				currentTavling.setOrganisationId(body);
-				currentTavling.setOrganisationName("");
+				currentEvent.setOrganisationId(body);
+				currentEvent.setOrganisationName("");
 			}
 		});
 		
@@ -388,14 +456,16 @@ public class RestAPI {
 		}
 		
 //		Log.i("SNDESB", "parsetavlingar : before sort ");
-		Collections.sort(tavlingar);
+		Collections.sort(events);
 //		Log.i("SNDESB", "parsetavlingar : after sort ");
-		return tavlingar;
+		return events;
 	}
 	
-/*
- * 	
- */
+	///////////////////////////////////////////////////////////
+    //
+    // parseOrganisations
+    //
+    ///////////////////////////////////////////////////////////
 	public List<Organisation> parseOrganisations() {
 		final Organisation currentOrganisation = new Organisation();
 		final List<Organisation> organisationer = new ArrayList<Organisation>();
@@ -447,31 +517,36 @@ public class RestAPI {
   		
 		item.getChild(ORGANISATIONTYPEID).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-//				Log.e("SNDESB", "organisation : setEndText organisationTypeId");
+//				Log.d("SNDESB", "organisation : setEndText organisationTypeId");
 				currentOrganisation.setOrganisationTypeId(body);
 			}			
 		});
 
 		item2.getChild(PARENTORGANISATIONID).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-//				Log.e("SNDESB", "organisation : setEndText ParentOrganisationId");
+//				Log.d("SNDESB", "organisation : setEndText ParentOrganisationId");
 				currentOrganisation.setParentOrganisationId(body);
 			}			
 		});
 
 		try {
-			Log.e("SNDESB", "organisation : start parsing");		
+			Log.d("SNDESB", "organisation : start parsing");		
 			Xml.parse(instream, Xml.Encoding.UTF_8, root.getContentHandler());
-			Log.e("SNDESB", "organisation : stop parsing");		
+			Log.d("SNDESB", "organisation : stop parsing");		
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 		return organisationer;
 	}
 
-	public ArrayList<tavlingsanmalning> parseTavlAnm() {
-		final tavlingsanmalning currentTavlingsanmalning = new tavlingsanmalning();
-		final ArrayList<tavlingsanmalning> tavlingsanmalningar = new ArrayList<tavlingsanmalning>();
+	///////////////////////////////////////////////////////////
+    //
+    // parseEventEntries
+    //
+    ///////////////////////////////////////////////////////////
+	public ArrayList<evententry> parseEventEntries() {
+		final evententry currentEventsanmalning = new evententry();
+		final ArrayList<evententry> evententries = new ArrayList<evententry>();
 		RootElement root = new RootElement(ENTRYLIST);
 		Element item = root.getChild(ENTRY);
 		Element item11 = item.getChild(COMPETITOR);
@@ -484,7 +559,7 @@ public class RestAPI {
 
 		item.setStartElementListener(new StartElementListener(){
 			public void start(org.xml.sax.Attributes attributes) {
-				currentTavlingsanmalning.setInitialValues();
+				currentEventsanmalning.setInitialValues();
 //				Log.i("SNDESB", "Entry start element");
 			}
 		});
@@ -495,11 +570,11 @@ public class RestAPI {
 				// Make sure 'type' is present.
 				if (attr == null) {
 					Log.i("SNDESB", "Event element does not contain attribute eventForm");
-					currentTavlingsanmalning.setEventForm("unknown");
+					currentEventsanmalning.setEventForm("unknown");
 					return;
 				} else {
 //					Log.i("SNDESB", "Event/EventForm : " + attr);					
-					currentTavlingsanmalning.setEventForm(attr);
+					currentEventsanmalning.setEventForm(attr);
 				}
 			}
 		});
@@ -507,7 +582,7 @@ public class RestAPI {
 		item.setEndElementListener(new EndElementListener(){
 			public void end() {
 //				Log.i("SNDESB", "parseTavlAnm : endElementListener");
-				tavlingsanmalningar.add(currentTavlingsanmalning.copy());
+				evententries.add(currentEventsanmalning.copy());
 			}
 		});
 
@@ -515,42 +590,42 @@ public class RestAPI {
 		item.getChild(ENTRYID).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
 				Log.i("SNDESB", "parseTavlAnm : ENTRYID endTextElementListener : " + body);				
-				currentTavlingsanmalning.setEntryId(body);
+				currentEventsanmalning.setEntryId(body);
 			}
 		});
 
  		item111.getChild(PERSONID).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
 				Log.i("SNDESB", "parseTavlAnm : PERSONID endTextElementListener : " + body);
-				currentTavlingsanmalning.setPersonId(body);
+				currentEventsanmalning.setPersonId(body);
 			}
 		});
 */
         item1111.getChild(FAMILY).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
 //				Log.i("SNDESB", "parseTavlAnm : FAMILY endTextElementListener : " + body);
-				currentTavlingsanmalning.setFamily(body);
+				currentEventsanmalning.setFamily(body);
 			}
 		});
 
 		item1111.getChild(GIVEN).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
 //				Log.i("SNDESB", "parseTavlAnm : GIVEN endTextElementListener : " + body);
-				currentTavlingsanmalning.setGiven(body);
+				currentEventsanmalning.setGiven(body);
 			}
 		});
 
 		item12.getChild(EVENTCLASSID).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
 //				Log.i("SNDESB", "parseTavlAnm : EVENTCLASSID endTextElementListener : " + body);
-				currentTavlingsanmalning.setEventClassId(body);
+				currentEventsanmalning.setEventClassId(body);
 			}
 		});
 		
 		item112.getChild(SHORTNAME).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
 //				Log.i("SNDESB", "parseTavlAnm : SHORTNAME endTextElementListener : " + body);
-				currentTavlingsanmalning.setShortName(body);
+				currentEventsanmalning.setShortName(body);
 			}
 		});
 
@@ -558,28 +633,28 @@ public class RestAPI {
  		item112.getChild(ORGANISATIONID).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
 				Log.i("SNDESB", "parseTavlAnm : ORGANISATIONID endTextElementListener : " + body);
-				currentTavlingsanmalning.setOrganisationId(body);
+				currentEventsanmalning.setOrganisationId(body);
 			}
 		});
 */					
 		item13.getChild(EVENTID).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
 //				Log.i("SNDESB", "parseTavlAnm : EVENTID endTextElementListener : " + body);				
-				currentTavlingsanmalning.setEventId(body);
+				currentEventsanmalning.setEventId(body);
 			}
 		});
 		
 		item13.getChild(EVENTNAME).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
 //				Log.i("SNDESB", "parseTavlAnm : EVENTNAME endTextElementListener : " + body);
-				currentTavlingsanmalning.setEventName(body);
+				currentEventsanmalning.setEventName(body);
 			}
 		});
 
 		item131.getChild(DATE).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
 //				Log.i("SNDESB", "parseTavlAnm : DATE endTextElementListener : " + body);
-				currentTavlingsanmalning.setEventDate(body);
+				currentEventsanmalning.setEventDate(body);
 			}
 		});
 		
@@ -591,11 +666,11 @@ public class RestAPI {
 			throw new RuntimeException(e);
 		}
 		
-//		Log.i("SNDESB", "parsetavlingar : before sort ");
-		Collections.sort(tavlingsanmalningar);
-//		Log.i("SNDESB", "parsetavlingar : after sort ");
+//		Log.i("SNDESB", "parseEventEntries : before sort ");
+		Collections.sort(evententries);
+//		Log.i("SNDESB", "parseEventEntries : after sort ");
 
-		return tavlingsanmalningar;
+		return evententries;
 	}
 	
 /*
@@ -605,37 +680,42 @@ public class RestAPI {
         <xs:element ref="ClassShortName" />
    */
 	
-	public ArrayList<tavlingsklass> parseTavlingsKlasser() {
-		final tavlingsklass currentTavlingsklass = new tavlingsklass();
-		final ArrayList<tavlingsklass> tavlingsklasser = new ArrayList<tavlingsklass>();
+	///////////////////////////////////////////////////////////
+    //
+    // parseEventClasses
+    //
+    ///////////////////////////////////////////////////////////
+	public ArrayList<eventclass> parseEventClasses() {
+		final eventclass currentEventsklass = new eventclass();
+		final ArrayList<eventclass> eventclasses = new ArrayList<eventclass>();
 		RootElement root = new RootElement(EVENTCLASSLIST);
 		Element item = root.getChild(EVENTCLASS);
 		
 		item.setEndElementListener(new EndElementListener(){
 			public void end() {
-//				Log.i("SNDESB", "parseTavlingsKlasser : endElementListener");
-				tavlingsklasser.add(currentTavlingsklass.copy());
+//				Log.i("SNDESB", "parseEventClasses : endElementListener");
+				eventclasses.add(currentEventsklass.copy());
 			}
 		});
 
 		item.getChild(EVENTCLASSID).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-//				Log.i("SNDESB", "parseTavlingsKlasser : EVENTCLASSID endTextElementListener : " + body);				
-				currentTavlingsklass.setEventClassId(body);
+//				Log.i("SNDESB", "parseEventClasses : EVENTCLASSID endTextElementListener : " + body);				
+				currentEventsklass.setEventClassId(body);
 			}
 		});
 		
 		item.getChild(EVENTCLASSNAME).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-//				Log.i("SNDESB", "parseTavlingsKlasser : EVENTCLASSNAME endTextElementListener : " + body);				
-				currentTavlingsklass.setClassName(body);
+//				Log.i("SNDESB", "parseEventClasses : EVENTCLASSNAME endTextElementListener : " + body);				
+				currentEventsklass.setClassName(body);
 			}
 		});
 		
 		item.getChild(EVENTCLASSSHORTNAME).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-//				Log.i("SNDESB", "parseTavlingsKlasser : EVENTCLASSSHORTNAME endTextElementListener : " + body);				
-				currentTavlingsklass.setClassShortName(body);
+//				Log.i("SNDESB", "parseEventClasses : EVENTCLASSSHORTNAME endTextElementListener : " + body);				
+				currentEventsklass.setClassShortName(body);
 			}
 		});
 
@@ -647,16 +727,14 @@ public class RestAPI {
 			throw new RuntimeException(e);
 		}
 		
-//		Log.i("SNDESB", "parsetavlingar : before sort ");
-//		Collections.sort(tavlingsklasser);
-//		Log.i("SNDESB", "parsetavlingar : after sort ");
+//		Log.i("SNDESB", "parseevents : before sort ");
+//		Collections.sort(eventclasses);
+//		Log.i("SNDESB", "parseevents : after sort ");
 		
-		return tavlingsklasser;
-	}	
+		return eventclasses;
+	}
+
 	
-/*
- * 
- */
 /*	private String convertStreamToString(InputStream is) throws IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 		StringBuilder sb = new StringBuilder();
