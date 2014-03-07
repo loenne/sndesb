@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/myBackgroundColour"
-    android:gravity="center"
     android:orientation="vertical"
-    android:paddingBottom="20dp" >
+    tools:context=".sndesb" >
 
     <TextView
-        android:id="@+id/configheading1"
+        android:id="@+id/tavlingrubrik1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -16,7 +16,7 @@
         android:gravity="center"
         android:paddingBottom="20dp"
         android:paddingTop="20dp"
-        android:text="@string/configheading1"
+        android:text="@string/tavlingrubrik1"
         android:textColor="@color/myTextColour"
         android:textSize="18sp"
         android:textStyle="bold" >
@@ -30,128 +30,120 @@
         android:orientation="horizontal" >
 
         <TextView
-            android:id="@+id/configsearchlength"
-            android:layout_width="190dip"
+            android:id="@+id/tavlingrubrik2"
+            android:layout_width="120dip"
             android:layout_height="wrap_content"
             android:clickable="false"
             android:gravity="left"
             android:paddingBottom="20dp"
-            android:text="@string/configsearchlength"
+            android:text="@string/tavlingrubrik2"
             android:textColor="@color/myTextColour"
             android:textSize="18sp"
             android:textStyle="bold" >
         </TextView>
 
-        <EditText
-            android:id="@+id/configSearchLengthField"
-            android:layout_width="50dp"
+        <Button
+            android:id="@+id/selectFDate"
+            android:layout_width="160dip"
             android:layout_height="wrap_content"
-            android:inputType="number"
+            android:onClick="mySelectFrDateClickHandler"
             android:textColor="@color/myTextColour"
             android:textSize="18sp"
             android:textStyle="bold" >
-        </EditText>
+        </Button>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@color/myBackgroundColour"
-        android:clickable="false"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/configsearchforbund"
-            android:layout_width="174dp"
-            android:layout_height="wrap_content"
-            android:clickable="false"
-            android:gravity="left"
-            android:paddingBottom="5dp"
-            android:text="@string/configsearchforbund"
-            android:textColor="@color/myTextColour"
-            android:textSize="18sp"
-            android:textStyle="bold" >
-        </TextView>
-
-        <Spinner
-            android:id="@+id/configSearchForbundField"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:textSize="18sp" >
-        </Spinner>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/myBackgroundColour"
-        android:clickable="false"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/configsearchclub"
-            android:layout_width="174dp"
-            android:layout_height="wrap_content"
-            android:clickable="false"
-            android:gravity="left"
-            android:paddingBottom="5dp"
-            android:text="@string/configsearchclub"
-            android:textColor="@color/myTextColour"
-            android:textSize="18sp"
-            android:textStyle="bold" >
-        </TextView>
-
-        <Spinner
-            android:id="@+id/configsearchclubbfield"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:textSize="18sp" >
-        </Spinner>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="0dip"
-        android:layout_weight="0.12"
-        android:background="@color/myBackgroundColour"
-        android:clickable="false"
-        android:orientation="vertical" >
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="122dp"
         android:background="@color/myBackgroundColour"
         android:clickable="false"
         android:orientation="horizontal" >
 
-        <Button
-            android:id="@+id/configsave"
-            android:layout_width="75dp"
+        <TextView
+            android:id="@+id/tavlingrubrik3"
+            android:layout_width="120dip"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:onClick="myCreateDatabaseClickHandler"
-            android:text="@string/configsave"
+            android:gravity="left"
+            android:paddingBottom="20dp"
+            android:text="@string/tavlingrubrik3"
             android:textColor="@color/myTextColour"
             android:textSize="18sp"
-            android:textStyle="bold">
-        </Button>
+            android:textStyle="bold" >
+        </TextView>
+
         <Button
-            android:id="@+id/configcreatedatabase"
-            android:layout_width="200dip"
+            android:id="@+id/selectTDate"
+            android:layout_width="160dip"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:onClick="myCreateDatabaseClickHandler"
-            android:text="@string/configcreatedatabase"
+            android:onClick="mySelectToDateClickHandler"
             android:textColor="@color/myTextColour"
             android:textSize="18sp"
             android:textStyle="bold" >
         </Button>
-        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/myBackgroundColour"
+        android:clickable="false"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tavlingrubrik4"
+            android:layout_width="120dip"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:paddingBottom="10dp"
+            android:text="@string/tavlingrubrik4"
+            android:textColor="@color/myTextColour"
+            android:textSize="18sp"
+            android:textStyle="bold" >
+        </TextView>
+
+        <Spinner
+            android:id="@+id/spinner1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp"
+            android:textColor="@color/myTextColour"
+            android:textSize="18sp" >
+        </Spinner>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/myBackgroundColour"
+        android:clickable="false"
+        android:orientation="horizontal"
+        android:paddingTop="20dp" >
+
+        <Button
+            android:id="@+id/eventtypechoice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="myEventSearchClickHandler"
+            android:text="@string/eventtypechoice"
+            android:textColor="@color/myTextColour"
+            android:textSize="18sp"
+            android:width="160dip" >
+        </Button>
+
+        <Button
+            android:id="@+id/searchchoice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="myEventSearchClickHandler"
+            android:text="@string/searchchoice"
+            android:textColor="@color/myTextColour"
+            android:textSize="18sp"
+            android:width="95dip" >
+        </Button>
+    </LinearLayout>
 
 </LinearLayout>

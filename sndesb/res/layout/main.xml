@@ -1,94 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/myBackgroundColour"
     android:orientation="vertical"
-    android:background="@color/myBackgroundColour"   
-    android:textColor="@color/myTextColour"   
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content">
-    <TextView 
-        android:text="@string/rubrik1" 
-        android:textSize="18dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="5dp"
-        android:layout_width="fill_parent" 
-        android:layout_height="wrap_content" 
-        android:editable="false" 
+    android:textColor="@color/myTextColour"
+    tools:context=".sndesb" >
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:clickable="false"
-        android:gravity="center_horizontal" 
-        android:textStyle="bold" 
-        android:textColor="@color/myTextColour"> 
-    </TextView>
-    <ImageView 
-        android:id="@+id/imageView1" 
-        android:layout_gravity="center|fill_horizontal" 
-        android:src="@drawable/skogskarm" 
-        android:layout_height="wrap_content" 
-        android:layout_width="wrap_content" 
-        android:clickable="false" 
+        android:gravity="center_horizontal"
+        android:paddingBottom="5dp"
         android:paddingTop="20dp"
+        android:text="@string/rubrik1"
+        android:textColor="@color/myTextColour"
+        android:textSize="18sp"
+        android:textStyle="bold" >
+    </TextView>
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="0dip"
+        android:layout_gravity="center|fill_horizontal"
+        android:layout_weight="1"
+        android:clickable="false"
+        android:contentDescription="@string/app_descr"
         android:paddingBottom="40dp"
-        android:layout_weight="1">
+        android:paddingTop="20dp"
+        android:src="@drawable/skogskarm" >
     </ImageView>
-    <LinearLayout 
-        xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="60dip"
+        android:background="@color/myBackgroundColour"
         android:orientation="horizontal"
-        android:background="@color/myBackgroundColour"   
-        android:textColor="@color/myTextColour"   
-        android:layout_width="fill_parent" 
         android:paddingBottom="10dp"
-        android:layout_height="60dip">
-        <Button 
-            android:id="@+id/tavlingsval" 
-            android:text="@string/tavlingsval" 
-            android:textSize="16dp"
-            android:layout_gravity="center" 
-            android:layout_width="wrap_content" 
-            android:onClick="myClickHandler" 
+        android:textColor="@color/myTextColour" >
+
+        <Button
+            android:id="@+id/eventchoice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.4"
+            android:clickable="true"
+            android:onClick="myClickHandler"
+            android:text="@string/eventchoice"
             android:textColor="@color/myTextColour"
             android:textColorHighlight="@color/myColor2"
-            android:clickable="true" 
-            android:editable="false" 
-            android:layout_height="wrap_content"
-            android:layout_weight="0.4">            
+            android:textSize="18sp" >
         </Button>
-        <Button 
-            android:id="@+id/klubbval" 
-            android:text="@string/klubbval" 
-            android:textSize="16dp"
-            android:layout_gravity="center" 
-            android:layout_width="wrap_content" 
+
+        <Button
+            android:id="@+id/clubchoice"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="myClickHandler" 
+            android:layout_gravity="center"
+            android:layout_weight="0.6"
+            android:clickable="true"
+            android:onClick="myClickHandler"
+            android:text="@string/clubchoice"
             android:textColor="@color/myTextColour"
             android:textColorHighlight="@color/myColor2"
-            android:clickable="true" 
-            android:editable="false" 
-            android:layout_weight="0.6">            
+            android:textSize="18sp" >
         </Button>
     </LinearLayout>
-    <LinearLayout 
-        xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dip"
+        android:background="@color/myBackgroundColour"
+        android:baselineAligned="true"
         android:orientation="horizontal"
-        android:background="@color/myBackgroundColour"   
-        android:textColor="@color/myTextColour"   
-        android:layout_width="fill_parent" 
-        android:layout_height="50dip" 
-        android:baselineAligned="true">
-        <Button 
-            android:id="@+id/loparval" 
-            android:text="@string/loparval" 
-            android:textSize="16dp"
-            android:layout_gravity="center" 
-            android:gravity="center" 
-            android:layout_width="fill_parent"
+        android:textColor="@color/myTextColour" >
+
+        <Button
+            android:id="@+id/runnerchoice"
+            android:layout_width="0dip"
             android:layout_height="fill_parent"
-            android:onClick="myClickHandler" 
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:gravity="center"
+            android:onClick="myClickHandler"
+            android:text="@string/runnerchoice"
             android:textColor="@color/myTextColour"
             android:textColorHighlight="@color/myColor2"
-            android:clickable="true" 
-            android:editable="false"
-            android:layout_weight="1">
+            android:textSize="18sp" >
         </Button>
     </LinearLayout>
+
 </LinearLayout>
