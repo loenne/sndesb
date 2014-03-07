@@ -102,6 +102,7 @@ public class sndesb extends Activity {
 
 		try {
 			myDbHelper.openDataBase(openstate);
+	        Log.d("SNDESB","dbSetup: Database opened");       
 		}catch(SQLException sqle){ 
 			throw sqle;
 		}
