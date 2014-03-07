@@ -229,7 +229,7 @@ public class eventinfo extends Activity {
 		}
 		case R.id.startlist:
 		{
-			Toast.makeText(this, "Du vill hämta startlist !!",
+			Toast.makeText(this, "You want to fetch the startlist",
 			Toast.LENGTH_LONG).show();
 /*			
 			String kalle[] = new String[4];
