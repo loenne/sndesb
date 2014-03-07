@@ -23,13 +23,14 @@ import android.widget.AdapterView.OnItemSelectedListener;
 
 
 public class configapp extends Activity {
-	final int MAX_FORBUND = 24;
+    final int MAX_FORBUND = 24;
 
 	private ArrayList<String> organisationId;
 	private ArrayList<String> organisationTypeId;
 	private ArrayList<String> name;
 	private ArrayList<String> shortName;
 	private ArrayList<String> parentOrganisationId;
+	
 	private Runnable getEntr;
 	SimpleAdapter myAdapter;
 	private ProgressDialog m_ProgressDialog = null;
@@ -40,15 +41,16 @@ public class configapp extends Activity {
 	private TextView mySearchLength;
 	private Spinner  myForbundSpinner;
 	private Spinner  myKlubbSpinner;
-//	private Button myCreateDatabase; 
-//	private Button myUpdateEventor;
-//	private Button mySaveConfig;
+
+	//	private Button myCreateDatabase; 
+	//	private Button myUpdateEventor;
+	//	private Button mySaveConfig;
 	private ArrayList<String> oforbund;
 	private ArrayList<String> oforbundid;
 	private ArrayList<String> oklubbar;
 	private ArrayList<String> oklubbarid;
-//	private String mySelKlubb;
-//	private String mySelForbund;
+	//	private String mySelKlubb;
+	//	private String mySelForbund;
 	
 	// Selected config values
 	private int mySelSearchLength;
@@ -57,48 +59,48 @@ public class configapp extends Activity {
 
 	private int mySelForbundIndx;
 	private int mySelKlubbIndx;	
-	
 	private int myKlubbIdCreated;
 
 	private String myBuffSearchLength;
 	private String myBuffSelectedForbund;
 	private String myBuffSelectedKlubb;	
-	
+	private String myBuffConnectionState;
 	private List <Organisation> allaOrg;
 	private Config cfg;
 	private Context cont;
-	private int openstate;
+	private int openstate; 
 	
 	@Override	
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.configapp);
+	    super.onCreate(savedInstanceState);
+	    setContentView(R.layout.configapp);
 
-		oforbund = new ArrayList<String>();
-		oforbundid = new ArrayList<String>();
-		oklubbar = new ArrayList<String>();
-		oklubbarid = new ArrayList<String>();
-		oforbund.clear();
-		oforbundid.clear();
-		oklubbar.clear();
-		oklubbarid.clear();
-		mySelForbundIndx = 0;
-		myKlubbIdCreated = 0;
-		openstate = 0;
-
-		mySearchLength = (TextView)findViewById(R.id.configSearchLengthField);
-   		myForbundSpinner = (Spinner)findViewById(R.id.configSearchForbundField);
-		myKlubbSpinner = (Spinner)findViewById(R.id.configsearchclubbfield);
-//		myCreateDatabase = (Button)findViewById(R.id.configcreatedatabase);
-//   		mySaveConfig = (Button)findViewById(R.id.configsave);
+	    oforbund = new ArrayList<String>();
+	    oforbundid = new ArrayList<String>();
+	    oklubbar = new ArrayList<String>();
+	    oklubbarid = new ArrayList<String>();
+	    oforbund.clear();
+	    oforbundid.clear();
+	    oklubbar.clear();
+	    oklubbarid.clear();
+	    mySelForbundIndx = 0;
+	    myKlubbIdCreated = 0;
+	    openstate = 0;
+	    mySearchLength = (TextView)findViewById(R.id.configSearchLengthField);
+	    myForbundSpinner = (Spinner)findViewById(R.id.configSearchForbundField);
+	    myKlubbSpinner = (Spinner)findViewById(R.id.configsearchclubbfield);
+	    //		myCreateDatabase = (Button)findViewById(R.id.configcreatedatabase);
+	    //   		mySaveConfig = (Button)findViewById(R.id.configsave);
    		
-		 Serializable s = this.getIntent().getSerializableExtra("arguments");
-		 Object[] o = (Object[]) s;
+	    Serializable s = this.getIntent().getSerializableExtra("arguments");
+	    Object[] o = (Object[]) s;
 
-		 if (o != null) {
-			 myBuffSearchLength = o[1].toString();
-			 myBuffSelectedForbund = o[3].toString();
-			 myBuffSelectedKlubb = o[5].toString();		 
+	    if (o != null) {
+	        myBuffSearchLength = o[1].toString();
+	        myBuffSelectedForbund = o[3].toString();
+	        myBuffSelectedKlubb = o[5].toString();		 
+	        myBuffConnectionState = o[7].toString();
+
 		 }else {
 			 Log.e("SNDESB","configApp start. Passed arguments from main app to config not correct");			 
 		 }
@@ -109,7 +111,10 @@ public class configapp extends Activity {
    		mySelForbundId = Integer.parseInt(myBuffSelectedForbund);
    		mySelKlubbId = Integer.parseInt(myBuffSelectedKlubb);
    		
-		Log.d("SNDESB","configApp: Fetch all forbund records from config database");
+   		// TODO: Add check for if the database have been fetched from Eventor. Should be part of
+   		// TODO: installation ? and then it should be able to refresh (update )
+   		// TODO: As it is working now, we don't fetch data before this and app crashes !!
+   		Log.d("SNDESB","configApp: Fetch all forbund records from config database");
 		fetchAllOrganisationNamesAndIds();
 		Log.d("SNDESB","configApp: Fetch all clubs belonging to configured forbund: " + myBuffSelectedForbund + " from config database");
 		int forbId = Integer.parseInt(myBuffSelectedForbund);
@@ -333,6 +338,7 @@ public class configapp extends Activity {
 				mySelKlubbIndx = i;
 				mySelKlubbId = Integer.parseInt(oklubbarid.get(i));
 				Log.d("SNDESB","Found klubbid: " + mySelKlubbId + " in index : " + i + " name:" + oklubbar.get(i));
+				break;
 			}
 			i++;
 		}
@@ -495,7 +501,7 @@ public class configapp extends Activity {
     ///////////////////////////////////////////////////////////
 	public void fetchFromEventor() {
 		
-		int count = 0;
+		//int count = 0;
 		String urlString = "organisations";
 
 		boolean fetchOk = false;
@@ -549,7 +555,7 @@ public class configapp extends Activity {
 	  						}  						
 						}
 					 */
-					count++;
+					//count++;
 				}
 				Log.d("SNDESB","myCreateDatabaseClickHandler: Store organisations to config database");
 				storeOrganisationsToDatabase();				
@@ -558,7 +564,7 @@ public class configapp extends Activity {
 						Toast.LENGTH_LONG).show();
 			}
 		} catch (Throwable t){
-			Log.e("SNDESB","fetchOrganisationsFromEventor: Failing to fetch forbund: " + t.getMessage(), t);
+			Log.e("SNDESB","fetchOrganisationsFromEventor: Failing to fetch organisations: " + t.getMessage(), t);
 		}
   		runOnUiThread(returnRes);
 		
@@ -619,14 +625,15 @@ public class configapp extends Activity {
 //			mySelForbund = parent.getItemAtPosition(pos).toString();
 			mySelForbundId = Integer.parseInt(oforbundid.get(pos));
 			mySelForbundIndx = pos;
-			Integer val = new Integer(mySelForbundId);
+//			Integer val = new Integer(mySelForbundId);
+			Integer val = Integer.valueOf(mySelForbundId);
 			Log.d("SNDESB","MyOnForbundItemSelectedListener: Before fetching clubs for " + val);
 			fetchOrgClubNamesAndIds(val);
 
 			mySpinnerKlubbArrayAdapter = new ArrayAdapter<String>(cont, R.layout.spinnerlayout, oklubbar);
 			mySpinnerKlubbArrayAdapter.setDropDownViewResource(R.layout.spinnerlayout);
 			myKlubbSpinner.setAdapter(mySpinnerKlubbArrayAdapter);
-	   		myKlubbSpinner.setSelection(0,true);
+	   		myKlubbSpinner.setSelection(mySelKlubbIndx,true);
 			Log.d("SNDESB","MyOnForbundItemSelectedListener: After" );
 			Log.d("SNDESB","oklubbar:" + oklubbar.get(0) + oklubbar.get(1) + oklubbar.get(2) );			
    	    }

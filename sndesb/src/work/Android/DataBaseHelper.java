@@ -2,19 +2,37 @@ package work.Android;
 
 import android.database.Cursor;
 import android.database.SQLException;
-
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 //import android.database.sqlite.SQLiteQueryBuilder;
 import android.content.ContentValues;
 import android.content.Context;
-
+import android.content.res.AssetManager;
 import android.util.Log;
 
+//import CSVReader;
+//import libs.opencsv-2.3.src.au.com.bytecode.opencsv.CSVWriter;
+
+
+
+
+
+
+
+
+
+
+
+
+import java.io.BufferedReader;
 //import java.io.FileNotFoundException;
 //import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 //import java.io.InputStream;
 //import java.io.OutputStream;
 import java.util.ArrayList;
@@ -23,6 +41,7 @@ import java.util.List;
 //import java.io.PrintWriter;
 //import java.io.UnsupportedEncodingException;
 //import java.util.HashMap;
+import java.util.StringTokenizer;
 
 ///////////////////////////////////////////////////////////
 //
@@ -45,6 +64,14 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 //	private final Context myContext;
 	long rowId;
 
+    private ArrayList<Organisation> objList= new ArrayList<Organisation>();
+
+//    private ArrayList<String> defOrganisationId;
+//	private ArrayList<String> defName;
+//	private ArrayList<String> defShortName;
+//	private ArrayList<String> defOrganisationTypeId;
+//	private ArrayList<String> defParentOrganisationId;	
+	
 	/**
 	 * Constructor
 	 * Takes and keeps a reference of the passed context in order to access to the application assets and resources.
@@ -60,8 +87,30 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 		super(context, DB_NAME, null, 1);
 //		Log.e("SNDESB","DataBaseHelper : Constructor: DB Name:" + DB_NAME);	
 //		this.myContext = context;
-	}	
+/*
+        defOrganisationId = new ArrayList<String>();
+		defOrganisationTypeId = new ArrayList<String>();
+		defName= new ArrayList<String>();
+		defParentOrganisationId = new ArrayList<String>();
+		defShortName = new ArrayList<String>();
 
+		defOrganisationId.clear();
+		defOrganisationTypeId.clear();
+		defName.clear();
+		defParentOrganisationId.clear();
+		defShortName.clear();
+*/		
+/*		int ind = 0;
+		
+		defOrganisationId.set(ind, "");
+    	defOrganisationTypeId.set(ind, "");
+    	defName.set(ind,"");
+    	defParentOrganisationId.set(ind,"");
+    	defShortName.set(ind,"");
+*/
+		
+	}	
+	
 	///////////////////////////////////////////////////////////
 	//
 	// createDataBase
@@ -72,20 +121,19 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	 * */
 	public void createDataBase() throws IOException{
 
-		Log.e("SNDESB","DataBaseHelper : Create Database:");	
+		Log.d("SNDESB","DataBaseHelper : Create Database:");	
 		boolean dbExist = checkDataBase();
-
 		
 		if(dbExist){
 			Log.e("SNDESB","DataBaseHelper : database exists");	
 			//do nothing - database already exist
 		}else{
-			Log.e("SNDESB","DataBaseHelper : database does not exist:");	
+			Log.d("SNDESB","DataBaseHelper : Creating empty database in default system path");	
 
 			//By calling this method an empty database will be created into the default system path
 			//of your application so we are going to be able to overwrite that database with our database.
 			this.getReadableDatabase();
-			Log.e("SNDESB","DataBaseHelper : after getReadableDatabase");
+			Log.d("SNDESB","DataBaseHelper : after empty database creation (getReadableDatabase)");
 
 /*			try {
 				Log.e("SNDESB","DataBaseHelper : copy database:");
@@ -101,11 +149,12 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	//
 	// checkDataBase
 	//
+	// Check if the database already exist to avoid re-copying
+	// the file each time you open the application.
+	// @return true if it exists, false if it doesn't
+	//
 	///////////////////////////////////////////////////////////
-	/**
-	 * Check if the database already exist to avoid re-copying the file each time you open the application.
-	 * @return true if it exists, false if it doesn't
-	 */
+	
 	public boolean checkDataBase(){
 
 		SQLiteDatabase checkDB = null;
@@ -117,16 +166,11 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 			checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
 
 		}catch(SQLiteException e){
-//	}catch(SQLException e){
-
-			//database does't exist yet.
-
+            Log.d("SNDESB","DataBaseHelper: checkdatabase: Database could not be opened. Does not exist");
 		}
 
 		if(checkDB != null){
-
 			checkDB.close();
-
 		}
 
 		return checkDB != null ? true : false;
@@ -496,6 +540,53 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	//
 	//
 	///////////////////////////////////////////////////////////
+	public void addOrganisationsRecords(AssetManager assetManager) {
+		
+       	Log.d("SNDESB","addOrganisationsRecords: delete all old organisation records.");
+		deleteAllOrgRecords(); 
+
+		try {
+		    readOrganisationsFromFile(assetManager);
+		} catch (IOException e) {
+		    
+		    
+		}
+        objList= new ArrayList<Organisation>();
+		
+        // A map to hold the new record's values.
+        ContentValues values = new ContentValues(); 
+        
+        int ind = 0;
+        int records = objList.size();
+        Organisation org = new Organisation();
+        
+        while (ind < records) {
+            org = objList.get(ind);
+            values.put("OrganisationId", org.getOrganisationId());
+        	values.put("OrganisationTypeId", org.getOrganisationTypeId());
+        	values.put("Name", org.getName());
+            values.put("ShortName", org.getShortName());
+        	values.put("ParentOrganisationId", org.getParentOrganisationId());
+
+        	Log.d("SNDESB","addOrganisationsRecords: Fill default Organisations data started.");
+        	rowId = myDataBase.insert("Organisations", null, values);
+        	Log.d("SNDESB","addOrganisationsRecords: Fill default Organisations data completed.");
+           	ind++;
+        }
+
+        // If the insert succeeded, the row ID exists.
+    	if (rowId <= 0) {
+        	// If the insert didn't succeed, then the rowID is <= 0. Throws an exception.
+        	throw new SQLException("Failed to insert row into organisations");
+        }
+        Log.d("SNDESB","configApp: Added: " + ind + " organisations to database");
+	}
+	
+	///////////////////////////////////////////////////////////
+	//
+	//
+	//
+	///////////////////////////////////////////////////////////
 	public void deleteAllOrgRecords() {
 		
 		rowId = myDataBase.delete(TABLE_NAME, null, null);
@@ -507,6 +598,48 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 //	        }
 	}		
 	
+	
+    ///////////////////////////////////////////////////////////
+    //
+    //
+    //
+    ///////////////////////////////////////////////////////////
+	private void readOrganisationsFromFile(AssetManager assetManager) throws UnsupportedEncodingException {
+
+	    InputStream is = null;
+
+	    try {
+	        is = assetManager.open("organisations.txt");
+	    } catch (IOException e) {
+	        // TODO Auto-generated catch block
+	        e.printStackTrace();
+	    }
+
+	    BufferedReader reader = null;
+	    reader = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+
+	    String line = "";
+	    StringTokenizer st = null;
+
+	    try {
+
+	        while ((line = reader.readLine()) != null) {
+	            st = new StringTokenizer(line, ",");
+	            Organisation obj= new Organisation();
+	            obj.setOrganisationId(st.nextToken());
+	            obj.setOrganisationTypeId(st.nextToken());
+	            obj.setName(st.nextToken());
+	            obj.setShortName(st.nextToken());
+	            obj.setParentOrganisationId(st.nextToken());
+	            objList.add(obj);
+	        }
+	    } catch (IOException e) {
+
+	        e.printStackTrace();
+	    }
+	}
+	
+
 	///////////////////////////////////////////////////////////
 	//
 	// onUpgrade

@@ -79,8 +79,6 @@ public class events extends Activity  {
 		Serializable s = this.getIntent().getSerializableExtra("arguments");
 //		Object[] o = (Object[]) s;
 
-		
-		
 		interfaceArray = (ArrayList<String>) s;
 //		interfaceArray = (ArrayList<String>) b.getArrayList("DATE_FROM");
 		
@@ -102,8 +100,8 @@ public class events extends Activity  {
 		Log.i("SNDESB","events, onCreate:");    			
 		
 //		if (o != null) {
-		int size = interfaceArray.size();
-		int i = 10;
+		//int size = interfaceArray.size();
+		//int i = 10;
 		
 		mySelDateFrom  = interfaceArray.get(1);
 		mySelDateTo    = interfaceArray.get(3);

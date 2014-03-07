@@ -1,8 +1,10 @@
 package work.Android;
 
 //import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 //import java.io.InputStreamReader;
 //import java.net.URL;
 import java.util.ArrayList;
@@ -468,63 +470,63 @@ public class RestAPI {
     ///////////////////////////////////////////////////////////
 	public List<Organisation> parseOrganisations() {
 		final Organisation currentOrganisation = new Organisation();
-		final List<Organisation> organisationer = new ArrayList<Organisation>();
+		final List<Organisation> organisations = new ArrayList<Organisation>();
 		RootElement root = new RootElement(ORGANISATIONLIST);
 		Element item = root.getChild(ORGANISATION);
 		Element item2 = item.getChild(PARENTORGANISATION);
-//		Log.i("SNDESB", "parseorganisations : item2 " + item2.toString());
+//		Log.i("SNDESB", "parseOrganisations: item2 " + item2.toString());
 
 		item.setEndElementListener(new EndElementListener(){
 			public void end() {
-				organisationer.add(currentOrganisation.copy());
+				organisations.add(currentOrganisation.copy());
 			}
 		});
 
 /*		item2.setEndElementListener(new EndElementListener(){
 			public void end() {
 //				Log.e("SNDESB", "In item2.setEndElementListener");
-//				organisationer.add(currentOrganisation.copy());
+//				organisations.add(currentOrganisation.copy());
 			}
 		});
 */
 /*
 		item2.setEndElementListener(new EndElementListener(){
 			public void end() {
-				organisationer.add(currentOrganisation.copy());
+				organisations.add(currentOrganisation.copy());
 			}
 		});
 */		
 		item.getChild(ORGANISATIONID).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-//				Log.e("SNDESB", "organisation : setEndText OrganisationId");
+//				Log.e("SNDESB", "parseOrganisations:setEndText OrganisationId");
 				currentOrganisation.setOrganisationId(body);
 			}			
 		});
 
   		item.getChild(ORGANISATIONNAME).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-//				Log.e("SNDESB", "organisation : setEndText OrganisationName");
+//				Log.e("SNDESB", "parseOrganisations: setEndText OrganisationName");
 				currentOrganisation.setName(body);
 			}
 		});		
 
   		item.getChild(SHORTNAME).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-//				Log.e("SNDESB", "organisation : setEndText ShortName");
+//				Log.e("SNDESB", "parseOrganisations: setEndText ShortName");
 				currentOrganisation.setShortName(body);
 			}
 		});		
   		
 		item.getChild(ORGANISATIONTYPEID).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-//				Log.d("SNDESB", "organisation : setEndText organisationTypeId");
+//				Log.d("SNDESB", "parseOrganisations: setEndText organisationTypeId");
 				currentOrganisation.setOrganisationTypeId(body);
 			}			
 		});
 
 		item2.getChild(PARENTORGANISATIONID).setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
-//				Log.d("SNDESB", "organisation : setEndText ParentOrganisationId");
+//				Log.d("SNDESB", "parseOrganisations: setEndText ParentOrganisationId");
 				currentOrganisation.setParentOrganisationId(body);
 			}			
 		});
@@ -536,9 +538,60 @@ public class RestAPI {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-		return organisationer;
-	}
 
+//        PrintWriter out = null;
+        
+//        try {
+//            out = new PrintWriter(new FileWriter("organisations.txt"));
+//            for (Organisation org: organisations) {
+//                out.print(org);
+
+/*                out.println(org.getOrganisationId() + "," + 
+                        org.getOrganisationTypeId() + "," + 
+                        org.getName() + "," +
+                        org.getShortName() + "," +
+                        org.getParentOrganisationId());
+*/
+//                Log.d("SNDESB", org.getOrganisationId() + "," + 
+//                        org.getOrganisationTypeId() + "," + 
+//                        org.getName() + "," +
+//                        org.getShortName() + "," +
+//                        org.getParentOrganisationId());
+//            }
+//            out.close();
+//        } catch (IOException ex) {
+//            Log.d("SNDESB", "Fail to write organisations to file");
+//        } finally {
+//            out.close();
+//        }
+		
+		return organisations;
+	}
+	
+    ///////////////////////////////////////////////////////////
+    //
+    // parseEventEntries
+    //
+    ///////////////////////////////////////////////////////////
+/*
+ 	public void writeToFile() {
+ 
+	    PrintWriter out = null;
+	    
+	    try {
+	        out = new PrintWriter(new FileWriter("organisations.txt"));
+
+	        for (Organisations org: organisations) {
+	            out.print(org);
+	        }
+	        out.close();
+	    } catch (IOException ex) {
+	        Logger.getLogger(ListOfNumbers.class.getName()).log(Level.SEVERE, null, ex);
+	    } finally {
+	        out.close();
+	    }
+	}
+*/
 	///////////////////////////////////////////////////////////
     //
     // parseEventEntries

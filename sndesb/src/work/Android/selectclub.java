@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+
+
 //import work.Android.selectevent.OnReadyListener;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -70,7 +72,7 @@ public class selectclub  extends Activity {
     private boolean[] eventtypes; 
     private boolean[] eventdisciplines; 
     private String[] types; 
-    private String[] disciplines; 
+//    private String[] disciplines; 
     
 	///////////////////////////////////////////////////////////
     //
@@ -98,7 +100,7 @@ public class selectclub  extends Activity {
 		openstate = 0;
 		eventtypes = new boolean[]{true,true,true,true,true,true,true,true,true,true};
 		types = new String[]{"1","2","3","4","5","6"};
-		disciplines = new String[]{"1","2","3","4"};
+//		disciplines = new String[]{"1","2","3","4"};
 		mySelClassificationIds	= "1,2,3,4,5,6";
 //		mySelDisciplineIds	= "1,2,3,4";
 		
@@ -171,12 +173,14 @@ public class selectclub  extends Activity {
 		Log.d("SNDESB","Search for selected forbundid: " + myBuffSelectedForbundId + " among forbunds");
 
 		for (String oforbid : oforbundid) {
+//			Log.d("SNDESB","selectclub: oforbid: " + oforbid);
 
 			if (oforbid.equals(myBuffSelectedForbundId)) {
 				mySelForbundIndx = i;
 //				mySelectedForbundId = oforbundid.get(i);
 //				mySelectedForbund = oforbund.get(i);
 				Log.d("SNDESB","Found forbundsid: " + myBuffSelectedForbundId + " in index : " + i + " name:" + oforbund.get(i));
+				break;
 			}
             i++;
 		}
@@ -211,6 +215,7 @@ public class selectclub  extends Activity {
 				mySelKlubbIndx = i;
 				mySelClubId = oklubbarid.get(i);
 				Log.d("SNDESB","Found klubbid: " + mySelClubId + " in index : " + i + " name:" + oklubbar.get(i));
+				break;
 			}
 			i++;
 		}
@@ -228,15 +233,15 @@ public class selectclub  extends Activity {
    	    public void onItemSelected(AdapterView<?> parent,
    	        View view, int pos, long id) {
 			mySelForbundId = oforbundid.get(pos);
-			Log.d("SNDESB","MyOnItemSelectedListener1: Selected pos : " + pos + " som är : " + parent.getItemAtPosition(pos).toString() + " och id:" + oforbundid.get(pos) );
+			Log.d("SNDESB","MyOnItemSelectedListener1: Selected pos : " + pos + " which is : " + parent.getItemAtPosition(pos).toString() + " och id:" + oforbundid.get(pos) );
 			mySelForbundIndx = pos;
-			Integer val = new Integer(mySelForbundId);
+			Integer val = new Integer(mySelForbundId);		
 			fetchOrgClubNamesAndIds(val);
 
 			mySpinnerArrayAdapter2 = new ArrayAdapter<String>(cont, R.layout.spinnerlayout, oklubbar);
 			mySpinnerArrayAdapter2.setDropDownViewResource(R.layout.spinnerlayout);
 			mySpinner2.setAdapter(mySpinnerArrayAdapter2);
-	   		mySpinner2.setSelection(0,true);
+	   		mySpinner2.setSelection(mySelKlubbIndx,true);
    	    }
 
    	    public void onNothingSelected(AdapterView<?> parent) {
@@ -460,7 +465,7 @@ public class selectclub  extends Activity {
 
     		if (eventtypes[5]) { 
     			mySelClassificationIds = mySelClassificationIds + types[5];        		
-    			Log.d("SNDESB OnReadyListener"," slutklämm: " + mySelClassificationIds);
+    			Log.d("SNDESB OnReadyListener"," slutkl‰mm: " + mySelClassificationIds);
     		}
 
     		Log.d("SNDESB OnReadyListener"," resultat: " + mySelClassificationIds);        	

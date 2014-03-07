@@ -45,7 +45,7 @@ public class selectevent  extends Activity {
 	private String mySelClassificationIds;			
 	private String mySelDisciplineIds;			
 	private String mySelSearchLength;
-	private String mySelClub;
+	//private String mySelClub;
 	private String mySelClubId;
 
 	private String myBuffSelectedForbundId;
