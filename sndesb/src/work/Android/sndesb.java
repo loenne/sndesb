@@ -115,7 +115,7 @@ public class sndesb extends Activity {
 //            networkDetails.put("Status", e.getMessage());
             res = CONNECTION_UNAVAILABLE;
         } 
-        Log.d("SNDESB","checkNetworkConnection: Network connection : " + connectionStates.get(res));
+        Log.d("SNDESB","checkNetworkConnection   : Network connection : " + connectionStates.get(res));
         return res;
    }
 
