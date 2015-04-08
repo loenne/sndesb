@@ -103,8 +103,8 @@ public class sndesb extends Activity {
 //                    networkDetails.put("Roming", "NO");
 //                }
                 res = CONNECTION_MOBILE;
-                Log.d("SNDESB","checkNetworkConnection: MOBILE Type:  " + mobileNetwork.getTypeName() +     " SubType: " + mobileNetwork.getSubtypeName());
-                Log.d("SNDESB","checkNetworkConnection: MOBILE State: " + mobileNetwork.getState().name() + " Roaming: " + mobileNetwork.isRoaming());
+                Log.d("SNDESB","checkNetworkConnection: MOBILE Type  : " + mobileNetwork.getTypeName() +     " SubType: " + mobileNetwork.getSubtypeName());
+                Log.d("SNDESB","checkNetworkConnection: MOBILE State : " + mobileNetwork.getState().name() + " Roaming: " + mobileNetwork.isRoaming());
             }
 
             if (wifiNetwork == null && mobileNetwork == null) {
